@@ -34,7 +34,7 @@ site_configuration = {
                     'launcher': 'local'
                 },
                 {
-                    'name': 'rc-testing'
+                    'name': 'rc-testing',
                     'scheduler': 'slurm',
                     'environs': [
                          'builtin',
