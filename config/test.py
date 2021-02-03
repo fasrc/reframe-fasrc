@@ -41,7 +41,7 @@ site_configuration = {
                          'gcc',
                          'intel'
                     ],
-                    'descr': 'Test Cluster CPU'
+                    'descr': 'Test Cluster CPU',
                     'max_jobs': 100,
                     'launcher': 'srun
                 }
