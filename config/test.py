@@ -56,7 +56,7 @@ site_configuration = {
             'cxx': 'g++',
             'ftn': 'gfortran'
         },
-            'name': 'intel'
+            'name': 'intel',
             'modules': ['intel/19.0.5-fasrc01'],
             'cc': 'icc',
             'cxx': 'icpc',
