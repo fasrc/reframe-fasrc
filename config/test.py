@@ -51,7 +51,7 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
-            'modules': ['gcc/9.2.0-fasrc01','intel-mkl/2019.5.281-fasrc01'],
+            'modules': ['gcc/9.2.0-fasrc01'],
             'cc': 'gcc',
             'cxx': 'g++',
             'ftn': 'gfortran'

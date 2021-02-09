@@ -19,7 +19,7 @@ class DGEMMTest(rfm.RegressionTest):
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
         self.valid_systems = ['*']
-        self.valid_prog_environs = ['gnu','intel']
+        self.valid_prog_environs = ['intel']
 
         self.num_tasks = 1
         self.use_multithreading = False
@@ -31,12 +31,6 @@ class DGEMMTest(rfm.RegressionTest):
     def setflags(self):
         if self.current_environ.name.startswith('gnu'):
             self.build_system.cflags += ['-fopenmp']
-            self.build_system.cppflags = [
-                '-DMKL_ILP64', '-I${MKLROOT}/include'
-            ]
-            self.build_system.ldflags = [
-                ' -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_ilp64.a ${MKLROOT}/lib/intel64/libmkl_gnu_thread.a ${MKLROOT}/lib/intel64/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl'
-            ]
         elif self.current_environ.name.startswith('intel'):
             self.build_system.cppflags = [
                 '-DMKL_ILP64', '-I${MKLROOT}/include'
@@ -71,9 +65,6 @@ class DGEMMTest(rfm.RegressionTest):
         for hostname in all_tested_nodes:
             partition_name = self.current_partition.fullname
             ref_name = '%s:%s' % (partition_name, hostname)
-            self.reference[ref_name] = self.sys_reference.get(
-                partition_name, (0.0, None, None, 'Gflop/s')
-            )
             self.perf_patterns[hostname] = sn.extractsingle(
                 r'%s:\s+Avg\. performance\s+:\s+(?P<gflops>\S+)'
                 r'\sGflop/s' % hostname, self.stdout, 'gflops', float)
