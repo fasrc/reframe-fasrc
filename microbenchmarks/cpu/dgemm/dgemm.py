@@ -21,7 +21,7 @@ class DGEMMTest(rfm.RegressionTest):
         self.valid_systems = ['*']
         self.valid_prog_environs = ['gnu','intel']
 
-        self.num_tasks = 0
+        self.num_tasks = 1
         self.use_multithreading = False
         self.executable_opts = ['6144', '12288', '3072']
         self.build_system = 'SingleSource'
