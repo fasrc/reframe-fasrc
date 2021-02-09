@@ -18,32 +18,26 @@ class DGEMMTest(rfm.RegressionTest):
 
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
-        self.valid_systems = ['daint:gpu', 'daint:mc', 'dom:gpu', 'dom:mc',
-                              'arolla:cn', 'arolla:pn', 'tsa:cn', 'tsa:pn']
-        if self.current_system.name in ['daint', 'dom']:
-            self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-intel']
-        if self.current_system.name in ['arolla', 'tsa']:
-            self.valid_prog_environs = ['PrgEnv-gnu-nompi']
+        self.valid_systems = ['*']
+        self.valid_prog_environs = ['gnu','intel']
 
         self.num_tasks = 0
         self.use_multithreading = False
         self.executable_opts = ['6144', '12288', '3072']
         self.build_system = 'SingleSource'
         self.build_system.cflags = ['-O3']
-        self.sys_reference = {
-            'daint:gpu': (300.0, -0.15, None, 'Gflop/s'),
-            'daint:mc': (860.0, -0.15, None, 'Gflop/s'),
-            'dom:gpu': (300.0, -0.15, None, 'Gflop/s'),
-            'dom:mc': (860.0, -0.15, None, 'Gflop/s'),
-        }
-        self.maintainers = ['AJ', 'VH']
-        self.tags = {'benchmark', 'diagnostic', 'craype'}
 
     @rfm.run_before('compile')
     def setflags(self):
-        if self.current_environ.name.startswith('PrgEnv-gnu'):
+        if self.current_environ.name.startswith('gnu'):
             self.build_system.cflags += ['-fopenmp']
-        elif self.current_environ.name.startswith('PrgEnv-intel'):
+            self.build_system.cppflags = [
+                '-DMKL_ILP64', '-I${MKLROOT}/include'
+            ]
+            self.build_system.ldflags = [
+                '-mkl', '-static-intel', '-liomp5', '-lpthread', '-lm', '-ldl'
+            ]
+        elif self.current_environ.name.startswith('intel'):
             self.build_system.cppflags = [
                 '-DMKL_ILP64', '-I${MKLROOT}/include'
             ]
@@ -52,27 +46,16 @@ class DGEMMTest(rfm.RegressionTest):
                 '-mkl', '-static-intel', '-liomp5', '-lpthread', '-lm', '-ldl'
             ]
 
-        if self.current_partition.fullname in ['arolla:cn', 'arolla:pn',
-                                               'tsa:cn', 'tsa:pn']:
-            self.build_system.cflags += ['-I$EBROOTOPENBLAS/include']
-            self.build_system.ldflags = ['-L$EBROOTOPENBLAS/lib', '-lopenblas',
-                                         '-lpthread', '-lgfortran']
-
     @rfm.run_before('run')
     def set_tasks(self):
-        if self.current_partition.fullname in ['daint:gpu', 'dom:gpu']:
-            self.num_cpus_per_task = 12
-        elif self.current_partition.fullname in ['daint:mc', 'dom:mc']:
-            self.num_cpus_per_task = 36
-        elif self.current_partition.fullname in ['arolla:cn', 'tsa:cn']:
-            self.num_cpus_per_task = 16
-        elif self.current_partition.fullname in ['arolla:pn', 'tsa:pn']:
-            self.num_cpus_per_task = 40
+        self.num_cpus_per_task = 32
 
         if self.num_cpus_per_task:
             self.variables = {
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task)
             }
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
 
     @sn.sanity_function
     def eval_sanity(self):
