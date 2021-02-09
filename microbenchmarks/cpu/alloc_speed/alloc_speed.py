@@ -23,3 +23,7 @@ class AllocSpeedTest(rfm.RegressionTest):
             'time': sn.extractsingle(r'4096 MB, allocation time (?P<time>\S+)',
                                      self.stdout, 'time', float)
         }
+
+    @rfm.run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem=4G']

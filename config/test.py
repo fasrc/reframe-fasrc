@@ -26,7 +26,7 @@ site_configuration = {
                     'scheduler': 'local',
                     'environs': [
                         'builtin',
-                        'gcc',
+                        'gnu',
                         'intel'
                     ],
                     'descr': 'Login nodes',
@@ -38,7 +38,7 @@ site_configuration = {
                     'scheduler': 'slurm',
                     'environs': [
                          'builtin',
-                         'gcc',
+                         'gnu',
                          'intel'
                     ],
                     'descr': 'Test Cluster CPU',
