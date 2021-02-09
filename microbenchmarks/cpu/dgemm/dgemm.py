@@ -35,7 +35,7 @@ class DGEMMTest(rfm.RegressionTest):
                 '-DMKL_ILP64', '-I${MKLROOT}/include'
             ]
             self.build_system.ldflags = [
-                '-mkl', '-static-intel', '-liomp5', '-lpthread', '-lm', '-ldl'
+                ' -Wl,--start-group ${MKLROOT}/lib/intel64/libmkl_intel_ilp64.a ${MKLROOT}/lib/intel64/libmkl_gnu_thread.a ${MKLROOT}/lib/intel64/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl'
             ]
         elif self.current_environ.name.startswith('intel'):
             self.build_system.cppflags = [
