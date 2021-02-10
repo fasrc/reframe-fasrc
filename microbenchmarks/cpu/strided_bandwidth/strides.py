@@ -27,7 +27,7 @@ class StridedBase(rfm.RegressionTest):
                 self.stdout, 'bw', float)
         }
 
-        self.num_cpus = 32
+        self.num_cpus_per_task = 32
 
     @property
     @sn.sanity_function
@@ -44,7 +44,7 @@ class StridedBandwidthTest(StridedBase):
     @rfm.run_before('run')
     def set_exec_opts(self):
         # 8-byte stride, using the full cacheline
-        self.executable_opts = ['100000000', '1', '%s' % self.num_cpus]
+        self.executable_opts = ['100000000', '1', '%s' % self.num_cpus_per_task]
 
     @rfm.run_before('run')
     def set_memory_limit(self):
@@ -63,7 +63,7 @@ class StridedBandwidthTest64(StridedBase):
     @rfm.run_before('run')
     def set_exec_opts(self):
         # 64-byte stride, using 1/8 of the cacheline
-        self.executable_opts = ['100000000', '8', '%s' % self.num_cpus]
+        self.executable_opts = ['100000000', '8', '%s' % self.num_cpus_per_task]
 
 
 @rfm.required_version('>=2.16-dev0')
@@ -79,4 +79,4 @@ class StridedBandwidthTest128(StridedBase):
     @rfm.run_before('run')
     def set_exec_opts(self):
         # 128-byte stride, using 1/8 of every 2nd cacheline
-        self.executable_opts = ['100000000', '16', '%s' % self.num_cpus]
+        self.executable_opts = ['100000000', '16', '%s' % self.num_cpus_per_task]
