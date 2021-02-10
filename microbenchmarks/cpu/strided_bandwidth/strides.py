@@ -13,6 +13,7 @@ class StridedBase(rfm.RegressionTest):
         self.build_system = 'SingleSource'
         self.valid_systems = ['*']
         self.valid_prog_environs = ['builtin','gnu','intel']
+        self.build_system.cxxflags = ['-std=c++11','-lpthread']
         self.num_tasks = 1
         self.num_tasks_per_node = 1
 
@@ -41,12 +42,13 @@ class StridedBandwidthTest(StridedBase):
         super().__init__()
 
     @rfm.run_before('run')
-    def set_memory_limit(self):
-        self.job.options = ['--mem=4G']
     def set_exec_opts(self):
         # 8-byte stride, using the full cacheline
         self.executable_opts = ['100000000', '1', '%s' % self.num_cpus]
 
+    @rfm.run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem=4G']
 
 @rfm.required_version('>=2.16-dev0')
 @rfm.simple_test
@@ -57,6 +59,8 @@ class StridedBandwidthTest64(StridedBase):
     @rfm.run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=4G']
+
+    @rfm.run_before('run')
     def set_exec_opts(self):
         # 64-byte stride, using 1/8 of the cacheline
         self.executable_opts = ['100000000', '8', '%s' % self.num_cpus]
@@ -71,6 +75,8 @@ class StridedBandwidthTest128(StridedBase):
     @rfm.run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=4G']
+
+    @rfm.run_before('run')
     def set_exec_opts(self):
         # 128-byte stride, using 1/8 of every 2nd cacheline
         self.executable_opts = ['100000000', '16', '%s' % self.num_cpus]
