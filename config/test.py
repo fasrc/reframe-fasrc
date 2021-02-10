@@ -27,7 +27,9 @@ site_configuration = {
                     'environs': [
                         'builtin',
                         'gnu',
-                        'intel'
+                        'intel',
+                        'gnu-mpi',
+                        'intel-mpi'
                     ],
                     'descr': 'Login nodes',
                     'max_jobs': 4,
@@ -39,7 +41,9 @@ site_configuration = {
                     'environs': [
                          'builtin',
                          'gnu',
-                         'intel'
+                         'intel',
+                         'gnu-mpi',
+                         'intel-mpi'
                     ],
                     'descr': 'Test Cluster CPU',
                     'max_jobs': 100,
@@ -69,6 +73,21 @@ site_configuration = {
             'cxx': 'g++',
             'ftn': 'gfortran'
         },
+        {
+            'name': 'gnu-mpi',
+            'modules': ['gcc/9.2.0-fasrc01','openmpi/4.0.2-fasrc01'],
+            'cc': 'mpicc',
+            'cxx': 'mpicxx',
+            'ftn': 'mpifort'
+        },
+        {
+            'name': 'intel-mpi',
+            'modules': ['intel/19.0.5-fasrc01','openmpi/4.0.2-fasrc01'],
+            'cc': 'mpicc',
+            'cxx': 'mpicxx',
+            'ftn': 'mpifort'
+        },
+
     ],
     'logging': [
         {
