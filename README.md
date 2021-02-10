@@ -14,6 +14,9 @@ These are benchmark tests that are broken down by category.  Here is a sort desc
 * stream: Runs STREAM test for measuring memory bandwidth.
 * strided_bandwidth: Runs bandwidth test with various stride sizes.
 
+#### mpi
+* fft: Test runs FFTW.
+
 ## Reframe Docs
 https://github.com/eth-cscs/reframe
 
