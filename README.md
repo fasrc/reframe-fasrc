@@ -17,6 +17,7 @@ These are benchmark tests that are broken down by category.  Here is a sort desc
 #### mpi
 * fft: Test runs FFTW.
 * halo_exchange: Simulates halo cell (aka ghost or boundary zone) exchange to test MPI communications.
+* osu: Various MPI benchmarks from OSU.
 
 ## Reframe Docs
 https://github.com/eth-cscs/reframe
