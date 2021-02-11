@@ -14,6 +14,9 @@ These are benchmark tests that are broken down by category.  Here is a sort desc
 * stream: Runs STREAM test for measuring memory bandwidth.
 * strided_bandwidth: Runs bandwidth test with various stride sizes.
 
+#### gpu
+* gpu_burn: Burns in GPU and gives a report of GFLOps for one GPU and its temperature.
+
 #### mpi
 * fft: Test runs FFTW.
 * halo_exchange: Simulates halo cell (aka ghost or boundary zone) exchange to test MPI communications.
