@@ -59,7 +59,14 @@ site_configuration = {
                     'descr': 'Test Cluster GPU',
                     'max_jobs': 100,
                     'launcher': 'srun',
-                    'access': ['-p gpu']
+                    'access': ['-p gpu'],
+                    'resources': [
+                        {
+                            'name': 'gres',
+                            'options': ['--gres={gres}']
+                        }
+                    ],
+
                 }
             ]
         }

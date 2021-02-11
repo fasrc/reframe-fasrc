@@ -18,6 +18,7 @@ class GpuBurnTest(rfm.RegressionTest):
         self.exclusive_access = True
         self.executable_opts = ['-d', '40']
         self.build_system = 'Make'
+        self.build_system.makefile = 'makefile.cuda'
         self.executable = './gpu_burn.x'
         self.num_tasks = 0
         self.num_tasks_per_node = 1
