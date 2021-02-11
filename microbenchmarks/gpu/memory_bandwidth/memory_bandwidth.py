@@ -20,7 +20,7 @@ class GpuBandwidthCheck(rfm.RegressionTest):
         self.build_system = 'Make'
         self.executable = 'memory_bandwidth.x'
         self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
-        self.num_tasks = 0
+        self.num_tasks = 1
         self.num_tasks_per_node = 1
         self.exclusive_access = True
 
@@ -60,7 +60,7 @@ class GpuBandwidthCheck(rfm.RegressionTest):
     @sn.sanity_function
     def do_sanity_check(self):
         node_names = set(sn.extractall(
-            r'^\s*\[([^,]{1,20})\]\s*Found %s device\(s\).'
+            r'^\s*\[([^,]{1,100})\]\s*Found %s device\(s\).'
             % self.num_gpus_per_node, self.stdout, 1
         ))
         sn.evaluate(sn.assert_eq(
@@ -68,7 +68,7 @@ class GpuBandwidthCheck(rfm.RegressionTest):
             msg='requested {0} node(s), got {1} (nodelist: %s)' %
             ','.join(sorted(node_names))))
         good_nodes = set(sn.extractall(
-            r'^\s*\[([^,]{1,20})\]\s*Test Result\s*=\s*PASS',
+            r'^\s*\[([^,]{1,100})\]\s*Test Result\s*=\s*PASS',
             self.stdout, 1
         ))
         sn.evaluate(sn.assert_eq(
