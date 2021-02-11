@@ -16,6 +16,7 @@ These are benchmark tests that are broken down by category.  Here is a sort desc
 
 #### gpu
 * gpu_burn: Burns in GPU and gives a report of GFLOps for one GPU and its temperature.
+* memory_bandwidth: Tests GPU memory bandwidth.
 
 #### mpi
 * fft: Test runs FFTW.
