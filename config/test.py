@@ -62,8 +62,8 @@ site_configuration = {
                     'access': ['-p gpu'],
                     'resources': [
                         {
-                            'name': 'gres',
-                            'options': ['--gres={gres}']
+                            'name': '_rfm_gpu',
+                            'options': ['--gres=gpu:{num_gpus_per_node}']
                         }
                     ],
 
