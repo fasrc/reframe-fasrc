@@ -49,6 +49,17 @@ site_configuration = {
                     'max_jobs': 100,
                     'launcher': 'srun',
                     'access': ['-p rc-testing']
+                }'
+                {
+                    'name': 'gpu',
+                    'scheduler': 'slurm',
+                    'environs': [
+                         'gpu'
+                    ],
+                    'descr': 'Test Cluster GPU',
+                    'max_jobs': 100,
+                    'launcher': 'srun',
+                    'access': ['-p gpu']
                 }
             ]
         }
@@ -88,7 +99,13 @@ site_configuration = {
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
         },
-
+        {
+            'name': 'gpu',
+            'modules': ['gcc','cuda'],
+            'cc': 'gcc',
+            'cxx': 'g++',
+            'ftn': 'gfortran'
+        }
     ],
     'logging': [
         {
