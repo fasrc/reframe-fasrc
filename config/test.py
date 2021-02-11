@@ -49,7 +49,7 @@ site_configuration = {
                     'max_jobs': 100,
                     'launcher': 'srun',
                     'access': ['-p rc-testing']
-                }'
+                },
                 {
                     'name': 'gpu',
                     'scheduler': 'slurm',
