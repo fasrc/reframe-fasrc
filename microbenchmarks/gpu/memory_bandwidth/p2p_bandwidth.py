@@ -59,7 +59,7 @@ class P2pBandwidthCheck(rfm.RegressionTest):
             msg='requested {0} node(s), got {1} (nodelist: %s)' %
             ','.join(sorted(node_names))))
         good_nodes = set(sn.extractall(
-            r'^\s*\[([^,]{1,20})\]\s*Test Result\s*=\s*PASS',
+            r'^\s*\[([^,]{1,100})\]\s*Test Result\s*=\s*PASS',
             self.stdout, 1
         ))
         sn.evaluate(sn.assert_eq(
