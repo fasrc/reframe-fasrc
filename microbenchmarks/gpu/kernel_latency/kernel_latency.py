@@ -17,6 +17,7 @@ class KernelLatencyTest(rfm.RegressionTest):
 
         self.num_tasks = 1
         self.num_tasks_per_node = 1
+        self.exclusive_access = True
         self.build_system = 'Make'
         self.executable = 'kernel_latency.x'
         if kernel_version == 'sync':
