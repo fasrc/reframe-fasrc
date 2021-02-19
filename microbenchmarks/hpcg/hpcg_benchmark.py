@@ -49,10 +49,8 @@ class HPCGHookMixin:
 class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
     def __init__(self):
         self.descr = 'HPCG reference benchmark'
-        self.valid_systems = ['daint:mc', 'daint:gpu', 'dom:gpu', 'dom:mc']
-        self.valid_prog_environs = ['PrgEnv-gnu']
-        if self.current_system.name in {'daint', 'dom'}:
-            self.modules = ['craype-hugepages8M']
+        self.valid_systems = ['test:rc-testing']
+        self.valid_prog_environs = ['gnu-mpi']
 
         self.build_system = 'Make'
         self.build_system.options = ['arch=MPI_GCC_OMP']
@@ -64,30 +62,6 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
 
         self.num_tasks = 0
         self.num_cpus_per_task = 1
-        self.system_num_tasks = {
-            'daint:mc':  36,
-            'daint:gpu': 12,
-            'dom:mc':  36,
-            'dom:gpu': 12
-        }
-
-        self.reference = {
-            'daint:gpu': {
-                'gflops': (7.6, -0.1, None, 'Gflop/s')
-            },
-            'daint:mc': {
-                'gflops': (13.4, -0.1, None, 'Gflop/s')
-            },
-            'dom:gpu': {
-                'gflops': (7.6, -0.1, None, 'Gflop/s')
-            },
-            'dom:mc': {
-                'gflops': (13.4, -0.1, None, 'Gflop/s')
-            }
-        }
-
-        self.maintainers = ['SK', 'EK']
-        self.tags = {'diagnostic', 'benchmark', 'craype', 'external-resources'}
 
     @property
     @sn.sanity_function
@@ -96,9 +70,11 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
 
     @rfm.run_before('compile')
     def set_tasks(self):
-        self.num_tasks_per_node = self.system_num_tasks.get(
-            self.current_partition.fullname, 1
-        )
+        self.num_tasks_per_node = 36
+
+    @rfm.run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
 
     @rfm.run_before('performance')
     def set_performance(self):
@@ -123,12 +99,10 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
 class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
     def __init__(self):
         self.descr = 'HPCG benchmark Intel MKL implementation'
-        self.valid_systems = ['daint:mc', 'dom:mc', 'daint:gpu', 'dom:gpu']
-        self.valid_prog_environs = ['PrgEnv-intel']
-        self.modules = ['craype-hugepages8M']
+        self.valid_systems = ['test:rc-testing']
+        self.valid_prog_environs = ['intel-mpi']
+        self.modules = ['intel-mkl/2019.5.281-fasrc01']
         self.build_system = 'Make'
-        self.prebuild_cmds = ['cp -r ${MKLROOT}/benchmarks/hpcg/* .',
-                              'mv Make.CrayXC setup', './configure CrayXC']
 
         self.num_tasks = 0
         self.problem_size = 104
@@ -146,23 +120,6 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
                                 f'--ny={self.problem_size}',
                                 f'--nz={self.problem_size}', '-t2']
 
-        self.reference = {
-            'dom:mc': {
-                'gflops': (22, -0.1, None, 'Gflop/s')
-            },
-            'daint:mc': {
-                'gflops': (22, -0.1, None, 'Gflop/s')
-            },
-            'dom:gpu': {
-                'gflops': (10.7, -0.1, None, 'Gflop/s')
-            },
-            'daint:gpu': {
-                'gflops': (10.7, -0.1, None, 'Gflop/s')
-            },
-        }
-
-        self.maintainers = ['SK']
-        self.tags = {'diagnostic', 'benchmark', 'craype'}
 
     @property
     @sn.sanity_function
@@ -178,12 +135,12 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
 
     @rfm.run_before('compile')
     def set_tasks(self):
-        if self.current_partition.fullname in ['daint:gpu', 'dom:gpu']:
-            self.num_tasks_per_node = 2
-            self.num_cpus_per_task = 12
-        else:
-            self.num_tasks_per_node = 4
-            self.num_cpus_per_task = 18
+        self.num_tasks_per_node = 2
+        self.num_cpus_per_task = 18
+
+    @rfm.run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
 
     @rfm.run_before('performance')
     def set_performance(self):
@@ -216,15 +173,13 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
 @rfm.simple_test
 class HPCG_GPUCheck(rfm.RunOnlyRegressionTest, HPCGHookMixin):
     def __init__(self):
-        self.maintainers = ['SK', 'VH']
         self.descr = 'HPCG benchmark on GPUs'
         self.sourcesdir = os.path.join(self.current_system.resourcesdir,
                                        'HPCG')
 
         # there's no binary with support for CUDA 10 yet
-        self.valid_systems = ['daint:gpu']
-        self.valid_prog_environs = ['PrgEnv-gnu']
-        self.modules = ['craype-accel-nvidia60', 'craype-hugepages8M']
+        self.valid_systems = ['test:gpu']
+        self.valid_prog_environs = ['gpu']
         self.executable = 'xhpcg_gpu_3.1'
         self.prerun_cmds = ['chmod +x %s' % self.executable]
         self.num_tasks = 0
@@ -240,15 +195,6 @@ class HPCG_GPUCheck(rfm.RunOnlyRegressionTest, HPCGHookMixin):
         }
 
         self.output_file = sn.getitem(sn.glob('*.yaml'), 0)
-
-        self.reference = {
-            'daint:gpu': {
-                'gflops': (94.7, -0.1, None, 'Gflop/s')
-            },
-            'dom:gpu': {
-                'gflops': (94.7, -0.1, None, 'Gflop/s')
-            },
-        }
 
         num_nodes = self.num_tasks_assigned / self.num_tasks_per_node
         self.perf_patterns = {
@@ -268,3 +214,7 @@ class HPCG_GPUCheck(rfm.RunOnlyRegressionTest, HPCGHookMixin):
     @sn.sanity_function
     def num_tasks_assigned(self):
         return self.job.num_tasks
+
+    @rfm.run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
