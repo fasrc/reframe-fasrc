@@ -140,6 +140,10 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
         self.num_tasks_per_node = 2
         self.num_cpus_per_task = 18
 
+    @rfm.run_after('setup')
+    def prepare_test(self):
+        self.variables['OMP_NUM_THREADS'] = str(self.num_cpus_per_task)
+
     @rfm.run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=4G']
