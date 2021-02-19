@@ -18,6 +18,7 @@ These are benchmark tests that are broken down by category.  Here is a sort desc
 * gpu_burn: Burns in GPU and gives a report of GFLOps for one GPU and its temperature.
 * kernel_latency: Tests latency in loading the NVIDIA kernel.
 * memory_bandwidth: Tests GPU memory bandwidth.
+* shmem: Tests shared memory bandwidth.
 
 #### mpi
 * fft: Test runs FFTW.
