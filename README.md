@@ -5,7 +5,7 @@ FASRC specific configuration for Reframe
 Checks currently are copied from the cscs-checks folder in reframe and tuned to the FASRC environment.
 
 ### Microbenchmarks
-These are benchmark tests that are broken down by category.  Here is a sort description of each test:
+These are benchmark tests that are broken down by category.  Here is a short description of each test:
 
 #### cpu
 * alloc_speed: Tests speed of memory allocation
@@ -25,6 +25,11 @@ These are benchmark tests that are broken down by category.  Here is a sort desc
 * halo_exchange: Simulates halo cell (aka ghost or boundary zone) exchange to test MPI communications.
 * hpcg_benchmark: Runs the HPCG benchmark for gnu and MKL.
 * osu: Various MPI benchmarks from OSU.
+
+### System
+These tests are to verify various aspects of the system.  Here is a short description of each test.
+
+* io: Test runs IOR on several filesystems 
 
 ## Reframe Docs
 https://github.com/eth-cscs/reframe
