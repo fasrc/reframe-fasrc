@@ -1,8 +1,8 @@
 # reframe-fasrc
 FASRC specific configuration for Reframe
 
-## Tests
-Tests currently are copied from the cscs-checks folder in reframe and tuned to the FASRC environment.
+## Checks
+Checks currently are copied from the cscs-checks folder in reframe and tuned to the FASRC environment.
 
 ### Microbenchmarks
 These are benchmark tests that are broken down by category.  Here is a sort description of each test:
