@@ -74,7 +74,7 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
-            'modules': ['gcc/9.2.0-fasrc01'],
+            'modules': ['gcc/9.3.0-fasrc01'],
             'cc': 'gcc',
             'cxx': 'g++',
             'ftn': 'gfortran'
@@ -94,7 +94,7 @@ site_configuration = {
         },
         {
             'name': 'gnu-mpi',
-            'modules': ['gcc/9.2.0-fasrc01','openmpi/4.0.5-fasrc01'],
+            'modules': ['gcc/9.3.0-fasrc01','openmpi/4.0.5-fasrc01'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'

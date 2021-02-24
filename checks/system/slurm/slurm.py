@@ -141,7 +141,7 @@ class MemoryOverconsumptionCheck(SlurmCompiledBaseCheck):
 class MemoryOverconsumptionMpiCheck(SlurmCompiledBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems += ['test:rc-testing]
+        self.valid_systems += ['test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi']
         self.time_limit = '5m'
         self.sourcepath = 'eatmemory_mpi.c'
