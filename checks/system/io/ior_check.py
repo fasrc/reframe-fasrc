@@ -22,14 +22,13 @@ class IorCheck(rfm.RegressionTest):
                                      '.ior')
         self.prerun_cmds = ['mkdir -p ' + self.test_dir]
         self.test_file = os.path.join(self.test_dir, 'ior')
-        self.valid_systems = ['rc-testing']
+        self.valid_systems = ['test:rc-testing']
         self.fs = {
-            '/scratch/: {
-                'num_tasks': 4,
+            '/scratch/': {
+                'num_tasks': 4
             },
             '/n/holyscratch01/rc_admin/test': {
-                'num_tasks': 10,
-
+                'num_tasks': 10
             },
         }
 
@@ -50,9 +49,8 @@ class IorCheck(rfm.RegressionTest):
         if cur_sys not in self.fs[base_dir]:
             cur_sys = 'dummy'
 
-        self.valid_systems = self.fs[base_dir]['valid_systems']
-        self.num_tasks = self.fs[base_dir][cur_sys].get('num_tasks', 1)
-        tpn = self.fs[base_dir][cur_sys].get('num_tasks_per_node', 1)
+        self.num_tasks = self.fs[base_dir].get('num_tasks', 1)
+        tpn = self.fs[base_dir].get('num_tasks_per_node', 1)
         self.num_tasks_per_node = tpn
 
         self.ior_block_size = self.fs[base_dir]['ior_block_size']
@@ -62,10 +60,6 @@ class IorCheck(rfm.RegressionTest):
                                 '-a', self.ior_access_type]
         self.valid_prog_environs = ['intel-mpi']
         self.modules = ['ior']
-
-        self.build_system.options = ['posix', 'mpiio']
-        self.build_system.max_concurrency = 1
-        self.num_gpus_per_node = 0
 
         # Default umask is 0022, which generates file permissions -rw-r--r--
         # we want -rw-rw-r-- so we set umask to 0002
