@@ -11,7 +11,7 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 
-class IorCheck(rfm.RegressionTest):
+class IorCheck(rfm.RunOnlyRegressionTest):
     def __init__(self, base_dir):
         self.descr = f'IOR check ({base_dir})'
         self.tags = {'ops', base_dir}
@@ -19,13 +19,14 @@ class IorCheck(rfm.RegressionTest):
         self.username = getpass.getuser()
         self.test_dir = os.path.join(self.base_dir,
                                      self.username,
-                                     '.ior')
+                                     'ior')
         self.prerun_cmds = ['mkdir -p ' + self.test_dir]
         self.test_file = os.path.join(self.test_dir, 'ior')
         self.valid_systems = ['test:rc-testing']
         self.fs = {
             '/scratch/': {
-                'num_tasks': 4
+                'num_tasks': 4,
+                'num_tasks_per_node': 4
             },
             '/n/holyscratch01/rc_admin/test': {
                 'num_tasks': 10
@@ -55,16 +56,18 @@ class IorCheck(rfm.RegressionTest):
 
         self.ior_block_size = self.fs[base_dir]['ior_block_size']
         self.ior_access_type = self.fs[base_dir]['ior_access_type']
-        self.executable_opts = ['-B', '-F', '-C ', '-Q 1', '-t 4m', '-D 30',
+        self.executable = 'ior'
+        self.executable_opts = ['-F', '-C', '-Q 1', '-t 1m', '-D 30',
                                 '-b', self.ior_block_size,
                                 '-a', self.ior_access_type]
         self.valid_prog_environs = ['intel-mpi']
         self.modules = ['ior']
+        self.sourcesdir = None
 
         # Default umask is 0022, which generates file permissions -rw-r--r--
         # we want -rw-rw-r-- so we set umask to 0002
         os.umask(2)
-        self.time_limit = '5m'
+        self.time_limit = '10m'
         # Our references are based on fs types but regression needs reference
         # per system.
         self.reference = {
@@ -76,6 +79,9 @@ class IorCheck(rfm.RegressionTest):
         self.test_file += '.' + self.current_partition.name
         self.executable_opts += ['-o', self.test_file]
 
+    @rfm.run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
 
 @rfm.parameterized_test(['/scratch/'],
                         ['/n/holyscratch01/rc_admin/test'])
