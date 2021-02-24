@@ -22,36 +22,15 @@ class IorCheck(rfm.RegressionTest):
                                      '.ior')
         self.prerun_cmds = ['mkdir -p ' + self.test_dir]
         self.test_file = os.path.join(self.test_dir, 'ior')
+        self.valid_systems = ['rc-testing']
         self.fs = {
-            '/scratch/snx3000tds': {
-                'valid_systems': ['dom:gpu', 'dom:mc'],
-                'dom': {
-                    'num_tasks': 4,
-                }
+            '/scratch/: {
+                'num_tasks': 4,
             },
-            '/scratch/snx3000': {
-                'valid_systems': ['daint:gpu', 'daint:mc'],
-                'daint': {
-                    'num_tasks': 10,
-                }
+            '/n/holyscratch01/rc_admin/test': {
+                'num_tasks': 10,
+
             },
-            '/users': {
-                'valid_systems': ['daint:gpu', 'dom:gpu', 'fulen:normal'],
-                'ior_block_size': '8g',
-                'daint': {},
-                'dom': {},
-                'fulen': {
-                    'valid_prog_environs': ['PrgEnv-gnu']
-                }
-            },
-            '/scratch/shared/fulen': {
-                'valid_systems': ['fulen:normal'],
-                'ior_block_size': '48g',
-                'fulen': {
-                    'num_tasks': 8,
-                    'valid_prog_environs': ['PrgEnv-gnu']
-                }
-            }
         }
 
         # Setting some default values
@@ -81,13 +60,8 @@ class IorCheck(rfm.RegressionTest):
         self.executable_opts = ['-B', '-F', '-C ', '-Q 1', '-t 4m', '-D 30',
                                 '-b', self.ior_block_size,
                                 '-a', self.ior_access_type]
-        self.sourcesdir = os.path.join(self.current_system.resourcesdir, 'IOR')
-        self.executable = os.path.join('src', 'C', 'IOR')
-        self.build_system = 'Make'
-
-        vpe = 'valid_prog_environs'
-        penv = self.fs[base_dir][cur_sys].get(vpe, ['builtin'])
-        self.valid_prog_environs = penv
+        self.valid_prog_environs = ['intel-mpi']
+        self.modules = ['ior']
 
         self.build_system.options = ['posix', 'mpiio']
         self.build_system.max_concurrency = 1
@@ -103,22 +77,14 @@ class IorCheck(rfm.RegressionTest):
             '*': self.fs[base_dir]['reference']
         }
 
-        self.maintainers = ['SO', 'GLR']
-
-        systems_to_test = ['dom', 'daint']
-        if self.current_system.name in systems_to_test:
-            self.tags |= {'production', 'external-resources'}
-
     @rfm.run_before('run')
     def set_exec_opts(self):
         self.test_file += '.' + self.current_partition.name
         self.executable_opts += ['-o', self.test_file]
 
 
-@rfm.parameterized_test(['/scratch/snx3000tds'],
-                        ['/scratch/snx3000'],
-                        ['/users'],
-                        ['/scratch/shared/fulen'])
+@rfm.parameterized_test(['/scratch/'],
+                        ['/n/holyscratch01/rc_admin/test'])
 class IorWriteCheck(IorCheck):
     def __init__(self, base_dir):
         super().__init__(base_dir)
@@ -132,10 +98,8 @@ class IorWriteCheck(IorCheck):
         self.tags |= {'write'}
 
 
-@rfm.parameterized_test(['/scratch/snx3000tds'],
-                        ['/scratch/snx3000'],
-                        ['/users'],
-                        ['/scratch/shared/fulen'])
+@rfm.parameterized_test(['/scratch/'],
+                        ['/n/holyscratch01/rc_admin/test'])
 class IorReadCheck(IorCheck):
     def __init__(self, base_dir):
         super().__init__(base_dir)
