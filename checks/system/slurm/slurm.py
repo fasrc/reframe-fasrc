@@ -12,53 +12,28 @@ class SlurmSimpleBaseCheck(rfm.RunOnlyRegressionTest):
     '''Base class for Slurm simple binary tests'''
 
     def __init__(self):
-        self.valid_systems = ['daint:gpu', 'daint:mc',
-                              'dom:gpu', 'dom:mc',
-                              'arolla:cn', 'arolla:pn',
-                              'tsa:cn', 'tsa:pn',
-                              'daint:xfer', 'eiger:mc']
-        self.valid_prog_environs = ['PrgEnv-cray']
-        self.tags = {'slurm', 'maintenance', 'ops',
-                     'production', 'single-node'}
+        self.valid_systems = ['test:rc-testing','test:gpu']
+        self.valid_prog_environs = ['builtin']
         self.num_tasks_per_node = 1
-        if self.current_system.name in ['arolla', 'tsa']:
-            self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-pgi']
-            self.exclusive_access = True
-
-        self.maintainers = ['RS', 'VH']
-
 
 class SlurmCompiledBaseCheck(rfm.RegressionTest):
     '''Base class for Slurm tests that require compiling some code'''
 
     def __init__(self):
-        self.valid_systems = ['daint:gpu', 'daint:mc',
-                              'dom:gpu', 'dom:mc']
-        self.valid_prog_environs = ['PrgEnv-cray']
-        self.tags = {'slurm', 'maintenance', 'ops',
-                     'production', 'single-node'}
+        self.valid_systems = ['test:rc-testing','test:gpu']
+        self.valid_prog_environs = ['builtin']
         self.num_tasks_per_node = 1
-
-        self.maintainers = ['RS', 'VH']
-
 
 @rfm.simple_test
 class HostnameCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.executable = '/bin/hostname'
+        self.valid_systems = ['test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.hostname_patt = {
-            'arolla:cn': r'^arolla-cn\d{3}$',
-            'arolla:pn': r'^arolla-pp\d{3}$',
-            'tsa:cn': r'^tsa-cn\d{3}$',
-            'tsa:pn': r'^tsa-pp\d{3}$',
-            'daint:gpu': r'^nid\d{5}$',
-            'daint:mc': r'^nid\d{5}$',
-            'daint:xfer': r'^datamover\d{2}.cscs.ch$',
-            'dom:gpu': r'^nid\d{5}$',
-            'dom:mc': r'^nid\d{5}$',
-            'eiger:mc': r'^nid\d{6}$',
+            'test:rc-testing': r'^holyitc\d{3}$',
+            'test:gpu': r'^aagk80gpu\d{3}$',
         }
 
     @rfm.run_before('sanity')
@@ -75,11 +50,7 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.num_tasks = 2
-        self.valid_systems = ['daint:gpu', 'daint:mc',
-                              'dom:gpu', 'dom:mc',
-                              'arolla:cn', 'arolla:pn',
-                              'tsa:cn', 'tsa:pn',
-                              'eiger:mc']
+        self.valid_systems = ['test:rc-testing','test:gpu']
         self.executable = '/bin/echo'
         self.executable_opts = ['$MY_VAR']
         self.variables = {'MY_VAR': 'TEST123456!'}
@@ -92,7 +63,7 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
 class RequiredConstraintCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['daint:login', 'dom:login']
+        self.valid_systems = ['test:rc-testing','test:gpu']
         self.executable = 'srun'
         self.executable_opts = ['-A', osext.osgroup(), 'hostname']
         self.sanity_patterns = sn.assert_found(
@@ -105,24 +76,23 @@ class RequiredConstraintCheck(SlurmSimpleBaseCheck):
 class RequestLargeMemoryNodeCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['daint:mc']
+        self.valid_systems = ['test:rc-testing']
         self.executable = '/usr/bin/free'
         self.executable_opts = ['-h']
         mem_obtained = sn.extractsingle(r'Mem:\s+(?P<mem>\S+)G',
                                         self.stdout, 'mem', float)
-        self.sanity_patterns = sn.assert_bounded(mem_obtained, 122.0, 128.0)
+        self.sanity_patterns = sn.assert_bounded(mem_obtained, 256.0, 256.0)
 
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem=120000']
+        self.job.options = ['--mem=256000']
 
 
 @rfm.simple_test
 class DefaultRequestGPU(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['daint:gpu', 'dom:gpu',
-                              'arolla:cn', 'tsa:cn']
+        self.valid_systems = ['test:gpu']
         self.executable = 'nvidia-smi'
         self.sanity_patterns = sn.assert_found(
             r'NVIDIA-SMI.*Driver Version.*', self.stdout)
@@ -132,7 +102,7 @@ class DefaultRequestGPU(SlurmSimpleBaseCheck):
 class DefaultRequestGPUSetsGRES(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['daint:gpu', 'dom:gpu']
+        self.valid_systems = ['test:gpu']
         self.executable = 'scontrol show job ${SLURM_JOB_ID}'
         self.sanity_patterns = sn.assert_found(
             r'.*(TresPerNode|Gres)=.*gpu:1.*', self.stdout)
@@ -142,38 +112,11 @@ class DefaultRequestGPUSetsGRES(SlurmSimpleBaseCheck):
 class DefaultRequestMC(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['daint:mc', 'dom:mc']
+        self.valid_systems = ['test:rc-testing']
         # This is a basic test that should return the number of CPUs on the
-        # system which, on a MC node should be 72
+        # system which, on a MC node should be 36
         self.executable = 'lscpu -p |grep -v "^#" -c'
-        self.sanity_patterns = sn.assert_found(r'72', self.stdout)
-
-
-@rfm.simple_test
-class ConstraintRequestCabinetGrouping(SlurmSimpleBaseCheck):
-    def __init__(self):
-        super().__init__()
-        self.valid_systems = ['daint:gpu', 'daint:mc',
-                              'dom:gpu', 'dom:mc']
-        self.executable = 'cat /proc/cray_xt/cname'
-        self.cabinets = {
-            'daint:gpu': 'c0-1',
-            'daint:mc': 'c1-0',
-
-            # Numbering is inverse in Dom
-            'dom:gpu': 'c0-0',
-            'dom:mc': 'c0-1',
-        }
-
-        # We choose a default pattern that will cause assert_found() to fail
-        cabinet = self.cabinets.get(self.current_system.name, r'$^')
-        self.sanity_patterns = sn.assert_found(fr'{cabinet}.*', self.stdout)
-
-    @rfm.run_before('run')
-    def set_slurm_constraint(self):
-        cabinet = self.cabinets.get(self.current_partition.fullname)
-        if cabinet:
-            self.job.options = [f'--constraint={cabinet}']
+        self.sanity_patterns = sn.assert_found(r'36', self.stdout)
 
 
 @rfm.simple_test
@@ -181,7 +124,7 @@ class MemoryOverconsumptionCheck(SlurmCompiledBaseCheck):
     def __init__(self):
         super().__init__()
         self.time_limit = '1m'
-        self.valid_systems += ['eiger:mc']
+        self.valid_systems += ['test:rc-testing','test:gpu']
         self.sourcepath = 'eatmemory.c'
         self.tags.add('mem')
         self.executable_opts = ['4000M']
@@ -198,8 +141,8 @@ class MemoryOverconsumptionCheck(SlurmCompiledBaseCheck):
 class MemoryOverconsumptionMpiCheck(SlurmCompiledBaseCheck):
     def __init__(self):
         super().__init__()
-        self.maintainers = ['JG']
-        self.valid_systems += ['eiger:mc', 'pilatus:mc']
+        self.valid_systems += ['test:rc-testing]
+        self.valid_prog_environs = ['gnu-mpi']
         self.time_limit = '5m'
         self.sourcepath = 'eatmemory_mpi.c'
         self.tags.add('mem')
@@ -231,12 +174,7 @@ class MemoryOverconsumptionMpiCheck(SlurmCompiledBaseCheck):
     @rfm.run_before('run')
     def set_tasks(self):
         tasks_per_node = {
-            'dom:mc': 36,
-            'daint:mc': 36,
-            'dom:gpu': 12,
-            'daint:gpu': 12,
-            'eiger:mc': 128,
-            'pilatus:mc': 128,
+            'test:rc-testing': 36,
         }
         partname = self.current_partition.fullname
         self.num_tasks_per_node = tasks_per_node[partname]
@@ -248,12 +186,6 @@ class MemoryOverconsumptionMpiCheck(SlurmCompiledBaseCheck):
     @sn.sanity_function
     def reference_meminfo(self):
         reference_meminfo = {
-            'dom:gpu': 62,
-            'dom:mc': 62,
-            'daint:gpu': 62,
-            'daint:mc': 62,  # this will pass with 64 GB and above memory sizes
-            # this will pass with 256 GB and above memory sizes:
-            'eiger:mc': 250,
-            'pilatus:mc': 250,
+            'test:rc-testing': 62,
         }
         return reference_meminfo[self.current_partition.fullname]
