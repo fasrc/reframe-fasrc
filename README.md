@@ -30,6 +30,7 @@ These are benchmark tests that are broken down by category.  Here is a short des
 These tests are to verify various aspects of the system.  Here is a short description of each test.
 
 * io: Test runs IOR on several filesystems 
+* slurm: Various slurm sanity checks
 
 ## Reframe Docs
 https://github.com/eth-cscs/reframe
