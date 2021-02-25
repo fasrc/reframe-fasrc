@@ -8,7 +8,6 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 
-@rfm.required_version('>=2.16')
 @rfm.parameterized_test(['production'])
 class AlltoallTest(rfm.RegressionTest):
     def __init__(self, variant):
@@ -53,7 +52,6 @@ class FlexAlltoallTest(rfm.RegressionTest):
         self.num_tasks = 8
         self.sanity_patterns = sn.assert_found(r'^1048576', self.stdout)
 
-@rfm.required_version('>=2.16')
 @rfm.parameterized_test(['small'], ['large'])
 class AllreduceTest(rfm.RegressionTest):
     def __init__(self, variant):
@@ -108,7 +106,6 @@ class P2PBaseTest(rfm.RegressionTest):
         }
 
 
-@rfm.required_version('>=2.16')
 @rfm.simple_test
 class P2PCPUBandwidthTest(P2PBaseTest):
     def __init__(self):
@@ -123,7 +120,6 @@ class P2PCPUBandwidthTest(P2PBaseTest):
         }
 
 
-@rfm.required_version('>=2.16')
 @rfm.simple_test
 class P2PCPULatencyTest(P2PBaseTest):
     def __init__(self):
@@ -139,7 +135,6 @@ class P2PCPULatencyTest(P2PBaseTest):
         }
 
 
-@rfm.required_version('>=2.16')
 @rfm.simple_test
 class G2GBandwidthTest(P2PBaseTest):
     def __init__(self):
@@ -156,7 +151,6 @@ class G2GBandwidthTest(P2PBaseTest):
                                    self.stdout, 'bw', float)
         }
 
-@rfm.required_version('>=2.16')
 @rfm.simple_test
 class G2GLatencyTest(P2PBaseTest):
     def __init__(self):

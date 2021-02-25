@@ -36,7 +36,6 @@ class StridedBase(rfm.RegressionTest):
         return self.job.num_tasks
 
 
-@rfm.required_version('>=2.16-dev0')
 @rfm.simple_test
 class StridedBandwidthTest(StridedBase):
     def __init__(self):
@@ -51,7 +50,6 @@ class StridedBandwidthTest(StridedBase):
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=4G']
 
-@rfm.required_version('>=2.16-dev0')
 @rfm.simple_test
 class StridedBandwidthTest64(StridedBase):
     def __init__(self):
@@ -67,7 +65,6 @@ class StridedBandwidthTest64(StridedBase):
         self.executable_opts = ['100000000', '8', '%s' % self.num_cpus_per_task]
 
 
-@rfm.required_version('>=2.16-dev0')
 @rfm.simple_test
 class StridedBandwidthTest128(StridedBase):
     def __init__(self):
