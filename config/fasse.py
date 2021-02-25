@@ -17,7 +17,7 @@ site_configuration = {
             'descr': 'FASSE',
             'hostnames': [
                 'holy7c',
-                'aagk80gpu'
+                'aagk80gpu',
                 'fasselogin'
             ],
             'modules_system': 'lmod',
