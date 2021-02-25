@@ -4,7 +4,8 @@ FASRC specific configuration for Reframe
 ## Configs
 These are configs for different clusters run by FASRC.
 
-* test: For the test cluster.
+* fasse: Configs for fasse.
+* test: Config for the test cluster.
 
 ## Checks
 Checks currently are copied from the cscs-checks folder in reframe and tuned to the FASRC environment.
