@@ -18,7 +18,7 @@ class DGEMMTest(rfm.RegressionTest):
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
         self.modules = ['intel-mkl/2019.5.281-fasrc01']
-        self.valid_systems = ['*']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['intel']
 
         self.num_tasks = 1

@@ -31,7 +31,7 @@ site_configuration = {
                         'intel',
                     ],
                     'descr': 'Login nodes',
-                    'max_jobs': 4,
+                    'max_jobs': 1,
                     'launcher': 'local'
                 },
                 {
