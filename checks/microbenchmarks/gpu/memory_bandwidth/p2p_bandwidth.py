@@ -11,7 +11,7 @@ import reframe as rfm
 @rfm.parameterized_test(['peerAccess'], ['noPeerAccess'])
 class P2pBandwidthCheck(rfm.RegressionTest):
     def __init__(self, peerAccess):
-        self.valid_systems = ['test:gpu']
+        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         # Perform a single bandwidth test with a buffer size of 1024MB

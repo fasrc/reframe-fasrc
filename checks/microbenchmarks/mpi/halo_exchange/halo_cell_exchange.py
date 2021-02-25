@@ -14,7 +14,7 @@ class HaloCellExchangeTest(rfm.RegressionTest):
         self.sourcepath = 'halo_cell_exchange.c'
         self.build_system = 'SingleSource'
         self.build_system.cflags = ['-O2']
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi','intel-mpi']
         self.num_tasks = 6
         self.num_tasks_per_node = 1

@@ -13,7 +13,7 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GpuBurnTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['test:gpu']
+        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
         self.descr = 'GPU burn test'
         self.valid_prog_environs = ['gpu']
         self.exclusive_access = True

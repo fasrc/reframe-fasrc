@@ -11,7 +11,7 @@ import reframe.utility.sanity as sn
 @rfm.parameterized_test(['sync'], ['async'])
 class KernelLatencyTest(rfm.RegressionTest):
     def __init__(self, kernel_version):
-        self.valid_systems = ['test:gpu']
+        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         self.num_tasks = 1

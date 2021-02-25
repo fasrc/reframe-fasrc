@@ -11,7 +11,7 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GPUShmemTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['test:gpu']
+        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
         self.num_tasks = 1
         self.num_tasks_per_node = 1

@@ -13,7 +13,7 @@ class FFTWTest(rfm.RegressionTest):
     def __init__(self, exec_mode):
         self.sourcepath = 'fftw_benchmark.c'
         self.build_system = 'SingleSource'
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.modules = ['fftw']
         self.num_tasks_per_node = 12
         self.num_gpus_per_node = 0

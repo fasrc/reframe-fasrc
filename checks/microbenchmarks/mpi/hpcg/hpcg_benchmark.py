@@ -50,7 +50,7 @@ class HPCGHookMixin:
 class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
     def __init__(self):
         self.descr = 'HPCG reference benchmark'
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi']
 
         self.build_system = 'Make'
@@ -100,7 +100,7 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
 class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
     def __init__(self):
         self.descr = 'HPCG benchmark Intel MKL implementation'
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['intel-mpi']
         self.modules = ['intel-mkl/2019.5.281-fasrc01']
         self.build_system = 'Make'

@@ -12,7 +12,7 @@ import reframe.utility.sanity as sn
 class AlltoallTest(rfm.RegressionTest):
     def __init__(self, variant):
         self.strict_check = False
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.descr = 'Alltoall OSU microbenchmark'
         self.build_system = 'Make'
         self.build_system.makefile = 'Makefile_alltoall'
@@ -41,7 +41,7 @@ class AlltoallTest(rfm.RegressionTest):
 @rfm.simple_test
 class FlexAlltoallTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.exclusive_access = True
         self.descr = 'Flexible Alltoall OSU test'
@@ -56,7 +56,7 @@ class FlexAlltoallTest(rfm.RegressionTest):
 class AllreduceTest(rfm.RegressionTest):
     def __init__(self, variant):
         self.strict_check = False
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
 
         self.descr = 'Allreduce OSU microbenchmark'
         self.build_system = 'Make'
@@ -95,7 +95,7 @@ class P2PBaseTest(rfm.RegressionTest):
         self.build_system = 'Make'
         self.build_system.makefile = 'Makefile_p2p'
         self.exclusive_access = True
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.sanity_patterns = sn.assert_found(r'^4194304', self.stdout)
 
@@ -110,7 +110,7 @@ class P2PBaseTest(rfm.RegressionTest):
 class P2PCPUBandwidthTest(P2PBaseTest):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.executable = './p2p_osu_bw'
         self.executable_opts = ['-x', '100', '-i', '1000']
@@ -124,7 +124,7 @@ class P2PCPUBandwidthTest(P2PBaseTest):
 class P2PCPULatencyTest(P2PBaseTest):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.executable_opts = ['-x', '100', '-i', '1000']
 
@@ -139,7 +139,7 @@ class P2PCPULatencyTest(P2PBaseTest):
 class G2GBandwidthTest(P2PBaseTest):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.num_gpus_per_node = 0
         self.executable = './p2p_osu_bw'
@@ -155,7 +155,7 @@ class G2GBandwidthTest(P2PBaseTest):
 class G2GLatencyTest(P2PBaseTest):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['test:rc-testing']
+        self.valid_systems = ['fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.num_gpus_per_node = 0
         self.executable = './p2p_osu_latency'
