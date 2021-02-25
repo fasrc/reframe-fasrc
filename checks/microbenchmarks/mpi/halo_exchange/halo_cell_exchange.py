@@ -70,4 +70,4 @@ class HaloCellExchangeTest(rfm.RegressionTest):
 
     @rfm.run_before('run')
     def set_pmix(self):
-        self.job.options = ['--mpi=pmix']
+        self.job.launcher.options = ['--mpi=pmix']
