@@ -4,8 +4,9 @@ FASRC specific configuration for Reframe
 ## Configs
 These are configs for different clusters run by FASRC.
 
+* cannon: Configs for cannon.
 * fasse: Configs for fasse.
-* test: Config for the test cluster.
+* test: Configs for the test cluster.
 
 ## Checks
 Checks currently are copied from the cscs-checks folder in reframe and tuned to the FASRC environment.

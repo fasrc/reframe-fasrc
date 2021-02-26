@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-# ReFrame FASSE cluster settings
+# ReFrame Cannon cluster settings
 #
 
 import reframe.utility.osext as osext
@@ -13,29 +13,16 @@ import reframe.utility.osext as osext
 site_configuration = {
     'systems': [
         {
-            'name': 'fasse',
-            'descr': 'FASSE',
+            'name': 'cannon',
+            'descr': 'Cannon Cluster',
             'hostnames': [
                 'holy7c',
-                'aagk80gpu',
-                'fasselogin'
+                'holygpu2c'
             ],
             'modules_system': 'lmod',
             'partitions': [
                 {
-                    'name': 'login',
-                    'scheduler': 'local',
-                    'environs': [
-                        'builtin',
-                        'gnu',
-                        'intel',
-                    ],
-                    'descr': 'Login nodes',
-                    'max_jobs': 1,
-                    'launcher': 'local'
-                },
-                {
-                    'name': 'fasse',
+                    'name': 'test',
                     'scheduler': 'slurm',
                     'environs': [
                          'builtin',
@@ -44,21 +31,21 @@ site_configuration = {
                          'gnu-mpi',
                          'intel-mpi'
                     ],
-                    'descr': 'FASSE CPU',
+                    'descr': 'Cannon test partition',
                     'max_jobs': 100,
                     'launcher': 'srun',
-                    'access': ['-p fasse']
+                    'access': ['-p test']
                 },
                 {
-                    'name': 'fasse_gpu',
+                    'name': 'gpu_test',
                     'scheduler': 'slurm',
                     'environs': [
                          'gpu'
                     ],
-                    'descr': 'FASSE GPU',
+                    'descr': 'Cannon gpu_test partition',
                     'max_jobs': 100,
                     'launcher': 'srun',
-                    'access': ['-p fasse_gpu'],
+                    'access': ['-p gpu_test'],
                     'resources': [
                         {
                             'name': '_rfm_gpu',
