@@ -24,6 +24,34 @@ class AllocSpeedTest(rfm.RegressionTest):
                                      self.stdout, 'time', float)
         }
 
+        self.sys_reference = {
+            'no': {
+                'cannon:test': {
+                    'time': (1.0, -0.9, 0.5, 's')
+                },
+                'cannon:gpu_test': {
+                    'time': (1.0, -0.9, 0.5, 's')
+                },
+                '*': {
+                    'time': (0, None, None, 's')
+                },
+            },
+            '2M': {
+                'cannon:test': {
+                    'time': (1.0, -0.9, 0.5, 's')
+                },
+                'cannon:gpu_test': {
+                    'time': (1.0, -0.9, 0.5, 's')
+                },
+                '*': {
+                    'time': (0, None, None, 's')
+                }
+            },
+        }
+        self.reference = self.sys_reference[hugepages]
+
+
+
     @rfm.run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=5G']
