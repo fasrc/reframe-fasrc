@@ -32,7 +32,7 @@ site_configuration = {
                          'intel-mpi'
                     ],
                     'descr': 'Cannon test partition',
-                    'max_jobs': 100,
+                    'max_jobs': 5,
                     'launcher': 'srun',
                     'access': ['-p test']
                 },

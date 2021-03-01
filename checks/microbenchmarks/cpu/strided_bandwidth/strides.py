@@ -12,7 +12,7 @@ class StridedBase(rfm.RegressionTest):
     def __init__(self):
         self.sourcepath = 'strides.cpp'
         self.build_system = 'SingleSource'
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['builtin','gnu','intel']
         self.build_system.cxxflags = ['-std=c++11','-lpthread']
         self.num_tasks = 1
@@ -28,7 +28,13 @@ class StridedBase(rfm.RegressionTest):
                 self.stdout, 'bw', float)
         }
 
-        self.num_cpus_per_task = 32
+        self.system_num_cpus = {
+            'cannon:test': 48,
+            'fasse:fasse': 48,
+            'test:rc-testing':  36,
+            '*': 32,
+        }
+
 
     @property
     @sn.sanity_function
@@ -41,26 +47,54 @@ class StridedBandwidthTest(StridedBase):
     def __init__(self):
         super().__init__()
 
+        self.reference = {
+            'cannon:test': {
+                'bandwidth': (185, -0.1, 0.1, 'GB/s')
+            },
+            'fasse:fasse': {
+                'bandwidth': (185, -0.1, 0.1, 'GB/s')
+            },
+            '*': {
+                'bandwidth': (270, None, None, 'GB/s')
+            },
+        }
+
     @rfm.run_before('run')
     def set_exec_opts(self):
+        self.num_cpus_per_task = self.system_num_cpus[self.current_partition.fullname]
+
         # 8-byte stride, using the full cacheline
         self.executable_opts = ['100000000', '1', '%s' % self.num_cpus_per_task]
 
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
 @rfm.simple_test
 class StridedBandwidthTest64(StridedBase):
     def __init__(self):
         super().__init__()
 
+        self.reference = {
+            'cannon:test': {
+                'bandwidth': (23, -0.1, 0.1, 'GB/s')
+            },
+            'fasse:fasse': {
+                'bandwidth': (23, -0.1, 0.1, 'GB/s')
+            },
+            '*': {
+                'bandwidth': (270, None, None, 'GB/s')
+            },
+        }
+
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
     @rfm.run_before('run')
     def set_exec_opts(self):
+        self.num_cpus_per_task = self.system_num_cpus[self.current_partition.fullname]
+
         # 64-byte stride, using 1/8 of the cacheline
         self.executable_opts = ['100000000', '8', '%s' % self.num_cpus_per_task]
 
@@ -70,11 +104,25 @@ class StridedBandwidthTest128(StridedBase):
     def __init__(self):
         super().__init__()
 
+        self.reference = {
+            'cannon:test': {
+                'bandwidth': (17, -0.1, 0.1, 'GB/s')
+            },
+            'fasse:fasse': {
+                'bandwidth': (17, -0.1, 0.1, 'GB/s')
+            },
+            '*': {
+                'bandwidth': (270, None, None, 'GB/s')
+            },
+        }
+
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
     @rfm.run_before('run')
     def set_exec_opts(self):
+        self.num_cpus_per_task = self.system_num_cpus[self.current_partition.fullname]
+
         # 128-byte stride, using 1/8 of every 2nd cacheline
         self.executable_opts = ['100000000', '16', '%s' % self.num_cpus_per_task]
