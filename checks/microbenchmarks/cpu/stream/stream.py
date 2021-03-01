@@ -33,7 +33,12 @@ class StreamTest(rfm.RegressionTest):
         self.build_system = 'SingleSource'
         self.num_tasks = 1
         self.num_tasks_per_node = 1
-        self.num_cpus_per_task = 32
+        self.stream_cpus_per_task = {
+            'cannon:test': 48,
+            'fasse:fasse': 48,
+            '*': 32,
+        }
+
         self.variables = {
             'OMP_PLACES': 'threads',
             'OMP_PROC_BIND': 'spread'
@@ -45,13 +50,33 @@ class StreamTest(rfm.RegressionTest):
                                       self.stdout, 'triad', float)
         }
 
+        self.stream_bw_reference = {
+            'builtin': {
+                'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
+                '*': {'triad': (117000, None, None, 'MB/s')},
+            },
+            'gnu': {
+                'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
+                '*': {'triad': (117000, None, None, 'MB/s')},
+            },
+            'intel': {
+                'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
+                '*': {'triad': (117000, None, None, 'MB/s')},
+            },
+        }
+
+
     @rfm.run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=4G']
 
     @rfm.run_after('setup')
     def prepare_test(self):
+        self.num_cpus_per_task = self.stream_cpus_per_task.get(
+            self.current_partition.fullname, 1)
         self.variables['OMP_NUM_THREADS'] = str(self.num_cpus_per_task)
         envname = self.current_environ.name
 
         self.build_system.cflags = self.prgenv_flags.get(envname, ['-O3'])
+
+        self.reference = self.stream_bw_reference[envname]
