@@ -18,7 +18,7 @@ class DGEMMTest(rfm.RegressionTest):
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
         self.modules = ['intel-mkl/2019.5.281-fasrc01']
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['intel']
 
         self.num_tasks = 1
@@ -26,6 +26,12 @@ class DGEMMTest(rfm.RegressionTest):
         self.executable_opts = ['6144', '12288', '3072']
         self.build_system = 'SingleSource'
         self.build_system.cflags = ['-O3']
+        self.sys_reference = {
+            'cannon:test': (2400.0, -0.15, None, 'Gflop/s'),
+            'fasse:fasse': (2400.0, -0.15, None, 'Gflop/s'),
+            '*': (0, None, None, 'Gflop/s'),
+        }
+
 
     @rfm.run_before('compile')
     def setflags(self):
@@ -42,7 +48,12 @@ class DGEMMTest(rfm.RegressionTest):
 
     @rfm.run_before('run')
     def set_tasks(self):
-        self.num_cpus_per_task = 32
+        if self.current_partition.fullname in ['test:rc-testing']:
+            self.num_cpus_per_task = 36
+        elif self.current_partition.fullname in ['cannon:test', 'fasse:fasse']:
+            self.num_cpus_per_task = 48
+        else:
+            self.num_cpus_per_task = 32
 
         if self.num_cpus_per_task:
             self.variables = {
@@ -65,6 +76,9 @@ class DGEMMTest(rfm.RegressionTest):
         for hostname in all_tested_nodes:
             partition_name = self.current_partition.fullname
             ref_name = '%s:%s' % (partition_name, hostname)
+            self.reference[ref_name] = self.sys_reference.get(
+                partition_name, (0.0, None, None, 'Gflop/s')
+            )
             self.perf_patterns[hostname] = sn.extractsingle(
                 r'%s:\s+Avg\. performance\s+:\s+(?P<gflops>\S+)'
                 r'\sGflop/s' % hostname, self.stdout, 'gflops', float)
