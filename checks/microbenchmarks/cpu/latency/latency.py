@@ -38,6 +38,33 @@ class CPULatencyTest(rfm.RegressionTest):
             'latencyMem': lat_pattern(3),
         }
 
+        self.reference = {
+            'cannon:test': {
+                'latencyL1':  (1.14, None, 0.26, 'ns'),
+                'latencyL2':  (4.0, None, 0.26, 'ns'),
+                'latencyL3':  (21, None, 0.075, 'ns'),
+                'latencyMem': (79, None, 0.05, 'ns')
+            },
+            'cannon:gpu_test': {
+                'latencyL1':  (1.14, None, 0.26, 'ns'),
+                'latencyL2':  (4.0, None, 0.26, 'ns'),
+                'latencyL3':  (21, None, 0.075, 'ns'),
+                'latencyMem': (90, None, 0.05, 'ns')
+            },
+            'fasse:fasse': {
+                'latencyL1':  (1.14, None, 0.26, 'ns'),
+                'latencyL2':  (4.0, None, 0.26, 'ns'),
+                'latencyL3':  (21, None, 0.075, 'ns'),
+                'latencyMem': (79, None, 0.05, 'ns')
+            },
+            '*': {
+                'latencyL1':  (1.14, None, None, 'ns'),
+                'latencyL2':  (4.0, None, None, 'ns'),
+                'latencyL3':  (21, None, None, 'ns'),
+                'latencyMem': (79, None, None, 'ns')
+            },
+        }
+
     @rfm.run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=4G']
