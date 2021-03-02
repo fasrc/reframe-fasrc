@@ -13,22 +13,28 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GpuBurnTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.descr = 'GPU burn test'
         self.valid_prog_environs = ['gpu']
-        self.exclusive_access = True
         self.executable_opts = ['-d', '40']
         self.build_system = 'Make'
         self.build_system.makefile = 'makefile.cuda'
         self.executable = './gpu_burn.x'
-        self.num_tasks = 1
-        self.num_tasks_per_node = 1
         self.sanity_patterns = self.assert_num_tasks()
         patt = (r'^\s*\[[^\]]*\]\s*GPU\s+\d+\(\S*\):\s+(?P<perf>\S*)\s+GF\/s'
                 r'\s+(?P<temp>\S*)\s+Celsius')
         self.perf_patterns = {
             'perf': sn.min(sn.extractall(patt, self.stdout, 'perf', float)),
             'temp': sn.max(sn.extractall(patt, self.stdout, 'temp', float)),
+        }
+        self.reference = {
+            'cannon:gpu_test': {
+                'perf': (6200, -0.10, None, 'Gflop/s'),
+            },
+            '*': {
+                'perf': (4115, None, None, 'Gflop/s'),
+            },
+            '*': {'temp': (0, None, None, 'degC')}
         }
 
     @property
@@ -44,7 +50,19 @@ class GpuBurnTest(rfm.RegressionTest):
 
     @rfm.run_before('run')
     def set_gpus_per_node(self):
-        self.num_gpus_per_node = 4
+        cp = self.current_partition.fullname
+        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+            self.num_gpus_per_node = 4
+            self.num_cpus_per_task = 4
+            self.num_tasks = 1
+        elif cp in {'cannon:gpu_test'}:
+            self.num_gpus_per_node = 2
+            self.num_cpus_per_task = 2
+            self.num_tasks = 1
+        else:
+            self.num_gpus_per_node = 1
+            self.num_cpus_per_task = 1
+            self.num_tasks = 1
 
     @rfm.run_before('performance')
     def report_nid_with_smallest_flops(self):
