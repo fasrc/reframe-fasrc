@@ -13,7 +13,7 @@ class SlurmSimpleBaseCheck(rfm.RunOnlyRegressionTest):
     '''Base class for Slurm simple binary tests'''
 
     def __init__(self):
-        self.valid_systems = ['fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
+        self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.num_tasks_per_node = 1
 
@@ -21,7 +21,7 @@ class SlurmCompiledBaseCheck(rfm.RegressionTest):
     '''Base class for Slurm tests that require compiling some code'''
 
     def __init__(self):
-        self.valid_systems = ['fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
+        self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.num_tasks_per_node = 1
 
@@ -30,9 +30,11 @@ class HostnameCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.executable = '/bin/hostname -s'
-        self.valid_systems = ['fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
+        self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.hostname_patt = {
+            'cannon:test': r'^holy7c\d{5}$',
+            'cannon:gpu_test': r'^holygpu2c\d{5}$',
             'test:rc-testing': r'^holyitc\d{2}$',
             'test:gpu': r'^aagk80gpu\d{2}$',
             'fasse:fasse': r'^holy7c\d{5}$',
@@ -53,7 +55,7 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.num_tasks = 2
-        self.valid_systems = ['fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
+        self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.executable = '/bin/echo'
         self.executable_opts = ['$MY_VAR']
         self.variables = {'MY_VAR': 'TEST123456!'}
@@ -65,7 +67,7 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
 class DefaultRequestGPU(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
         self.num_gpus_per_node = 1
         self.executable = 'nvidia-smi'
@@ -78,7 +80,7 @@ class DefaultRequestGPUSetsGRES(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.valid_prog_environs = ['gpu']
-        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.num_gpus_per_node = 1
         self.executable = 'scontrol show job ${SLURM_JOB_ID}'
         self.sanity_patterns = sn.assert_found(
@@ -90,7 +92,7 @@ class MemoryOverconsumptionCheck(SlurmCompiledBaseCheck):
     def __init__(self):
         super().__init__()
         self.time_limit = '1m'
-        self.valid_systems += ['fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
+        self.valid_systems += ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.sourcepath = 'eatmemory.c'
         self.tags.add('mem')
         self.executable_opts = ['4000M']
