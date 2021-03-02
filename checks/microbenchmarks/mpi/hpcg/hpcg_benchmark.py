@@ -50,7 +50,7 @@ class HPCGHookMixin:
 class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
     def __init__(self):
         self.descr = 'HPCG reference benchmark'
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi']
 
         self.build_system = 'Make'
@@ -61,8 +61,28 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
         # use glob to catch the output file suffix dependent on execution time
         self.output_file = sn.getitem(sn.glob('HPCG*.txt'), 0)
 
-        self.num_tasks = 72
+        self.num_tasks = 96
         self.num_cpus_per_task = 1
+
+        self.system_num_tasks = {
+            'cannon:test':  48,
+            'fasse:fasse': 48,
+            'test:rc-testing':  36,
+            '*': 32
+        }
+
+        self.reference = {
+            'cannon:test': {
+                'gflops': (28, -0.1, None, 'Gflop/s')
+            },
+            'fasse:fasse': {
+                'gflops': (28, -0.1, None, 'Gflop/s')
+            },
+            '*': {
+                'gflops': (13.4, None, None, 'Gflop/s')
+            }
+        }
+
 
     @property
     @sn.sanity_function
@@ -71,11 +91,13 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
 
     @rfm.run_before('compile')
     def set_tasks(self):
-        self.num_tasks_per_node = 36
+        self.num_tasks_per_node = self.system_num_tasks.get(
+            self.current_partition.fullname, 1
+        )
 
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
     @rfm.run_before('performance')
     def set_performance(self):
@@ -100,7 +122,7 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
 class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
     def __init__(self):
         self.descr = 'HPCG benchmark Intel MKL implementation'
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['intel-mpi']
         self.modules = ['intel-mkl/2019.5.281-fasrc01']
         self.build_system = 'Make'
@@ -123,6 +145,17 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
                                 f'--ny={self.problem_size}',
                                 f'--nz={self.problem_size}', '-t2']
 
+        self.reference = {
+            'cannon:test': {
+                'gflops': (39, -0.1, None, 'Gflop/s')
+            },
+            'fasse:fasse': {
+                'gflops': (39, -0.1, None, 'Gflop/s')
+            },
+            '*': {
+                'gflops': (13.4, None, None, 'Gflop/s')
+            }
+        }
 
     @property
     @sn.sanity_function
@@ -138,8 +171,15 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
 
     @rfm.run_before('compile')
     def set_tasks(self):
-        self.num_tasks_per_node = 2
-        self.num_cpus_per_task = 18
+        if self.current_partition.fullname in ['cannon:test', 'fasse:fasse']:
+            self.num_tasks_per_node = 2
+            self.num_cpus_per_task = 24
+        elif self.current_partition.fullname in ['test:rc-testing']:
+            self.num_tasks_per_node = 2
+            self.num_cpus_per_task = 18
+        else:
+            self.num_tasks_per_node = 2
+            self.num_cpus_per_task = 16
 
     @rfm.run_after('setup')
     def prepare_test(self):
@@ -147,7 +187,7 @@ class HPCGCheckMKL(rfm.RegressionTest, HPCGHookMixin):
 
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
     @rfm.run_before('performance')
     def set_performance(self):
