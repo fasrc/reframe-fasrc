@@ -43,7 +43,7 @@ site_configuration = {
                          'gpu'
                     ],
                     'descr': 'Cannon gpu_test partition',
-                    'max_jobs': 100,
+                    'max_jobs': 1,
                     'launcher': 'srun',
                     'access': ['-p gpu_test'],
                     'resources': [

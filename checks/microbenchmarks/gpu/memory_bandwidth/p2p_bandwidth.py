@@ -11,7 +11,7 @@ import reframe as rfm
 @rfm.parameterized_test(['peerAccess'], ['noPeerAccess'])
 class P2pBandwidthCheck(rfm.RegressionTest):
     def __init__(self, peerAccess):
-        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         # Perform a single bandwidth test with a buffer size of 1024MB
@@ -20,9 +20,6 @@ class P2pBandwidthCheck(rfm.RegressionTest):
         self.build_system = 'Make'
         self.executable = 'p2p_bandwidth.x'
         self.build_system.cxxflags = [f'-DCOPY={copy_size}']
-        self.num_tasks = 1
-        self.num_tasks_per_node = 1
-        self.exclusive_access = True
 
         if (peerAccess == 'peerAccess'):
             self.build_system.cxxflags += ['-DP2P']
@@ -37,8 +34,25 @@ class P2pBandwidthCheck(rfm.RegressionTest):
                 self.stdout, 1, float))
         }
 
-        self.tags = {'diagnostic', 'benchmark', 'mch'}
-        self.maintainers = ['JO']
+        if p2p:
+            self.reference = {
+                'cannon:gpu_test': {
+                    'bw':   (9, -0.05, None, 'GB/s'),
+                },
+                '*': {
+                    'bw':   (172.5, -0.05, None, 'GB/s'),
+                },
+            }
+        else:
+            self.reference = {
+                'cannon:gpu_test': {
+                    'bw': (11, -0.05, None, 'GB/s'),
+                },
+                '*': {
+                    'bw': (79.6, -0.05, None, 'GB/s'),
+                },
+            }
+
 
     @rfm.run_after('setup')
     def select_makefile(self):
@@ -46,7 +60,19 @@ class P2pBandwidthCheck(rfm.RegressionTest):
 
     @rfm.run_before('run')
     def set_num_gpus_per_node(self):
-        self.num_gpus_per_node = 4
+        cp = self.current_partition.fullname
+        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+            self.num_gpus_per_node = 4
+            self.num_cpus_per_task = 4
+            self.num_tasks = 1
+        elif cp in {'cannon:gpu_test'}:
+            self.num_gpus_per_node = 2
+            self.num_cpus_per_task = 2
+            self.num_tasks = 1
+        else:
+            self.num_gpus_per_node = 1
+            self.num_cpus_per_task = 1
+            self.num_tasks = 1
 
     @sn.sanity_function
     def do_sanity_check(self):
