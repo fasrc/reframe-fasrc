@@ -38,9 +38,9 @@ class GpuBandwidthCheck(rfm.RegressionTest):
                 'd2d': (780000, -0.1, None, 'MB/s')
             },
             '*': {
-                'h2d': (11881, -0.1, None, 'MB/s'),
-                'd2h': (12571, -0.1, None, 'MB/s'),
-                'd2d': (499000, -0.1, None, 'MB/s')
+                'h2d': (11881, None, None, 'MB/s'),
+                'd2h': (12571, None, None, 'MB/s'),
+                'd2d': (499000, None, None, 'MB/s')
             },
         }
 

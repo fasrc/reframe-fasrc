@@ -40,7 +40,7 @@ class P2pBandwidthCheck(rfm.RegressionTest):
                     'bw':   (9, -0.05, None, 'GB/s'),
                 },
                 '*': {
-                    'bw':   (172.5, -0.05, None, 'GB/s'),
+                    'bw':   (172.5, None, None, 'GB/s'),
                 },
             }
         else:
@@ -49,7 +49,7 @@ class P2pBandwidthCheck(rfm.RegressionTest):
                     'bw': (11, -0.05, None, 'GB/s'),
                 },
                 '*': {
-                    'bw': (79.6, -0.05, None, 'GB/s'),
+                    'bw': (79.6, None, None, 'GB/s'),
                 },
             }
 

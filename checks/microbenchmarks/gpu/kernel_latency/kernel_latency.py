@@ -34,7 +34,7 @@ class KernelLatencyTest(rfm.RegressionTest):
                     'latency': (3.7, None, 0.10, 'us')
                 },
                 '*': {
-                    'latency': (15.1, None, 0.10, 'us')
+                    'latency': (15.1, None, None, 'us')
                 },
             },
             'async': {
@@ -42,7 +42,7 @@ class KernelLatencyTest(rfm.RegressionTest):
                     'latency': (3.7, None, 0.10, 'us')
                 },
                 '*': {
-                    'latency': (2.2, None, 0.10, 'us')
+                    'latency': (2.2, None, None, 'us')
                 },
             },
         }
