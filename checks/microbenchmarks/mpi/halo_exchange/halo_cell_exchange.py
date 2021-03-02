@@ -14,7 +14,7 @@ class HaloCellExchangeTest(rfm.RegressionTest):
         self.sourcepath = 'halo_cell_exchange.c'
         self.build_system = 'SingleSource'
         self.build_system.cflags = ['-O2']
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi','intel-mpi']
         self.num_tasks = 6
         self.num_tasks_per_node = 1
@@ -62,6 +62,31 @@ class HaloCellExchangeTest(rfm.RegressionTest):
                 r'halo_cell_exchange 6 3 2 1 1000000 1000000 1000000'
                 r' \S+ (?P<time_mpi>\S+)', self.stdout,
                 'time_mpi', float)
+        }
+
+        self.reference = {
+            'cannon:test': {
+                'time_2_10': (1e-05, None, 0.50, 's'),
+                'time_2_10000': (6e-05, None, 0.50, 's'),
+                'time_2_1000000': (1e-03, None, 0.50, 's'),
+                'time_4_10': (2e-05, None, 0.50, 's'),
+                'time_4_10000': (7e-05, None, 0.50, 's'),
+                'time_4_1000000': (1e-03, None, 0.50, 's'),
+                'time_6_10': (2e-05, None, 0.50, 's'),
+                'time_6_10000': (6e-05, None, 0.50, 's'),
+                'time_6_1000000': (1e-03, None, 0.50, 's')
+            },
+            '*': {
+                'time_2_10': (3.925395e-06, None, None, 's'),
+                'time_2_10000': (9.721279e-06, None, None, 's'),
+                'time_2_1000000': (4.934530e-04, None, None, 's'),
+                'time_4_10': (5.878997e-06, None, None, 's'),
+                'time_4_10000': (1.495080e-05, None, None, 's'),
+                'time_4_1000000': (6.791397e-04, None, None, 's'),
+                'time_6_10': (5.428815e-06, None, None, 's'),
+                'time_6_10000': (1.540580e-05, None, None, 's'),
+                'time_6_1000000': (9.179296e-04, None, None, 's')
+            },
         }
 
     @rfm.run_before('run')
