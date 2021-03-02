@@ -11,7 +11,7 @@ import reframe as rfm
 @rfm.simple_test
 class GpuBandwidthCheck(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         # Perform a single bandwidth test with a buffer size of 1024MB
@@ -20,9 +20,6 @@ class GpuBandwidthCheck(rfm.RegressionTest):
         self.build_system = 'Make'
         self.executable = 'memory_bandwidth.x'
         self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
-        self.num_tasks = 1
-        self.num_tasks_per_node = 1
-        self.exclusive_access = True
 
         # perf_patterns and reference will be set by the sanity check function
         self.sanity_patterns = self.do_sanity_check()
@@ -34,6 +31,19 @@ class GpuBandwidthCheck(rfm.RegressionTest):
             'd2d': sn.min(sn.extractall(self._xfer_pattern('d2d'),
                                         self.stdout, 1, float)),
         }
+        self.reference = {
+            'cannon:gpu_test': {
+                'h2d': (12000, -0.1, None, 'MB/s'),
+                'd2h': (13000, -0.1, None, 'MB/s'),
+                'd2d': (780000, -0.1, None, 'MB/s')
+            },
+            '*': {
+                'h2d': (11881, -0.1, None, 'MB/s'),
+                'd2h': (12571, -0.1, None, 'MB/s'),
+                'd2d': (499000, -0.1, None, 'MB/s')
+            },
+        }
+
 
     @rfm.run_after('setup')
     def select_makefile(self):
@@ -41,7 +51,19 @@ class GpuBandwidthCheck(rfm.RegressionTest):
 
     @rfm.run_before('run')
     def set_num_gpus_per_node(self):
-        self.num_gpus_per_node = 4
+        cp = self.current_partition.fullname
+        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+            self.num_gpus_per_node = 4
+            self.num_cpus_per_task = 4
+            self.num_tasks = 1
+        elif cp in {'cannon:gpu_test'}:
+            self.num_gpus_per_node = 2
+            self.num_cpus_per_task = 2
+            self.num_tasks = 1
+        else:
+            self.num_gpus_per_node = 1
+            self.num_cpus_per_task = 1
+            self.num_tasks = 1
 
     def _xfer_pattern(self, xfer_kind):
         '''generates search pattern for performance analysis'''
