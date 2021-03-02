@@ -13,7 +13,7 @@ class FFTWTest(rfm.RegressionTest):
     def __init__(self, exec_mode):
         self.sourcepath = 'fftw_benchmark.c'
         self.build_system = 'SingleSource'
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.modules = ['fftw']
         self.num_tasks_per_node = 12
         self.num_gpus_per_node = 0
@@ -31,9 +31,33 @@ class FFTWTest(rfm.RegressionTest):
         if exec_mode == 'nompi':
             self.num_tasks = 12
             self.executable_opts = ['72 12 1000 0']
+            self.reference = {
+                'cannon:test': {
+                    'fftw_exec_time': (0.47, None, 0.05, 's'),
+                },
+                'fasse:fasse': {
+                    'fftw_exec_time': (0.47, None, 0.05, 's'),
+                },
+                '*': {
+                    'fftw_exec_time': (0.59, None, None, 's'),
+                },
+            }
+
         else:
             self.num_tasks = 72
             self.executable_opts = ['144 72 200 1']
+            self.reference = {
+                'cannon:test': {
+                    'fftw_exec_time': (0.47, None, 0.05, 's'),
+                },
+                'fasse:fasse': {
+                    'fftw_exec_time': (0.47, None, 0.05, 's'),
+                },
+                '*': {
+                    'fftw_exec_time': (0.59, None, 0.05, 's'),
+                },
+            }
+
 
     @rfm.run_before('run')
     def set_memory_limit(self):
