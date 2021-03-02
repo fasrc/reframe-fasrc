@@ -11,12 +11,9 @@ import reframe.utility.sanity as sn
 @rfm.parameterized_test(['sync'], ['async'])
 class KernelLatencyTest(rfm.RegressionTest):
     def __init__(self, kernel_version):
-        self.valid_systems = ['fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
-        self.num_tasks = 1
-        self.num_tasks_per_node = 1
-        self.exclusive_access = True
         self.build_system = 'Make'
         self.executable = 'kernel_latency.x'
         if kernel_version == 'sync':
@@ -31,6 +28,26 @@ class KernelLatencyTest(rfm.RegressionTest):
                 r'\[\S+\] \[gpu \d+\] Kernel launch latency: '
                 r'(?P<latency>\S+) us', self.stdout, 'latency', float))
         }
+        self.sys_reference = {
+            'sync': {
+                'cannon:gpu_test': {
+                    'latency': (3.7, None, 0.10, 'us')
+                },
+                '*': {
+                    'latency': (15.1, None, 0.10, 'us')
+                },
+            },
+            'async': {
+                'cannon:gpu_test': {
+                    'latency': (3.7, None, 0.10, 'us')
+                },
+                '*': {
+                    'latency': (2.2, None, 0.10, 'us')
+                },
+            },
+        }
+        self.reference = self.sys_reference[kernel_version]
+
 
     @property
     @sn.sanity_function
@@ -43,7 +60,19 @@ class KernelLatencyTest(rfm.RegressionTest):
 
     @rfm.run_before('run')
     def set_num_gpus_per_node(self):
-        self.num_gpus_per_node = 4
+        cp = self.current_partition.fullname
+        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+            self.num_gpus_per_node = 4
+            self.num_cpus_per_task = 4
+            self.num_tasks = 1
+        elif cp in {'cannon:gpu_test'}:
+            self.num_gpus_per_node = 2
+            self.num_cpus_per_task = 2
+            self.num_tasks = 1
+        else:
+            self.num_gpus_per_node = 1
+            self.num_cpus_per_task = 1
+            self.num_tasks = 1
 
     @sn.sanity_function
     def assert_count_gpus(self):
