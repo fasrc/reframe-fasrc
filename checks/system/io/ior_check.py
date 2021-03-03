@@ -23,7 +23,7 @@ class IorCheck(rfm.RunOnlyRegressionTest):
                                      'ior')
         self.prerun_cmds = ['mkdir -p ' + self.test_dir]
         self.test_file = os.path.join(self.test_dir, 'ior')
-        self.valid_systems = ['fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.fs = {
             '/scratch/': {
                 'num_tasks': 4,
