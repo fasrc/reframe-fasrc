@@ -30,7 +30,9 @@ class IorCheck(rfm.RunOnlyRegressionTest):
                 'num_tasks_per_node': 4
             },
             '/n/holyscratch01/rc_admin/test': {
-                'num_tasks': 10
+                'num_tasks': 96,
+                'num_tasks_per_node': 32,
+                'ior_block_size': '32g',
             },
         }
 
@@ -58,7 +60,7 @@ class IorCheck(rfm.RunOnlyRegressionTest):
         self.ior_block_size = self.fs[base_dir]['ior_block_size']
         self.ior_access_type = self.fs[base_dir]['ior_access_type']
         self.executable = 'ior'
-        self.executable_opts = ['-F', '-C', '-Q 1', '-t 1m', '-D 30',
+        self.executable_opts = ['-F', '-C', '-Q 1', '-t 1m', '-D 60',
                                 '-b', self.ior_block_size,
                                 '-a', self.ior_access_type]
         self.valid_prog_environs = ['intel-mpi']
@@ -82,34 +84,20 @@ class IorCheck(rfm.RunOnlyRegressionTest):
 
     @rfm.run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
 @rfm.parameterized_test(['/scratch/'],
                         ['/n/holyscratch01/rc_admin/test'])
-class IorWriteCheck(IorCheck):
+class IorWRCheck(IorCheck):
     def __init__(self, base_dir):
         super().__init__(base_dir)
-        self.executable_opts += ['-w', '-k']
         self.sanity_patterns = sn.assert_found(r'^Max Write: ', self.stdout)
+        self.sanity_patterns = sn.assert_found(r'^Max Read: ', self.stdout)
         self.perf_patterns = {
             'write_bw': sn.extractsingle(
                 r'^Max Write:\s+(?P<write_bw>\S+) MiB/sec', self.stdout,
-                'write_bw', float)
-        }
-        self.tags |= {'write'}
-
-
-@rfm.parameterized_test(['/scratch/'],
-                        ['/n/holyscratch01/rc_admin/test'])
-class IorReadCheck(IorCheck):
-    def __init__(self, base_dir):
-        super().__init__(base_dir)
-        self.executable_opts += ['-r']
-        self.sanity_patterns = sn.assert_found(r'^Max Read: ', self.stdout)
-        self.perf_patterns = {
+                'write_bw', float),
             'read_bw': sn.extractsingle(
                 r'^Max Read:\s+(?P<read_bw>\S+) MiB/sec', self.stdout,
                 'read_bw', float)
         }
-        self.depends_on(re.sub(r'IorReadCheck', 'IorWriteCheck', self.name))
-        self.tags |= {'read'}
