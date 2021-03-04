@@ -31,7 +31,7 @@ class KernelLatencyTest(rfm.RegressionTest):
         self.sys_reference = {
             'sync': {
                 'cannon:gpu_test': {
-                    'latency': (3.7, None, 0.10, 'us')
+                    'latency': (4.0, None, 0.10, 'us')
                 },
                 '*': {
                     'latency': (15.1, None, None, 'us')
@@ -39,7 +39,7 @@ class KernelLatencyTest(rfm.RegressionTest):
             },
             'async': {
                 'cannon:gpu_test': {
-                    'latency': (3.7, None, 0.10, 'us')
+                    'latency': (4.0, None, 0.10, 'us')
                 },
                 '*': {
                     'latency': (2.2, None, None, 'us')
