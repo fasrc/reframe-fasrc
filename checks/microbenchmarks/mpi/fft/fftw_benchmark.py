@@ -48,10 +48,10 @@ class FFTWTest(rfm.RegressionTest):
             self.executable_opts = ['144 72 200 1']
             self.reference = {
                 'cannon:test': {
-                    'fftw_exec_time': (0.5, None, 0.05, 's'),
+                    'fftw_exec_time': (0.6, None, 0.05, 's'),
                 },
                 'fasse:fasse': {
-                    'fftw_exec_time': (0.5, None, 0.05, 's'),
+                    'fftw_exec_time': (0.6, None, 0.05, 's'),
                 },
                 '*': {
                     'fftw_exec_time': (0.59, None, None, 's'),
