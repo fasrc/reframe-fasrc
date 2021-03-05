@@ -22,6 +22,30 @@ site_configuration = {
             'modules_system': 'lmod',
             'partitions': [
                 {
+                    'name': 'local',
+                    'scheduler': 'local',
+                    'environs': [
+                        'builtin',
+                        'gnu',
+                        'intel',
+                        'gnu-mpi',
+                        'intel-mpi'
+                    ],
+                    'descr': 'Run on local node',
+                    'max_jobs': 1,
+                    'launcher': 'local'
+                },
+                {
+                    'name': 'local-gpu',
+                    'scheduler': 'local',
+                    'environs': [
+                        'gpu',
+                    ],
+                    'descr': 'Run on local GPU node',
+                    'max_jobs': 1,
+                    'launcher': 'local'
+                },
+                {
                     'name': 'test',
                     'scheduler': 'slurm',
                     'environs': [
