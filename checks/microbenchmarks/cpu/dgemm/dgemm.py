@@ -18,7 +18,7 @@ class DGEMMTest(rfm.RegressionTest):
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
         self.modules = ['intel-mkl/2019.5.281-fasrc01']
-        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:local','cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['intel']
 
         self.num_tasks = 1
@@ -27,6 +27,7 @@ class DGEMMTest(rfm.RegressionTest):
         self.build_system = 'SingleSource'
         self.build_system.cflags = ['-O3']
         self.sys_reference = {
+            'cannon:local': (2400.0, -0.15, None, 'Gflop/s'),
             'cannon:test': (2400.0, -0.15, None, 'Gflop/s'),
             'fasse:fasse': (2400.0, -0.15, None, 'Gflop/s'),
             '*': (0, None, None, 'Gflop/s'),
@@ -50,7 +51,7 @@ class DGEMMTest(rfm.RegressionTest):
     def set_tasks(self):
         if self.current_partition.fullname in ['test:rc-testing']:
             self.num_cpus_per_task = 36
-        elif self.current_partition.fullname in ['cannon:test', 'fasse:fasse']:
+        elif self.current_partition.fullname in ['cannon:local','cannon:test', 'fasse:fasse']:
             self.num_cpus_per_task = 48
         else:
             self.num_cpus_per_task = 32

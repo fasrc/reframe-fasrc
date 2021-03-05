@@ -26,6 +26,9 @@ class AllocSpeedTest(rfm.RegressionTest):
 
         self.sys_reference = {
             'no': {
+                'cannon:local': {
+                    'time': (1.0, None, 0.5, 's')
+                },
                 'cannon:test': {
                     'time': (2.0, None, 0.5, 's')
                 },
@@ -40,6 +43,9 @@ class AllocSpeedTest(rfm.RegressionTest):
                 },
             },
             '2M': {
+                'cannon:local': {
+                    'time': (1.0, None, 0.5, 's')
+                },
                 'cannon:test': {
                     'time': (2.0, None, 0.5, 's')
                 },
