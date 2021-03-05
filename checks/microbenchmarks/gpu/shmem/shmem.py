@@ -11,10 +11,10 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GPUShmemTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
-        self.executable = 'shmem.x'
+        self.executable = './shmem.x'
         self.sanity_patterns = self.assert_count_gpus()
         self.perf_patterns = {
             'bandwidth': sn.min(sn.extractall(
@@ -25,11 +25,14 @@ class GPUShmemTest(rfm.RegressionTest):
         self.reference = {
             # theoretical limit for P100:
             # 8 [B/cycle] * 1.328 [GHz] * 16 [bankwidth] * 56 [SM] = 9520 GB/s
+            'cannon:local-gpu': {
+                'bandwidth': (13000, -0.01, None, 'GB/s per gpu')
+            },
             'cannon:gpu_test': {
-                'bandwidth': (13000, -0.01, None, 'GB/s')
+                'bandwidth': (13000, -0.01, None, 'GB/s per gpu')
             },
             '*': {
-                'bandwidth': (8850, None, None, 'GB/s')
+                'bandwidth': (8850, None, None, 'GB/s per gpu')
             },
         }
 
@@ -52,7 +55,7 @@ class GPUShmemTest(rfm.RegressionTest):
     @rfm.run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
-        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+        if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
             self.num_cpus_per_task = 4
             self.num_tasks = 1
