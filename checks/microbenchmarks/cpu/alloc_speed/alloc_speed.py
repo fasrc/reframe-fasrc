@@ -29,11 +29,14 @@ class AllocSpeedTest(rfm.RegressionTest):
                 'cannon:local': {
                     'time': (1.0, None, 0.5, 's')
                 },
-                'cannon:test': {
-                    'time': (2.0, None, 0.5, 's')
+                'cannon:local-gpu': {
+                    'time': (1.0, None, 0.5, 's')
                 },
                 'cannon:gpu_test': {
                     'time': (1.0, None, 0.5, 's')
+                },
+                'cannon:test': {
+                    'time': (2.0, None, 0.5, 's')
                 },
                 'fasse:fasse': {
                     'time': (2.0, None, 0.5, 's')
@@ -46,11 +49,14 @@ class AllocSpeedTest(rfm.RegressionTest):
                 'cannon:local': {
                     'time': (1.0, None, 0.5, 's')
                 },
-                'cannon:test': {
-                    'time': (2.0, None, 0.5, 's')
+                'cannon:local-gpu': {
+                    'time': (1.0, None, 0.5, 's')
                 },
                 'cannon:gpu_test': {
                     'time': (1.0, None, 0.5, 's')
+                },
+                'cannon:test': {
+                    'time': (2.0, None, 0.5, 's')
                 },
                 'fasse:fasse': {
                     'time': (2.0, None, 0.5, 's')
