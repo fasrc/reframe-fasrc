@@ -12,7 +12,7 @@ class StridedBase(rfm.RegressionTest):
     def __init__(self):
         self.sourcepath = 'strides.cpp'
         self.build_system = 'SingleSource'
-        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:local','cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['builtin','gnu','intel']
         self.build_system.cxxflags = ['-std=c++11','-lpthread']
         self.num_tasks = 1
@@ -29,6 +29,7 @@ class StridedBase(rfm.RegressionTest):
         }
 
         self.system_num_cpus = {
+            'cannon:local': 48,
             'cannon:test': 48,
             'fasse:fasse': 48,
             'test:rc-testing':  36,
@@ -48,6 +49,9 @@ class StridedBandwidthTest(StridedBase):
         super().__init__()
 
         self.reference = {
+            'cannon:local': {
+                'bandwidth': (185, -0.1, 0.1, 'GB/s')
+            },
             'cannon:test': {
                 'bandwidth': (185, -0.1, 0.1, 'GB/s')
             },
@@ -76,6 +80,9 @@ class StridedBandwidthTest64(StridedBase):
         super().__init__()
 
         self.reference = {
+            'cannon:local': {
+                'bandwidth': (23, -0.1, 0.1, 'GB/s')
+            },
             'cannon:test': {
                 'bandwidth': (23, -0.1, 0.1, 'GB/s')
             },
@@ -105,6 +112,9 @@ class StridedBandwidthTest128(StridedBase):
         super().__init__()
 
         self.reference = {
+            'cannon:local': {
+                'bandwidth': (17, -0.1, 0.1, 'GB/s')
+            },
             'cannon:test': {
                 'bandwidth': (17, -0.1, 0.1, 'GB/s')
             },

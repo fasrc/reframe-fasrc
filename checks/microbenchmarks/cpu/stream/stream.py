@@ -34,6 +34,7 @@ class StreamTest(rfm.RegressionTest):
         self.num_tasks = 1
         self.num_tasks_per_node = 1
         self.stream_cpus_per_task = {
+            'cannon:local': 48,
             'cannon:test': 48,
             'fasse:fasse': 48,
             '*': 32,
@@ -52,14 +53,17 @@ class StreamTest(rfm.RegressionTest):
 
         self.stream_bw_reference = {
             'builtin': {
+                'cannon:local': {'triad': (210000, -0.05, None, 'MB/s')},
                 'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
                 '*': {'triad': (117000, None, None, 'MB/s')},
             },
             'gnu': {
+                'cannon:local': {'triad': (210000, -0.05, None, 'MB/s')},
                 'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
                 '*': {'triad': (117000, None, None, 'MB/s')},
             },
             'intel': {
+                'cannon:local': {'triad': (230000, -0.05, None, 'MB/s')},
                 'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
                 '*': {'triad': (117000, None, None, 'MB/s')},
             },

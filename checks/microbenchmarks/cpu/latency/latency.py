@@ -39,6 +39,12 @@ class CPULatencyTest(rfm.RegressionTest):
         }
 
         self.reference = {
+            'cannon:local': {
+                'latencyL1':  (1.14, None, 0.26, 'ns'),
+                'latencyL2':  (4.0, None, 0.26, 'ns'),
+                'latencyL3':  (23, None, 0.075, 'ns'),
+                'latencyMem': (80, None, 0.05, 'ns')
+            },
             'cannon:test': {
                 'latencyL1':  (1.14, None, 0.26, 'ns'),
                 'latencyL2':  (4.0, None, 0.26, 'ns'),
