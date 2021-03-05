@@ -19,13 +19,14 @@ class StreamTest(rfm.RegressionTest):
         self.descr = 'STREAM Benchmark'
         self.exclusive_access = True
         self.valid_systems = ['*']
-        self.valid_prog_environs = ['builtin','gnu','intel']
+        self.valid_prog_environs = ['builtin','gnu','gpu','intel']
 
         self.use_multithreading = False
 
         self.prgenv_flags = {
             'builtin': ['-fopenmp', '-O3'],
             'gnu': ['-fopenmp', '-O3'],
+            'gpu': ['-fopenmp', '-O3'],
             'intel': ['-qopenmp', '-O3']
         }
 
@@ -35,6 +36,8 @@ class StreamTest(rfm.RegressionTest):
         self.num_tasks_per_node = 1
         self.stream_cpus_per_task = {
             'cannon:local': 48,
+            'cannon:local-gpu': 32,
+            'cannon:gpu_test': 16,
             'cannon:test': 48,
             'fasse:fasse': 48,
             '*': 32,
@@ -60,6 +63,11 @@ class StreamTest(rfm.RegressionTest):
             'gnu': {
                 'cannon:local': {'triad': (210000, -0.05, None, 'MB/s')},
                 'cannon:test': {'triad': (210000, -0.05, None, 'MB/s')},
+                '*': {'triad': (117000, None, None, 'MB/s')},
+            },
+            'gpu': {
+                'cannon:local-gpu': {'triad': (165000, -0.05, None, 'MB/s')},
+                'cannon:gpu_test': {'triad': (165000, -0.05, None, 'MB/s')},
                 '*': {'triad': (117000, None, None, 'MB/s')},
             },
             'intel': {
