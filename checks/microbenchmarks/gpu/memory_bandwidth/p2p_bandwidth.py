@@ -11,14 +11,14 @@ import reframe as rfm
 @rfm.parameterized_test(['peerAccess'], ['noPeerAccess'])
 class P2pBandwidthCheck(rfm.RegressionTest):
     def __init__(self, peerAccess):
-        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         # Perform a single bandwidth test with a buffer size of 1024MB
         copy_size = 1073741824
 
         self.build_system = 'Make'
-        self.executable = 'p2p_bandwidth.x'
+        self.executable = './p2p_bandwidth.x'
         self.build_system.cxxflags = [f'-DCOPY={copy_size}']
 
         if (peerAccess == 'peerAccess'):
@@ -36,6 +36,9 @@ class P2pBandwidthCheck(rfm.RegressionTest):
 
         if p2p:
             self.reference = {
+                'cannon:local-gpu': {
+                    'bw':   (28, -0.05, None, 'GB/s'),
+                },
                 'cannon:gpu_test': {
                     'bw':   (9, -0.05, None, 'GB/s'),
                 },
@@ -45,6 +48,9 @@ class P2pBandwidthCheck(rfm.RegressionTest):
             }
         else:
             self.reference = {
+                'cannon:local-gpu': {
+                    'bw': (35, -0.05, None, 'GB/s'),
+                },
                 'cannon:gpu_test': {
                     'bw': (11, -0.05, None, 'GB/s'),
                 },
@@ -61,7 +67,7 @@ class P2pBandwidthCheck(rfm.RegressionTest):
     @rfm.run_before('run')
     def set_num_gpus_per_node(self):
         cp = self.current_partition.fullname
-        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+        if cp in {'cannon:local-gpu','fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
             self.num_cpus_per_task = 4
             self.num_tasks = 1

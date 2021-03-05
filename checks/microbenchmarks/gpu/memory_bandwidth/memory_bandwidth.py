@@ -11,14 +11,14 @@ import reframe as rfm
 @rfm.simple_test
 class GpuBandwidthCheck(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         # Perform a single bandwidth test with a buffer size of 1024MB
         self.copy_size = 1073741824
 
         self.build_system = 'Make'
-        self.executable = 'memory_bandwidth.x'
+        self.executable = './memory_bandwidth.x'
         self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
 
         # perf_patterns and reference will be set by the sanity check function
@@ -32,15 +32,20 @@ class GpuBandwidthCheck(rfm.RegressionTest):
                                         self.stdout, 1, float)),
         }
         self.reference = {
+            'cannon:local-gpu': {
+                'h2d': (12000, -0.1, None, 'MB/s per gpu'),
+                'd2h': (13000, -0.1, None, 'MB/s per gpu'),
+                'd2d': (630000, -0.1, None, 'MB/s per gpu')
+            },
             'cannon:gpu_test': {
-                'h2d': (12000, -0.1, None, 'MB/s'),
-                'd2h': (13000, -0.1, None, 'MB/s'),
-                'd2d': (780000, -0.1, None, 'MB/s')
+                'h2d': (12000, -0.1, None, 'MB/s per gpu'),
+                'd2h': (13000, -0.1, None, 'MB/s per gpu'),
+                'd2d': (780000, -0.1, None, 'MB/s per gpu')
             },
             '*': {
-                'h2d': (11881, None, None, 'MB/s'),
-                'd2h': (12571, None, None, 'MB/s'),
-                'd2d': (499000, None, None, 'MB/s')
+                'h2d': (11881, None, None, 'MB/s per gpu'),
+                'd2h': (12571, None, None, 'MB/s per gpu'),
+                'd2d': (499000, None, None, 'MB/s per gpu')
             },
         }
 
@@ -52,7 +57,7 @@ class GpuBandwidthCheck(rfm.RegressionTest):
     @rfm.run_before('run')
     def set_num_gpus_per_node(self):
         cp = self.current_partition.fullname
-        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+        if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
             self.num_cpus_per_task = 4
             self.num_tasks = 1
