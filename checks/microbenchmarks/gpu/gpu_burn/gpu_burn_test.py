@@ -13,7 +13,7 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GpuBurnTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.descr = 'GPU burn test'
         self.valid_prog_environs = ['gpu']
         self.executable_opts = ['-d', '40']
@@ -28,11 +28,14 @@ class GpuBurnTest(rfm.RegressionTest):
             'temp': sn.max(sn.extractall(patt, self.stdout, 'temp', float)),
         }
         self.reference = {
+            'cannon:local-gpu': {
+                'perf': (6200, -0.10, None, 'Gflop/s per gpu'),
+            },
             'cannon:gpu_test': {
-                'perf': (6200, -0.10, None, 'Gflop/s'),
+                'perf': (6200, -0.10, None, 'Gflop/s per gpu'),
             },
             '*': {
-                'perf': (4115, None, None, 'Gflop/s'),
+                'perf': (4115, None, None, 'Gflop/s per gpu'),
             },
             '*': {'temp': (0, None, None, 'degC')}
         }
@@ -51,7 +54,7 @@ class GpuBurnTest(rfm.RegressionTest):
     @rfm.run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
-        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+        if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
             self.num_cpus_per_task = 4
             self.num_tasks = 1
@@ -74,7 +77,7 @@ class GpuBurnTest(rfm.RegressionTest):
         # Find index of smallest flops and update reference dictionary to
         # include our patched units
         index = self.flops.evaluate().index(min(self.flops))
-        unit = f'GF/s ({self.nids[index]})'
+        unit = f'GF/s per gpu ({self.nids[index]})'
         for key, ref in self.reference.items():
             if not key.endswith(':temp'):
                 self.reference[key] = (*ref[:3], unit)
