@@ -52,19 +52,19 @@ class StridedBandwidthTest(StridedBase):
 
         self.reference = {
             'cannon:local': {
-                'bandwidth': (185, -0.1, 0.1, 'GB/s')
+                'bandwidth': (185, -0.1, None, 'GB/s')
             },
             'cannon:local-gpu': {
-                'bandwidth': (84, -0.1, 0.1, 'GB/s')
+                'bandwidth': (156, -0.1, None, 'GB/s')
             },
             'cannon:gpu_test': {
-                'bandwidth': (84, -0.1, 0.1, 'GB/s')
+                'bandwidth': (84, -0.1, None, 'GB/s')
             },
             'cannon:test': {
-                'bandwidth': (185, -0.1, 0.1, 'GB/s')
+                'bandwidth': (185, -0.1, None, 'GB/s')
             },
             'fasse:fasse': {
-                'bandwidth': (185, -0.1, 0.1, 'GB/s')
+                'bandwidth': (185, -0.1, None, 'GB/s')
             },
             '*': {
                 'bandwidth': (270, None, None, 'GB/s')
@@ -89,19 +89,19 @@ class StridedBandwidthTest64(StridedBase):
 
         self.reference = {
             'cannon:local': {
-                'bandwidth': (23, -0.1, 0.1, 'GB/s')
+                'bandwidth': (23, -0.1, None, 'GB/s')
             },
             'cannon:local-gpu': {
-                'bandwidth': (12, -0.1, 0.1, 'GB/s')
+                'bandwidth': (22, -0.1, None, 'GB/s')
             },
             'cannon:gpu_test': {
-                'bandwidth': (12, -0.1, 0.1, 'GB/s')
+                'bandwidth': (12, -0.1, None, 'GB/s')
             },
             'cannon:test': {
-                'bandwidth': (23, -0.1, 0.1, 'GB/s')
+                'bandwidth': (23, -0.1, None, 'GB/s')
             },
             'fasse:fasse': {
-                'bandwidth': (23, -0.1, 0.1, 'GB/s')
+                'bandwidth': (23, -0.1, None, 'GB/s')
             },
             '*': {
                 'bandwidth': (270, None, None, 'GB/s')
@@ -127,19 +127,19 @@ class StridedBandwidthTest128(StridedBase):
 
         self.reference = {
             'cannon:local': {
-                'bandwidth': (17, -0.1, 0.1, 'GB/s')
+                'bandwidth': (17, -0.1, None, 'GB/s')
             },
             'cannon:local-gpu': {
-                'bandwidth': (8, -0.1, 0.1, 'GB/s')
+                'bandwidth': (14, -0.1, None, 'GB/s')
             },
             'cannon:gpu_test': {
-                'bandwidth': (8, -0.1, 0.1, 'GB/s')
+                'bandwidth': (8, -0.1, None, 'GB/s')
             },
             'cannon:test': {
-                'bandwidth': (17, -0.1, 0.1, 'GB/s')
+                'bandwidth': (17, -0.1, None, 'GB/s')
             },
             'fasse:fasse': {
-                'bandwidth': (17, -0.1, 0.1, 'GB/s')
+                'bandwidth': (17, -0.1, None, 'GB/s')
             },
             '*': {
                 'bandwidth': (270, None, None, 'GB/s')
