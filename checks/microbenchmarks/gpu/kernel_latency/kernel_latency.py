@@ -11,11 +11,11 @@ import reframe.utility.sanity as sn
 @rfm.parameterized_test(['sync'], ['async'])
 class KernelLatencyTest(rfm.RegressionTest):
     def __init__(self, kernel_version):
-        self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
 
         self.build_system = 'Make'
-        self.executable = 'kernel_latency.x'
+        self.executable = './kernel_latency.x'
         if kernel_version == 'sync':
             self.build_system.cppflags = ['-D SYNCKERNEL=1']
         else:
@@ -30,6 +30,9 @@ class KernelLatencyTest(rfm.RegressionTest):
         }
         self.sys_reference = {
             'sync': {
+                'cannon:local-gpu': {
+                    'latency': (6.0, None, 0.10, 'us')
+                },
                 'cannon:gpu_test': {
                     'latency': (4.0, None, 0.10, 'us')
                 },
@@ -38,6 +41,9 @@ class KernelLatencyTest(rfm.RegressionTest):
                 },
             },
             'async': {
+                'cannon:local-gpu': {
+                    'latency': (6.0, None, 0.10, 'us')
+                },
                 'cannon:gpu_test': {
                     'latency': (4.0, None, 0.10, 'us')
                 },
@@ -61,7 +67,7 @@ class KernelLatencyTest(rfm.RegressionTest):
     @rfm.run_before('run')
     def set_num_gpus_per_node(self):
         cp = self.current_partition.fullname
-        if cp in {'fasse:fasse_gpu', 'test:gpu'}:
+        if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
             self.num_cpus_per_task = 4
             self.num_tasks = 1
