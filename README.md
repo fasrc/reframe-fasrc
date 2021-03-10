@@ -22,6 +22,7 @@ These are benchmark tests that are broken down by category.  Here is a short des
 * strided_bandwidth: Runs bandwidth test with various stride sizes. Originally from CSCS
 
 #### gpu
+* dgemm: Runs dgemm code to get a measure of FLOps. Originally from CSCS
 * gpu_burn: Burns in GPU and gives a report of GFLOps for one GPU and its temperature. Originally from CSCS
 * kernel_latency: Tests latency in loading the NVIDIA kernel. Originally from CSCS
 * memory_bandwidth: Tests GPU memory bandwidth. Originally from CSCS
