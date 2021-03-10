@@ -26,6 +26,7 @@ These are benchmark tests that are broken down by category.  Here is a short des
 * gpu_burn: Burns in GPU and gives a report of GFLOps for one GPU and its temperature. Originally from CSCS
 * kernel_latency: Tests latency in loading the NVIDIA kernel. Originally from CSCS
 * memory_bandwidth: Tests GPU memory bandwidth. Originally from CSCS
+* pointer_chase: Runs a linked list search to test memory latencies. Originally from CSCS
 * shmem: Tests shared memory bandwidth. Originally from CSCS
 
 #### mpi

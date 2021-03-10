@@ -16,16 +16,16 @@ class PchaseGlobal(rfm.RegressionMixin):
     '''
     single_device_systems = variable(
         typ.List[str],
-        value=['daint:gpu', 'dom:gpu']
+        value=[]
     )
     multi_device_systems = variable(
         typ.List[str],
         value=[
-            'ault:intelv100', 'ault:amdv100',
-            'ault:amda100', 'ault:amdvega', 'tsa:cn'
+            'cannon:local-gpu', 'cannon:gpu_test',
+            'fasse:fasse_gpu', 'test:gpu'
         ]
     )
-    global_prog_environs = variable(list, value=['PrgEnv-gnu'])
+    global_prog_environs = variable(list, value=['gpu'])
 
 
 @rfm.simple_test
@@ -35,55 +35,13 @@ class CompileGpuPointerChase(rfm.CompileOnlyRegressionTest, PchaseGlobal):
             self.single_device_systems + self.multi_device_systems
         )
         self.valid_prog_environs = self.global_prog_environs
-        self.exclusive_access = True
         self.build_system = 'Make'
-        self.num_tasks = 0
-        self.num_tasks_per_node = 1
         self.postbuild_cmds = ['ls .']
         self.sanity_patterns = sn.assert_found(r'pChase.x', self.stdout)
-        self.maintainers = ['JO', 'SK']
-        self.tags = {'benchmark'}
 
     @rfm.run_after('setup')
     def select_makefile(self):
-        cp = self.current_partition.fullname
-        if cp == 'ault:amdvega':
-            self.build_system.makefile = 'makefile.hip'
-        else:
-            self.build_system.makefile = 'makefile.cuda'
-
-    @rfm.run_after('setup')
-    def set_gpu_arch(self):
-        cp = self.current_partition.fullname
-
-        # Deal with the NVIDIA options first
-        nvidia_sm = None
-        if cp in {'tsa:cn', 'ault:intelv100', 'ault:amdv100'}:
-            nvidia_sm = '70'
-        elif cp == 'ault:amda100':
-            nvidia_sm = '80'
-        elif cp in {'dom:gpu', 'daint:gpu'}:
-            nvidia_sm = '60'
-
-        if nvidia_sm:
-            self.build_system.cxxflags += [f'-arch=sm_{nvidia_sm}']
-            if cp in {'dom:gpu', 'daint:gpu'}:
-                self.modules += ['craype-accel-nvidia60']
-                if cp == 'dom:gpu':
-                    self.modules += ['cdt-cuda']
-
-            else:
-                self.modules += ['cuda']
-
-        # Deal with the AMD options
-        amd_trgt = None
-        if cp == 'ault:amdvega':
-            amd_trgt = 'gfx906,gfx908'
-
-        if amd_trgt:
-            self.build_system.cxxflags += [f'--amdgpu-target={amd_trgt}']
-            self.modules += ['rocm']
-
+        self.build_system.makefile = 'makefile.cuda'
 
 class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
     '''Base RunOnly class.
@@ -109,12 +67,7 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
     def __init__(self):
         self.depends_on('CompileGpuPointerChase')
         self.valid_prog_environs = self.global_prog_environs
-        self.num_tasks = 0
-        self.num_tasks_per_node = 1
-        self.exclusive_access = True
         self.sanity_patterns = self.do_sanity_check()
-        self.maintainers = ['JO', 'SK']
-        self.tags = {'benchmark'}
 
     @rfm.require_deps
     def set_executable(self, CompileGpuPointerChase):
@@ -130,18 +83,20 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
         ]
 
     @rfm.run_before('run')
-    def set_num_gpus_per_node(self):
+    def set_gpus_per_node(self):
         cp = self.current_partition.fullname
-        if cp == 'tsa:cn':
-            self.num_gpus_per_node = 8
-        elif cp in {'ault:intelv100', 'ault:amda100'}:
+        if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
-        elif cp in {'ault:amdv100'}:
+            self.num_cpus_per_task = 4
+            self.num_tasks = 1
+        elif cp in {'cannon:gpu_test'}:
             self.num_gpus_per_node = 2
-        elif cp in {'ault:amdvega'}:
-            self.num_gpus_per_node = 3
+            self.num_cpus_per_task = 2
+            self.num_tasks = 1
         else:
             self.num_gpus_per_node = 1
+            self.num_cpus_per_task = 1
+            self.num_tasks = 1
 
     @sn.sanity_function
     def do_sanity_check(self):
@@ -189,23 +144,14 @@ class GpuL1Latency(GpuPointerChaseSingle):
     def __init__(self):
         super().__init__()
         self.reference = {
-            'dom:gpu': {
+            'cannon:local-gpu': {
+                'average_latency': (30, None, 0.1, 'clock cycles')
+            },
+            'cannon:gpu_test': {
+                'average_latency': (30, None, 0.1, 'clock cycles')
+            },
+            '*': {
                 'average_latency': (103, None, 0.1, 'clock cycles')
-            },
-            'daint:gpu': {
-                'average_latency': (103, None, 0.1, 'clock cycles')
-            },
-            'tsa:cn': {
-                'average_latency': (28, None, 0.1, 'clock cycles')
-            },
-            'ault:amda100': {
-                'average_latency': (33, None, 0.1, 'clock cycles')
-            },
-            'ault:amdv100': {
-                'average_latency': (28, None, 0.1, 'clock cycles')
-            },
-            'ault:amdvega': {
-                'average_latency': (140, None, 0.1, 'clock cycles')
             },
         }
 
@@ -222,22 +168,13 @@ class GpuL2Latency(GpuPointerChaseSingle):
     def __init__(self):
         super().__init__()
         self.reference = {
-            'dom:gpu': {
-                'average_latency': (290, None, 0.1, 'clock cycles')
+            'cannon:local-gpu': {
+                'average_latency': (220, None, 0.1, 'clock cycles')
             },
-            'daint:gpu': {
-                'average_latency': (258, None, 0.1, 'clock cycles')
+            'cannon:gpu_test': {
+                'average_latency': (220, None, 0.1, 'clock cycles')
             },
-            'tsa:cn': {
-                'average_latency': (215, None, 0.1, 'clock cycles')
-            },
-            'ault:amda100': {
-                'average_latency': (204, None, 0.1, 'clock cycles')
-            },
-            'ault:amdv100': {
-                'average_latency': (215, None, 0.1, 'clock cycles')
-            },
-            'ault:amdvega': {
+            '*': {
                 'average_latency': (290, None, 0.1, 'clock cycles')
             },
         }
@@ -256,23 +193,14 @@ class GpuDRAMLatency(GpuPointerChaseSingle):
     def __init__(self):
         super().__init__()
         self.reference = {
-            'dom:gpu': {
+            'cannon:local-gpu': {
+                'average_latency': (430, None, 0.1, 'clock cycles')
+            },
+            'cannon:gpu_test': {
+                'average_latency': (430, None, 0.1, 'clock cycles')
+            },
+            '*': {
                 'average_latency': (506, None, 0.1, 'clock cycles')
-            },
-            'daint:gpu': {
-                'average_latency': (506, None, 0.1, 'clock cycles')
-            },
-            'tsa:cn': {
-                'average_latency': (425, None, 0.1, 'clock cycles')
-            },
-            'ault:amda100': {
-                'average_latency': (560, None, 0.1, 'clock cycles')
-            },
-            'ault:amdv100': {
-                'average_latency': (425, None, 0.1, 'clock cycles')
-            },
-            'ault:amdvega': {
-                'average_latency': (625, None, 0.1, 'clock cycles')
             },
         }
 
@@ -320,33 +248,25 @@ class GpuP2PLatencyP2P(GpuP2PLatency):
         self.num_list_nodes = self.list_size
         if self.list_size == 5000:
             self.reference = {
-                'tsa:cn': {
+                'cannon:local-gpu': {
+                    'average_latency': (1900, None, 0.1, 'clock cycles')
+                },
+                'cannon:gpu_test': {
+                    'average_latency': (1900, None, 0.1, 'clock cycles')
+                },
+                '*': {
                     'average_latency': (2981, None, 0.1, 'clock cycles')
-                },
-                'ault:amda100': {
-                    'average_latency': (760, None, 0.1, 'clock cycles')
-                },
-                'ault:amdv100': {
-                    'average_latency': (760, None, 0.1, 'clock cycles')
-                },
-                'ault:amdvega': {
-                    'average_latency': (315, None, 0.1, 'clock cycles')
                 },
             }
         elif self.list_size == 2000000:
             self.reference = {
-                'tsa:cn': {
+                'cannon:local-gpu': {
+                    'average_latency': (2200, None, 0.1, 'clock cycles')
+                },
+                'cannon:gpu_test': {
+                    'average_latency': (2200, None, 0.1, 'clock cycles')
+                },
+                '*': {
                     'average_latency': (3219, None, 0.1, 'clock cycles')
-                },
-                'ault:amda100': {
-                    'average_latency': (1120, None, 0.1, 'clock cycles')
-                },
-                'ault:amdv100': {
-                    'average_latency': (760, None, 0.1, 'clock cycles')
-                },
-                'ault:amdvega': {
-                    'average_latency': (
-                        3550, None, 0.1, 'clock cycles'
-                    )
                 },
             }
