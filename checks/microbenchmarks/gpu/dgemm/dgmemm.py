@@ -29,7 +29,7 @@ class GPUdgemmTest(rfm.RegressionTest):
                 'perf': (5.2, -0.1, None, 'TF/s per gpu')
             },
             '*': {
-                'perf': (3.35, -0.1, None, 'TF/s per gpu')
+                'perf': (3.35, None, None, 'TF/s per gpu')
             },
         }
 

@@ -34,6 +34,9 @@ class GpuBurnTest(rfm.RegressionTest):
             'cannon:gpu_test': {
                 'perf': (6200, -0.10, None, 'Gflop/s per gpu'),
             },
+            'test:gpu': {
+                'perf': (4115, None, None, 'Gflop/s per gpu'),
+            },
             '*': {
                 'perf': (4115, None, None, 'Gflop/s per gpu'),
             },
