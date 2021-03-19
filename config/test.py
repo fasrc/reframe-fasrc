@@ -32,7 +32,7 @@ site_configuration = {
                         'intel-mpi'
                     ],
                     'descr': 'Login nodes',
-                    'max_jobs': 4,
+                    'max_jobs': 1,
                     'launcher': 'local'
                 },
                 {
