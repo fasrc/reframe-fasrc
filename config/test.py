@@ -16,7 +16,7 @@ site_configuration = {
             'name': 'test',
             'descr': 'Test Cluster',
             'hostnames': [
-                'holy2a242',
+                'holy2a',
                 'aagk80gpu'
             ],
             'modules_system': 'lmod',
