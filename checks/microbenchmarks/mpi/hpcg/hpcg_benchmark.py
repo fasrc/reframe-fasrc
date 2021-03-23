@@ -67,7 +67,7 @@ class HPCGCheckRef(rfm.RegressionTest, HPCGHookMixin):
         self.system_num_tasks = {
             'cannon:test':  48,
             'fasse:fasse': 48,
-            'test:rc-testing':  36,
+            'test:rc-testing':  32,
             '*': 32
         }
 
