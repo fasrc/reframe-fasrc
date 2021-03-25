@@ -14,7 +14,7 @@ class GPUdgemmTest(rfm.RegressionTest):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
-        self.executable = 'dgemm.x'
+        self.executable = './dgemm.x'
         self.sanity_patterns = self.assert_num_gpus()
         self.perf_patterns = {
             'perf': sn.min(sn.extractall(
