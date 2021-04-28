@@ -118,7 +118,7 @@ site_configuration = {
         },
         {
             'name': 'gpu',
-            'modules': ['gcc','cuda'],
+            'modules': ['gcc/9.3.0-fasrc01','cuda'],
             'cc': 'gcc',
             'cxx': 'g++',
             'ftn': 'gfortran'
