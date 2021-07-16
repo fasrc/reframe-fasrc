@@ -36,9 +36,8 @@ class CompileGpuPointerChase(rfm.CompileOnlyRegressionTest, PchaseGlobal):
         self.valid_prog_environs = self.global_prog_environs
         self.build_system = 'Make'
         self.postbuild_cmds = ['ls .']
-        self.sanity_patterns = sn.assert_found(r'pChase.x', self.stdout)
 
-    @rfm.run_after('setup')
+    @run_after('setup')
     def select_makefile(self):
         self.build_system.makefile = 'makefile.cuda'
 
@@ -66,14 +65,13 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
     def __init__(self):
         self.depends_on('CompileGpuPointerChase')
         self.valid_prog_environs = self.global_prog_environs
-        self.sanity_patterns = self.do_sanity_check()
 
-    @rfm.require_deps
+    @require_deps
     def set_executable(self, CompileGpuPointerChase):
         self.executable = os.path.join(
             CompileGpuPointerChase().stagedir, 'pChase.x')
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_exec_opts(self):
         self.executable_opts += [
             f'--stride {self.stride}',
@@ -81,7 +79,7 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
             f'--num-jumps {self.num_node_jumps}'
         ]
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
@@ -97,7 +95,7 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
             self.num_cpus_per_task = 1
             self.num_tasks = 1
 
-    @sn.sanity_function
+    @sanity_function
     def do_sanity_check(self):
         # Check that every node has the right number of GPUs
         # Store this nodes in case they're used later by the perf functions.
@@ -216,7 +214,7 @@ class GpuP2PLatency(GpuPointerChaseBase):
             'average_latency': self.average_P2P_latency(),
         }
 
-    @sn.sanity_function
+    @sanity_function
     def average_P2P_latency(self):
         '''
         Extract the average P2P latency. Note that the pChase code

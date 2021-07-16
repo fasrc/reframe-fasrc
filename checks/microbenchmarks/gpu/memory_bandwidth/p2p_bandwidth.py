@@ -27,7 +27,6 @@ class P2pBandwidthCheck(rfm.RegressionTest):
         else:
             p2p = False
 
-        self.sanity_patterns = self.do_sanity_check()
         self.perf_patterns = {
             'bw': sn.min(sn.extractall(
                 r'^[^,]*\[[^\]]*\]\s+GPU\s+\d+\s+(\s*\d+.\d+\s)+',
@@ -60,11 +59,11 @@ class P2pBandwidthCheck(rfm.RegressionTest):
             }
 
 
-    @rfm.run_after('setup')
+    @run_after('setup')
     def select_makefile(self):
         self.build_system.makefile = 'makefile_p2pBandwidth.cuda'
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_num_gpus_per_node(self):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu','fasse:fasse_gpu', 'test:gpu'}:
@@ -80,7 +79,7 @@ class P2pBandwidthCheck(rfm.RegressionTest):
             self.num_cpus_per_task = 1
             self.num_tasks = 1
 
-    @sn.sanity_function
+    @sanity_function
     def do_sanity_check(self):
         node_names = set(sn.extractall(
             r'^\s*\[([^,]{1,100})\]\s*Found %s device\(s\).'

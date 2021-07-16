@@ -15,7 +15,6 @@ class GPUShmemTest(rfm.RegressionTest):
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
         self.executable = './shmem.x'
-        self.sanity_patterns = self.assert_count_gpus()
         self.perf_patterns = {
             'bandwidth': sn.min(sn.extractall(
                 r'^\s*\[[^\]]*\]\s*GPU\s*\d+: '
@@ -38,21 +37,21 @@ class GPUShmemTest(rfm.RegressionTest):
 
 
     @property
-    @sn.sanity_function
+    @deferrable
     def num_tasks_assigned(self):
         return self.job.num_tasks
 
-    @sn.sanity_function
+    @sanity_function
     def assert_count_gpus(self):
         return sn.assert_eq(
             sn.count(sn.findall(r'Bandwidth', self.stdout)),
             self.num_tasks_assigned * 2 * self.num_gpus_per_node)
 
-    @rfm.run_after('setup')
+    @run_after('setup')
     def select_makefile(self):
         self.build_system.makefile = 'makefile.cuda'
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:

@@ -15,7 +15,6 @@ class GPUdgemmTest(rfm.RegressionTest):
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
         self.executable = './dgemm.x'
-        self.sanity_patterns = self.assert_num_gpus()
         self.perf_patterns = {
             'perf': sn.min(sn.extractall(
                 r'^\s*\[[^\]]*\]\s*GPU\s*\d+: (?P<fp>\S+) TF/s',
@@ -33,17 +32,17 @@ class GPUdgemmTest(rfm.RegressionTest):
             },
         }
 
-    @sn.sanity_function
+    @sanity_function
     def assert_num_gpus(self):
         return sn.assert_eq(
             sn.count(sn.findall(r'^\s*\[[^\]]*\]\s*Test passed', self.stdout)),
             sn.getattr(self.job, 'num_tasks'))
 
-    @rfm.run_before('compile')
+    @run_before('compile')
     def select_makefile(self):
         self.build_system.makefile = 'makefile.cuda'
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
