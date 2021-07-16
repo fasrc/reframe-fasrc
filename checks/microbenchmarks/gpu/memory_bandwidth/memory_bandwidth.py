@@ -22,7 +22,6 @@ class GpuBandwidthCheck(rfm.RegressionTest):
         self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
 
         # perf_patterns and reference will be set by the sanity check function
-        self.sanity_patterns = self.do_sanity_check()
         self.perf_patterns = {
             'h2d': sn.min(sn.extractall(self._xfer_pattern('h2d'),
                                         self.stdout, 1, float)),
@@ -50,11 +49,11 @@ class GpuBandwidthCheck(rfm.RegressionTest):
         }
 
 
-    @rfm.run_after('setup')
+    @run_after('setup')
     def select_makefile(self):
         self.build_system.makefile = 'makefile_memoryBandwidth.cuda'
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_num_gpus_per_node(self):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
@@ -84,7 +83,7 @@ class GpuBandwidthCheck(rfm.RegressionTest):
         return (rf'^[^,]*\[[^,]*\]\s*{direction}\s*bandwidth on device'
                 r' \d+ is \s*(\S+)\s*Mb/s.')
 
-    @sn.sanity_function
+    @sanity_function
     def do_sanity_check(self):
         node_names = set(sn.extractall(
             r'^\s*\[([^,]{1,100})\]\s*Found %s device\(s\).'
