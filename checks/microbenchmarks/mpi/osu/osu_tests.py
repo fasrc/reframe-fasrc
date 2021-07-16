@@ -60,11 +60,11 @@ class FlexAlltoallTest(rfm.RegressionTest):
         self.executable = './osu_alltoall'
         self.sanity_patterns = sn.assert_found(r'^1048576', self.stdout)
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=3G']
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_tasks(self):
         if self.current_partition.fullname in ['test:rc-testing']:
             self.num_tasks_per_node = 36

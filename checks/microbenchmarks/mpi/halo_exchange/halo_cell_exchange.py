@@ -89,10 +89,10 @@ class HaloCellExchangeTest(rfm.RegressionTest):
             },
         }
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=4G']
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_pmix(self):
         self.job.launcher.options = ['--mpi=pmix']
