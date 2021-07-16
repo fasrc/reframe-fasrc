@@ -77,12 +77,12 @@ class IorCheck(rfm.RunOnlyRegressionTest):
             '*': self.fs[base_dir]['reference']
         }
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_exec_opts(self):
         self.test_file += '.' + self.current_partition.name
         self.executable_opts += ['-o', self.test_file]
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=3G']
 

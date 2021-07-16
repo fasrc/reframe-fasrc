@@ -41,7 +41,7 @@ class HostnameCheck(SlurmSimpleBaseCheck):
             'fasse:fasse_gpu': r'^aagk80gpu\d{2}$',
         }
 
-    @rfm.run_before('sanity')
+    @run_before('sanity')
     def set_sanity_patterns(self):
         partname = self.current_partition.fullname
         num_matches = sn.count(
@@ -100,6 +100,6 @@ class MemoryOverconsumptionCheck(SlurmCompiledBaseCheck):
             r'(exceeded memory limit)|(Out Of Memory)', self.stderr
         )
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=2000']
