@@ -20,7 +20,6 @@ class GpuBurnTest(rfm.RegressionTest):
         self.build_system = 'Make'
         self.build_system.makefile = 'makefile.cuda'
         self.executable = './gpu_burn.x'
-        self.sanity_patterns = self.assert_num_tasks()
         patt = (r'^\s*\[[^\]]*\]\s*GPU\s+\d+\(\S*\):\s+(?P<perf>\S*)\s+GF\/s'
                 r'\s+(?P<temp>\S*)\s+Celsius')
         self.perf_patterns = {
@@ -44,17 +43,17 @@ class GpuBurnTest(rfm.RegressionTest):
         }
 
     @property
-    @sn.sanity_function
+    @deferrable
     def num_tasks_assigned(self):
         return self.job.num_tasks * self.num_gpus_per_node
 
-    @sn.sanity_function
+    @sanity_function
     def assert_num_tasks(self):
         return sn.assert_eq(sn.count(sn.findall(
             r'^\s*\[[^\]]*\]\s*GPU\s*\d+\(OK\)', self.stdout)
         ), self.num_tasks_assigned)
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
@@ -70,7 +69,7 @@ class GpuBurnTest(rfm.RegressionTest):
             self.num_cpus_per_task = 1
             self.num_tasks = 1
 
-    @rfm.run_before('performance')
+    @run_before('performance')
     def report_nid_with_smallest_flops(self):
         regex = r'\[(\S+)\] GPU\s+\d\(OK\): (\d+) GF/s'
         rptf = os.path.join(self.stagedir, sn.evaluate(self.stdout))
