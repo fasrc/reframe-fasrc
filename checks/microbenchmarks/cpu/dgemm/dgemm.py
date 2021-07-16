@@ -13,7 +13,6 @@ class DGEMMTest(rfm.RegressionTest):
     def __init__(self):
         self.descr = 'DGEMM performance test'
         self.sourcepath = 'dgemm.c'
-        self.sanity_patterns = self.eval_sanity()
 
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
@@ -34,7 +33,7 @@ class DGEMMTest(rfm.RegressionTest):
         }
 
 
-    @rfm.run_before('compile')
+    @run_before('compile')
     def setflags(self):
         if self.current_environ.name.startswith('gnu'):
             self.build_system.cflags += ['-fopenmp']
@@ -47,7 +46,7 @@ class DGEMMTest(rfm.RegressionTest):
                 '-mkl', '-static-intel', '-liomp5', '-lpthread', '-lm', '-ldl'
             ]
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_tasks(self):
         if self.current_partition.fullname in ['test:rc-testing']:
             self.num_cpus_per_task = 36
@@ -63,7 +62,7 @@ class DGEMMTest(rfm.RegressionTest):
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=4G']
 
-    @sn.sanity_function
+    @sanity_function
     def eval_sanity(self):
         all_tested_nodes = sn.evaluate(sn.extractall(
             r'(?P<hostname>\S+):\s+Time for \d+ DGEMM operations',

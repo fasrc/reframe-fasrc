@@ -77,11 +77,11 @@ class CPULatencyTest(rfm.RegressionTest):
             },
         }
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=4G']
 
     @property
-    @sn.sanity_function
+    @deferrable
     def num_tasks_assigned(self):
         return self.job.num_tasks

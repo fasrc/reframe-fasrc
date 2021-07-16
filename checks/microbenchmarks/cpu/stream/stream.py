@@ -78,11 +78,11 @@ class StreamTest(rfm.RegressionTest):
         }
 
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=4G']
 
-    @rfm.run_after('setup')
+    @run_after('setup')
     def prepare_test(self):
         self.num_cpus_per_task = self.stream_cpus_per_task.get(
             self.current_partition.fullname, 1)

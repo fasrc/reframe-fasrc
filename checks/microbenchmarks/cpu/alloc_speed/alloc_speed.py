@@ -70,6 +70,6 @@ class AllocSpeedTest(rfm.RegressionTest):
 
 
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem=5G']
