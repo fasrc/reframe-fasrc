@@ -7,27 +7,33 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-
-@rfm.parameterized_test(['nompi'], ['mpi'])
+@rfm.simple_test
 class FFTWTest(rfm.RegressionTest):
-    def __init__(self, exec_mode):
-        self.sourcepath = 'fftw_benchmark.c'
-        self.build_system = 'SingleSource'
-        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
-        self.modules = ['fftw']
-        self.num_tasks_per_node = 12
-        self.num_gpus_per_node = 0
-        self.sanity_patterns = sn.assert_eq(
-            sn.count(sn.findall(r'execution time', self.stdout)), 1)
-        self.build_system.cflags = ['-O2','-lfftw3']
-        self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
+    exec_mode = parameter(['nompi', 'mpi'])
+    sourcepath = 'fftw_benchmark.c'
+    build_system = 'SingleSource'
+    valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
+    modules = ['fftw']
+    num_tasks_per_node = 12
+    num_gpus_per_node = 0
+    build_system.cflags = ['-O2','-lfftw3']
+    valid_prog_environs = ['gnu-mpi', 'intel-mpi']
 
-        self.perf_patterns = {
-            'fftw_exec_time': sn.extractsingle(
-                r'execution time:\s+(?P<exec_time>\S+)', self.stdout,
-                'exec_time', float),
-        }
+    @performance_function('s')
+    def fftw_exec_time(self):
+        return sn.extractsingle(
+            r'execution time:\s+(?P<exec_time>\S+)', self.stdout,
+            'exec_time', float
+        )
 
+    @sanity_function
+    def assert_finished(self):
+        return sn.assert_eq(
+            sn.count(sn.findall(r'execution time', self.stdout)), 1
+        )
+
+    @run_before('run')
+    def configure_exec_mode(self):
         if exec_mode == 'nompi':
             self.num_tasks = 12
             self.executable_opts = ['72 12 1000 0']

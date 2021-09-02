@@ -7,24 +7,27 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-
-@rfm.parameterized_test(['no'], ['2M'])
+@rfm.simple test
 class AllocSpeedTest(rfm.RegressionTest):
-    def __init__(self, hugepages):
-        self.descr = 'Time to allocate 4096 MB using %s hugepages' % hugepages
-        self.sourcepath = 'alloc_speed.cpp'
-        self.build_system = 'SingleSource'
-        self.build_system.cxxflags = ['-O3', '-std=c++11']
-        self.valid_systems = ['*']
-        self.valid_prog_environs = ['*']
+    hugepages = parameter(['no', '2M'])
+    sourcepath = 'alloc_speed.cpp'
+    build_system = 'SingleSource'
+    build_system.cxxflags = ['-O3', '-std=c++11']
+    valid_systems = ['*']
+    valid_prog_environs = ['*']
 
-        self.sanity_patterns = sn.assert_found('4096 MB', self.stdout)
-        self.perf_patterns = {
-            'time': sn.extractsingle(r'4096 MB, allocation time (?P<time>\S+)',
-                                     self.stdout, 'time', float)
-        }
+    @run_after('init')
+    def set_descr(self):
+        self.descr = (f'Time to allocate 4096 MB using {self.hugepages} '
+                      f'hugepages')
 
-        self.sys_reference = {
+    @sanity_function
+    def assert_4GB(self):
+        return sn.assert_found('4096 MB', self.stdout)
+
+    @run_before('performance')
+    def set_reference(self):
+        sys_reference = {
             'no': {
                 'cannon:local': {
                     'time': (1.0, None, 0.5, 's')
@@ -68,7 +71,10 @@ class AllocSpeedTest(rfm.RegressionTest):
         }
         self.reference = self.sys_reference[hugepages]
 
-
+    @performance_function('s')
+    def time(self):
+        return sn.extractsingle(r'4096 MB, allocation time (?P<time>\S+)',
+                                self.stdout, 'time', float)
 
     @run_before('run')
     def set_memory_limit(self):
