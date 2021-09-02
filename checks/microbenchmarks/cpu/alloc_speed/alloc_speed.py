@@ -12,7 +12,6 @@ class AllocSpeedTest(rfm.RegressionTest):
     hugepages = parameter(['no', '2M'])
     sourcepath = 'alloc_speed.cpp'
     build_system = 'SingleSource'
-    build_system.cxxflags = ['-O3', '-std=c++11']
     valid_systems = ['*']
     valid_prog_environs = ['*']
 
@@ -20,6 +19,10 @@ class AllocSpeedTest(rfm.RegressionTest):
     def set_descr(self):
         self.descr = (f'Time to allocate 4096 MB using {self.hugepages} '
                       f'hugepages')
+
+    @run_before('compile')
+    def set_cxxflags(self):
+        self.build_system.cxxflags = ['-O3', '-std=c++11']
 
     @sanity_function
     def assert_4GB(self):
