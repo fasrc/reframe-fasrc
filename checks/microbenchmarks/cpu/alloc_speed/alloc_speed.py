@@ -7,7 +7,7 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-@rfm.simple test
+@rfm.simple_test
 class AllocSpeedTest(rfm.RegressionTest):
     hugepages = parameter(['no', '2M'])
     sourcepath = 'alloc_speed.cpp'
