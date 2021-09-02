@@ -72,7 +72,7 @@ class AllocSpeedTest(rfm.RegressionTest):
                 }
             },
         }
-        self.reference = self.sys_reference[hugepages]
+        self.reference = sys_reference[hugepages]
 
     @performance_function('s')
     def time(self):
