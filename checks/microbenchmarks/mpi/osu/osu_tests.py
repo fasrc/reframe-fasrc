@@ -14,7 +14,6 @@ class AlltoallTest(rfm.RegressionTest):
     valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
     descr = 'Alltoall OSU microbenchmark'
     build_system = 'Make'
-    build_system.makefile = 'Makefile_alltoall'
     executable = './osu_alltoall'
     # The -m option sets the maximum message size
     # The -x option sets the number of warm-up iterations
@@ -42,6 +41,10 @@ class AlltoallTest(rfm.RegressionTest):
             'num_switches': 1
         }
     }
+
+    @run_before('compile')
+    def set_makefile(self):
+        self.build_system.makefile = 'Makefile_alltoall'
 
     @sanity_function
     def assert_found_8MB_latency(self):
@@ -90,7 +93,6 @@ class AllreduceTest(rfm.RegressionTest):
 
     descr = 'Allreduce OSU microbenchmark'
     build_system = 'Make'
-    build_system.makefile = 'Makefile_allreduce'
     executable = './osu_allreduce'
     # The -x option controls the number of warm-up iterations
     # The -i option controls the number of iterations
@@ -103,6 +105,10 @@ class AllreduceTest(rfm.RegressionTest):
             'num_switches': 1
         }
     }
+
+    @run_before('compile')
+    def set_makefile(self):
+        self.build_system.makefile = 'Makefile_allreduce'
 
     @run_before('run')
     def set_num_tasks(self):

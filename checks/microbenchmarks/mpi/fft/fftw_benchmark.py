@@ -16,8 +16,11 @@ class FFTWTest(rfm.RegressionTest):
     modules = ['fftw']
     num_tasks_per_node = 12
     num_gpus_per_node = 0
-    build_system.cflags = ['-O2','-lfftw3']
     valid_prog_environs = ['gnu-mpi', 'intel-mpi']
+
+    @run_before('compile')
+    def set_cflags(self):
+        self.build_system.cflags = ['-O2','-lfftw3']
 
     @performance_function('s')
     def fftw_exec_time(self):
