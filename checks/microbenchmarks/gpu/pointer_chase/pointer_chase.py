@@ -41,6 +41,12 @@ class CompileGpuPointerChase(rfm.CompileOnlyRegressionTest, PchaseGlobal):
     def select_makefile(self):
         self.build_system.makefile = 'makefile.cuda'
 
+    @sanity_function
+    def assert_exec_present(self):
+        '''Assert that the executable is present.'''
+
+        return sn.assert_found(r'pChase.x', self.stdout)
+
 class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
     '''Base RunOnly class.
 
