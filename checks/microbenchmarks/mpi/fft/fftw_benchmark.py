@@ -37,7 +37,7 @@ class FFTWTest(rfm.RegressionTest):
 
     @run_before('run')
     def configure_exec_mode(self):
-        if exec_mode == 'nompi':
+        if self.exec_mode == 'nompi':
             self.num_tasks = 12
             self.executable_opts = ['72 12 1000 0']
             self.reference = {
