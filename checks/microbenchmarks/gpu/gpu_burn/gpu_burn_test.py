@@ -69,6 +69,10 @@ class GpuBurnTest(rfm.RegressionTest):
             self.num_cpus_per_task = 1
             self.num_tasks = 1
 
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
+
     @run_before('performance')
     def report_slow_nodes(self):
         '''Report the base perf metrics and also all the slow nodes.'''

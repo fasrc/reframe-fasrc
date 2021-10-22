@@ -69,6 +69,10 @@ class GpuBandwidthCheck(rfm.RegressionTest):
             self.num_cpus_per_task = 1
             self.num_tasks = 1
 
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
+
     def _xfer_pattern(self, xfer_kind):
         '''generates search pattern for performance analysis'''
         if xfer_kind == 'h2d':
