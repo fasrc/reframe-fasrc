@@ -50,6 +50,10 @@ class AlltoallTest(rfm.RegressionTest):
     def assert_found_8MB_latency(self):
         return sn.assert_found(r'^8', self.stdout)
 
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=3G']
+
     @run_before('performance')
     def set_performance_patterns(self):
         self.perf_patterns = {
