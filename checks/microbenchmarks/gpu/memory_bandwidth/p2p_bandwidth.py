@@ -8,33 +8,39 @@ import reframe.utility.sanity as sn
 import reframe as rfm
 
 
-@rfm.parameterized_test(['peerAccess'], ['noPeerAccess'])
+@rfm.simple_test
 class P2pBandwidthCheck(rfm.RegressionTest):
-    def __init__(self, peerAccess):
-        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
-        self.valid_prog_environs = ['gpu']
+    valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+    valid_prog_environs = ['gpu']
 
-        # Perform a single bandwidth test with a buffer size of 1024MB
-        copy_size = 1073741824
+    # Perform a single bandwidth test with a buffer size of 1024MB
+    copy_size = 1073741824
 
-        self.build_system = 'Make'
-        self.executable = './p2p_bandwidth.x'
-        self.build_system.cxxflags = [f'-DCOPY={copy_size}']
+    build_system = 'Make'
+    executable = './p2p_bandwidth.x'
 
-        if (peerAccess == 'peerAccess'):
+    peerAccess = parameter(['peerAccess', 'noPeerAccess'])
+
+    @run_before('compile')
+    def set_cxxflags(self):
+        if (self.peerAccess == 'peerAccess'):
+            self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
             self.build_system.cxxflags += ['-DP2P']
-            p2p = True
         else:
-            p2p = False
+            self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
 
+    @run_before('performance')
+    def set_perf_patterns(self):
         self.perf_patterns = {
             'bw': sn.min(sn.extractall(
                 r'^[^,]*\[[^\]]*\]\s+GPU\s+\d+\s+(\s*\d+.\d+\s)+',
                 self.stdout, 1, float))
         }
 
-        if p2p:
-            self.reference = {
+    @run_before('performance')
+    def set_reference(self):
+        self.sys_reference = {
+            'peerAccess': {
                 'cannon:local-gpu': {
                     'bw':   (28, -0.05, None, 'GB/s'),
                 },
@@ -44,9 +50,8 @@ class P2pBandwidthCheck(rfm.RegressionTest):
                 '*': {
                     'bw':   (172.5, None, None, 'GB/s'),
                 },
-            }
-        else:
-            self.reference = {
+            },
+            'noPeerAccess': {
                 'cannon:local-gpu': {
                     'bw': (35, -0.05, None, 'GB/s'),
                 },
@@ -56,7 +61,9 @@ class P2pBandwidthCheck(rfm.RegressionTest):
                 '*': {
                     'bw': (79.6, None, None, 'GB/s'),
                 },
-            }
+            },
+        }
+        self.reference = self.sys_reference[self.peerAccess]
 
 
     @run_after('setup')
