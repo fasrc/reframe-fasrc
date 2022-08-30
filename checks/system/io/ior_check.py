@@ -11,19 +11,26 @@ import re
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-
+@rfm.simple_test
 class IorCheck(rfm.RunOnlyRegressionTest):
-    def __init__(self, base_dir):
-        self.descr = f'IOR check ({base_dir})'
-        self.tags = {'ops', base_dir}
-        self.base_dir = base_dir
+    base_dir = parameter(['/scratch/','/n/holyscratch01/rc_admin/test'])
+    valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
+    valid_prog_environs = ['intel-mpi']
+    modules = ['ior']
+    sourcesdir = None
+    executable = 'ior'
+
+    @run_before('compile')
+    def set_vars(self):
+        self.descr = f'IOR check ({self.base_dir})'
+        self.tags = {'ops', self.base_dir}
+        self.basedir = self.base_dir
         self.username = getpass.getuser()
-        self.test_dir = os.path.join(self.base_dir,
+        self.test_dir = os.path.join(self.basedir,
                                      self.username,
                                      'ior')
         self.prerun_cmds = ['mkdir -p ' + self.test_dir]
         self.test_file = os.path.join(self.test_dir, 'ior')
-        self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.fs = {
             '/scratch/': {
                 'num_tasks': 4,
@@ -50,22 +57,18 @@ class IorCheck(rfm.RunOnlyRegressionTest):
             data.setdefault('dummy', {})  # entry for unknown systems
 
         cur_sys = self.current_system.name
-        if cur_sys not in self.fs[base_dir]:
+        if cur_sys not in self.fs[self.base_dir]:
             cur_sys = 'dummy'
 
-        self.num_tasks = self.fs[base_dir].get('num_tasks', 1)
-        tpn = self.fs[base_dir].get('num_tasks_per_node', 1)
+        self.num_tasks = self.fs[self.base_dir].get('num_tasks', 1)
+        tpn = self.fs[self.base_dir].get('num_tasks_per_node', 1)
         self.num_tasks_per_node = tpn
 
-        self.ior_block_size = self.fs[base_dir]['ior_block_size']
-        self.ior_access_type = self.fs[base_dir]['ior_access_type']
-        self.executable = 'ior'
+        self.ior_block_size = self.fs[self.base_dir]['ior_block_size']
+        self.ior_access_type = self.fs[self.base_dir]['ior_access_type']
         self.executable_opts = ['-F', '-C', '-Q 1', '-t 1m', '-D 60',
                                 '-b', self.ior_block_size,
                                 '-a', self.ior_access_type]
-        self.valid_prog_environs = ['intel-mpi']
-        self.modules = ['ior']
-        self.sourcesdir = None
 
         # Default umask is 0022, which generates file permissions -rw-r--r--
         # we want -rw-rw-r-- so we set umask to 0002
@@ -74,7 +77,7 @@ class IorCheck(rfm.RunOnlyRegressionTest):
         # Our references are based on fs types but regression needs reference
         # per system.
         self.reference = {
-            '*': self.fs[base_dir]['reference']
+            '*': self.fs[self.base_dir]['reference']
         }
 
     @run_before('run')
@@ -86,13 +89,13 @@ class IorCheck(rfm.RunOnlyRegressionTest):
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=3G']
 
-@rfm.parameterized_test(['/scratch/'],
-                        ['/n/holyscratch01/rc_admin/test'])
-class IorWRCheck(IorCheck):
-    def __init__(self, base_dir):
-        super().__init__(base_dir)
+    @run_before('sanity')
+    def set_sanity_patterns(self):
         self.sanity_patterns = sn.assert_found(r'^Max Write: ', self.stdout)
         self.sanity_patterns = sn.assert_found(r'^Max Read: ', self.stdout)
+
+    @run_before('performance')
+    def set_perf_patterns(self):
         self.perf_patterns = {
             'write_bw': sn.extractsingle(
                 r'^Max Write:\s+(?P<write_bw>\S+) MiB/sec', self.stdout,
