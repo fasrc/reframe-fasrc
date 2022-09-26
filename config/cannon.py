@@ -17,7 +17,7 @@ site_configuration = {
             'descr': 'Cannon Cluster',
             'hostnames': [
                 'holy7c',
-                'holygpu2c'
+                'holygpu'
             ],
             'modules_system': 'lmod',
             'partitions': [
