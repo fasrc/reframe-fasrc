@@ -56,7 +56,7 @@ class DGEMMTest(rfm.RegressionTest):
             self.num_cpus_per_task = 32
 
         if self.num_cpus_per_task:
-            self.variables = {
+            self.env_vars = {
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task)
             }
     def set_memory_limit(self):
