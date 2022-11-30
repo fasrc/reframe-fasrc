@@ -43,7 +43,7 @@ class StreamTest(rfm.RegressionTest):
             '*': 32,
         }
 
-        self.variables = {
+        self.env_vars = {
             'OMP_PLACES': 'threads',
             'OMP_PROC_BIND': 'spread'
         }

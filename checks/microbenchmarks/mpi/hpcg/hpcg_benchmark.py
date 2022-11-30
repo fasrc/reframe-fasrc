@@ -94,7 +94,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.num_tasks = 4
         self.problem_size = 104
 
-        self.variables = {
+        self.env_vars = {
             'HUGETLB_VERBOSE': '0',
             'MPICH_MAX_THREAD_SAFETY': 'multiple',
             'MPICH_USE_DMAPP_COLL': '1',
@@ -145,7 +145,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
 
     @run_after('setup')
     def prepare_test(self):
-        self.variables['OMP_NUM_THREADS'] = str(self.num_cpus_per_task)
+        self.env_vars['OMP_NUM_THREADS'] = str(self.num_cpus_per_task)
 
     @run_before('run')
     def set_memory_limit(self):

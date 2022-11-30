@@ -58,7 +58,7 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
         self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.executable = '/bin/echo'
         self.executable_opts = ['$MY_VAR']
-        self.variables = {'MY_VAR': 'TEST123456!'}
+        self.env_vars = {'MY_VAR': 'TEST123456!'}
         num_matches = sn.count(sn.findall(r'TEST123456!', self.stdout))
         self.sanity_patterns = sn.assert_eq(self.num_tasks, num_matches)
 
