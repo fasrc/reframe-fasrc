@@ -80,8 +80,8 @@ class FlexAlltoallTest(rfm.RegressionTest):
     @run_before('run')
     def set_tasks(self):
         if self.current_partition.fullname in ['test:rc-testing']:
-            self.num_tasks_per_node = 36
-            self.num_tasks = 72
+            self.num_tasks_per_node = 32
+            self.num_tasks = 64
         elif self.current_partition.fullname in ['cannon:test', 'fasse:fasse']:
             self.num_tasks_per_node = 48
             self.num_tasks = 96

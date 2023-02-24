@@ -138,7 +138,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
             self.num_cpus_per_task = 24
         elif self.current_partition.fullname in ['test:rc-testing']:
             self.num_tasks_per_node = 2
-            self.num_cpus_per_task = 18
+            self.num_cpus_per_task = 16
         else:
             self.num_tasks_per_node = 2
             self.num_cpus_per_task = 16
