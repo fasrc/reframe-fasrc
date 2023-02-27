@@ -34,7 +34,7 @@ class StridedBase(rfm.RegressionTest):
             'cannon:gpu_test': 16,
             'cannon:test': 48,
             'fasse:fasse': 48,
-            'test:rc-testing':  36,
+            'test:rc-testing':  32,
             '*': 32,
         }
 

@@ -49,7 +49,7 @@ class DGEMMTest(rfm.RegressionTest):
     @run_before('run')
     def set_tasks(self):
         if self.current_partition.fullname in ['test:rc-testing']:
-            self.num_cpus_per_task = 36
+            self.num_cpus_per_task = 32
         elif self.current_partition.fullname in ['cannon:local','cannon:test', 'fasse:fasse']:
             self.num_cpus_per_task = 48
         else:
