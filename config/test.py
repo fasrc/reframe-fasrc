@@ -93,14 +93,14 @@ site_configuration = {
         },
         {
             'name': 'gnu-mpi',
-            'modules': ['gcc/12.2.0-fasrc01','openmpi/4.1.4-fasrc01'],
+            'modules': ['gcc/12.2.0-fasrc01','openmpi/4.1.5-fasrc03'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
         },
         {
             'name': 'intel-mpi',
-            'modules': ['intel/23.0.0-fasrc01','openmpi/4.1.4-fasrc01'],
+            'modules': ['intel/23.0.0-fasrc01','openmpi/4.1.5-fasrc03'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
