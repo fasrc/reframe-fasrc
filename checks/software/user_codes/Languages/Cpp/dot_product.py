@@ -10,8 +10,8 @@ import reframe.utility.sanity as sn
 
 @rfm.simple_test
 class CppDotProduct(rfm.RegressionTest):
-    valid_systems = ['*']
-    valid_prog_environs = ['*']
+    valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
+    valid_prog_environs = ['builtin','gnu','intel']
     prebuild_cmds = [
         'wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Cpp/dot_prod.cpp'  # noqa: E501
     ]
