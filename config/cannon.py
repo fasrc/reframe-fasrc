@@ -92,9 +92,9 @@ site_configuration = {
         {
             'name': 'intel',
             'modules': ['intel'],
-            'cc': 'icc',
-            'cxx': 'icpc',
-            'ftn': 'ifort'
+            'cc': 'icx',
+            'cxx': 'icpx',
+            'ftn': 'ifx'
         },
         {
             'name': 'builtin',

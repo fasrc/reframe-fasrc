@@ -80,10 +80,10 @@ site_configuration = {
         },
         {
             'name': 'intel',
-            'modules': ['intel/23.0.0-fasrc01'],
-            'cc': 'icc',
-            'cxx': 'icpc',
-            'ftn': 'ifort'
+            'modules': ['intel/23.2.0-fasrc01'],
+            'cc': 'icx',
+            'cxx': 'icpx',
+            'ftn': 'ifx'
         },
         {
             'name': 'builtin',
