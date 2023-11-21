@@ -39,16 +39,16 @@ These are benchmark tests that are broken down by category.  Here is a short des
 These are codes from [FASRC User_codes](https://github.com/fasrc/User_Codes) repo. We try to test the main software used on the cluster.
 
 * AI
-  * PyTorch: pulls PyTorch Singularity image and runs [`check_gpu.py`](https://github.com/fasrc/User_Codes/blob/master/AI/PyTorch/) inside the container
+  * PyTorch: pulls PyTorch Singularity image and runs [`check_gpu.py`](https://github.com/fasrc/User_Codes/blob/master/AI/PyTorch/check_gpu.py) inside the container
   * TensorFlow: pulls TenforFlow Singularity image and runs [`tf_test_multi_gpu.py`](https://github.com/fasrc/User_Codes/tree/master/AI/TensorFlow/Example4/tf_test_multi_gpu.py) inside the container
 * Languages
-  * Cpp: runs [`dot_pro.cpp`](https://github.com/fasrc/User_Codes/tree/master/Languages/Cpp/dot_pro.cpp)
+  * Cpp: runs [`dot_prod.cpp`](https://github.com/fasrc/User_Codes/tree/master/Languages/Cpp/dot_prod.cpp)
   * Python
     * `Example1/monte_carlo_pi.py` runs [`mc_pi.py`](https://github.com/fasrc/User_Codes/tree/master/Languages/Python/Example1/mc_pi.py)
     * `Example3/mamba_env.py` runs [`build_env.sh`](https://github.com/fasrc/User_Codes/tree/master/Languages/Python/Example3/build_env.sh) to build a mamba environment and [`numpy_pandas_ex.py`](https://github.com/fasrc/User_Codes/tree/master/Languages/Python/Example3/numpy_pandas_ex.py) to use python packages installed in the mamba environment
   * R: runs [`count_down.R`](https://github.com/fasrc/User_Codes/tree/master/Languages/R/Example1/count_down.R)
 * Parallel computing
-  * Matlab: runs [`parallel_monte_carlo.m`](https://github.com/fasrc/User_Codes/tree/master/Parallel_Computing/MATLAB/Example1i/parallel_monte_carlo.m)
+  * Matlab: runs [`parallel_monte_carlo.m`](https://github.com/fasrc/User_Codes/tree/master/Parallel_Computing/MATLAB/Example1/parallel_monte_carlo.m)
 
 The reframe tests that run the codes listed above were modified tests from [Reframe tutorial](https://reframe-hpc.readthedocs.io/en/stable/tutorial_basics.html) and from University of Southern California [uschpc reframe repo](https://github.com/uschpc/reframe-tests/tree/main/tests).
 
