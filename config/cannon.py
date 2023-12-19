@@ -91,10 +91,10 @@ site_configuration = {
         },
         {
             'name': 'intel',
-            'modules': ['intel'],
-            'cc': 'icx',
-            'cxx': 'icpx',
-            'ftn': 'ifx'
+            'modules': ['intel/23.0.0-fasrc01'],
+            'cc': 'icc',
+            'cxx': 'icpc',
+            'ftn': 'ifort'
         },
         {
             'name': 'builtin',
