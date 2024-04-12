@@ -9,6 +9,10 @@
 
 import reframe.utility.osext as osext
 
+@register_launcher('srun-harvard')
+class MySmartLauncher(JobLauncher):
+    def command(self, job):
+        return ['srun -c $SLURM_CPUS_PER_TASK -n $SLURM_NTASKS --mpi=pmix']
 
 site_configuration = {
     'systems': [
@@ -46,7 +50,7 @@ site_configuration = {
                     ],
                     'descr': 'Test Cluster CPU',
                     'max_jobs': 100,
-                    'launcher': 'srun -c $SLURM_CPUS_PER_TASK -n $SLURM_NTASKS --mpi=pmix',
+                    'launcher': 'srun-harvard',
                     'access': ['-p rc-testing']
                 },
                 {
@@ -57,7 +61,7 @@ site_configuration = {
                     ],
                     'descr': 'Test Cluster GPU',
                     'max_jobs': 100,
-                    'launcher': 'srun -c $SLURM_CPUS_PER_TASK -n $SLURM_NTASKS --mpi=pmix',
+                    'launcher': 'srun-harvard',
                     'access': ['-p gpu'],
                     'resources': [
                         {
