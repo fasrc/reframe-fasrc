@@ -46,7 +46,7 @@ site_configuration = {
                     ],
                     'descr': 'Test Cluster CPU',
                     'max_jobs': 100,
-                    'launcher': 'srun',
+                    'launcher': 'srun -c $SLURM_CPUS_PER_TASK -n $SLURM_NTASKS --mpi=pmix',
                     'access': ['-p rc-testing']
                 },
                 {
@@ -57,7 +57,7 @@ site_configuration = {
                     ],
                     'descr': 'Test Cluster GPU',
                     'max_jobs': 100,
-                    'launcher': 'srun',
+                    'launcher': 'srun -c $SLURM_CPUS_PER_TASK -n $SLURM_NTASKS --mpi=pmix',
                     'access': ['-p gpu'],
                     'resources': [
                         {
