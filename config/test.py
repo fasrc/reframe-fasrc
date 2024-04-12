@@ -15,7 +15,7 @@ from reframe.core.launchers import JobLauncher
 @register_launcher('srun-harvard')
 class MySmartLauncher(JobLauncher):
     def command(self, job):
-        return ['srun -c $SLURM_CPUS_PER_TASK -n $SLURM_NTASKS --mpi=pmix']
+        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmix']
 
 site_configuration = {
     'systems': [
