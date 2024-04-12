@@ -8,6 +8,9 @@
 #
 
 import reframe.utility.osext as osext
+from reframe.core.backends import register_launcher
+from reframe.core.launchers import JobLauncher
+
 
 @register_launcher('srun-harvard')
 class MySmartLauncher(JobLauncher):
