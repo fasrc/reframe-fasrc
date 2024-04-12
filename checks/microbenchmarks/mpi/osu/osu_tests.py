@@ -52,7 +52,7 @@ class AlltoallTest(rfm.RegressionTest):
 
     @run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=3G']
+        self.job.options = ['--mem-per-cpu=4G']
 
     @run_before('performance')
     def set_performance_patterns(self):
