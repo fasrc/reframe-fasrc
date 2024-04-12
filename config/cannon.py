@@ -8,7 +8,14 @@
 #
 
 import reframe.utility.osext as osext
+from reframe.core.backends import register_launcher
+from reframe.core.launchers import JobLauncher
 
+
+@register_launcher('srun-harvard')
+class MySmartLauncher(JobLauncher):
+    def command(self, job):
+        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmix']
 
 site_configuration = {
     'systems': [
@@ -57,7 +64,7 @@ site_configuration = {
                     ],
                     'descr': 'Cannon test partition',
                     'max_jobs': 5,
-                    'launcher': 'srun',
+                    'launcher': 'srun-harvard',
                     'access': ['-p test']
                 },
                 {
@@ -68,7 +75,7 @@ site_configuration = {
                     ],
                     'descr': 'Cannon gpu_test partition',
                     'max_jobs': 1,
-                    'launcher': 'srun',
+                    'launcher': 'srun-harvard',
                     'access': ['-p gpu_test'],
                     'resources': [
                         {
@@ -91,10 +98,10 @@ site_configuration = {
         },
         {
             'name': 'intel',
-            'modules': ['intel/23.0.0-fasrc01'],
-            'cc': 'icc',
-            'cxx': 'icpc',
-            'ftn': 'ifort'
+            'modules': ['intel'],
+            'cc': 'icx',
+            'cxx': 'icpx',
+            'ftn': 'ifx'
         },
         {
             'name': 'builtin',

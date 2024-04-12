@@ -8,6 +8,14 @@
 #
 
 import reframe.utility.osext as osext
+from reframe.core.backends import register_launcher
+from reframe.core.launchers import JobLauncher
+
+
+@register_launcher('srun-harvard')
+class MySmartLauncher(JobLauncher):
+    def command(self, job):
+        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmix']
 
 
 site_configuration = {
@@ -46,7 +54,7 @@ site_configuration = {
                     ],
                     'descr': 'FASSE CPU',
                     'max_jobs': 100,
-                    'launcher': 'srun',
+                    'launcher': 'srun-harvard',
                     'access': ['-p fasse']
                 },
                 {
@@ -57,7 +65,7 @@ site_configuration = {
                     ],
                     'descr': 'FASSE GPU',
                     'max_jobs': 100,
-                    'launcher': 'srun',
+                    'launcher': 'srun-harvard',
                     'access': ['-p fasse_gpu'],
                     'resources': [
                         {
