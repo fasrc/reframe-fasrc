@@ -73,14 +73,14 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
-            'modules': ['gcc/12.2.0-fasrc01'],
+            'modules': ['gcc/13.2.0-fasrc01'],
             'cc': 'gcc',
             'cxx': 'g++',
             'ftn': 'gfortran'
         },
         {
             'name': 'intel',
-            'modules': ['intel/23.2.0-fasrc01'],
+            'modules': ['intel/24.0.1-fasrc01'],
             'cc': 'icx',
             'cxx': 'icpx',
             'ftn': 'ifx'
@@ -93,14 +93,14 @@ site_configuration = {
         },
         {
             'name': 'gnu-mpi',
-            'modules': ['gcc/12.2.0-fasrc01','openmpi/4.1.5-fasrc03'],
+            'modules': ['gcc/13.2.0-fasrc01','openmpi/5.0.2-fasrc01'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
         },
         {
             'name': 'intel-mpi',
-            'modules': ['intel/23.0.0-fasrc01','openmpi/4.1.5-fasrc03'],
+            'modules': ['intel/24.0.1-fasrc01','openmpi/5.0.2-fasrc01'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'

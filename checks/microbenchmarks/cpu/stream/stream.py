@@ -35,7 +35,7 @@ class StreamTest(rfm.RegressionTest):
         self.num_tasks = 1
         self.num_tasks_per_node = 1
         self.stream_cpus_per_task = {
-            'cannon:local': 48,
+            'cannon:local': 96,
             'cannon:local-gpu': 32,
             'cannon:gpu_test': 16,
             'cannon:test': 48,

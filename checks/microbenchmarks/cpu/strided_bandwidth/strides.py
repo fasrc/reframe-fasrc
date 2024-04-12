@@ -29,7 +29,7 @@ class StridedBase(rfm.RegressionTest):
         }
 
         self.system_num_cpus = {
-            'cannon:local': 48,
+            'cannon:local': 96,
             'cannon:local-gpu': 32,
             'cannon:gpu_test': 16,
             'cannon:test': 48,
