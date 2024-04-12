@@ -101,7 +101,7 @@ site_configuration = {
         },
         {
             'name': 'gnu-mpi',
-            'modules': ['gcc','openmpi'],
+            'modules': ['gcc','openmpi/5.0.2-fasrc01'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
