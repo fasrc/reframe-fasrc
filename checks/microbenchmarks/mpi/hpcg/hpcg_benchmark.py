@@ -89,7 +89,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.modules = ['intel-mkl']
         self.build_system = 'Make'
         self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/* .',
-                             './configure OPENMPI_IOMP_AVX2']
+                             './configure INTELMPI_IOMP_AVX2']
 
         self.num_tasks = 4
         self.problem_size = 104

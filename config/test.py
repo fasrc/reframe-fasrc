@@ -49,7 +49,8 @@ site_configuration = {
                          'gnu',
                          'intel',
                          'gnu-mpi',
-                         'intel-mpi'
+                         'intel-mpi',
+                         'intel-intelmpi'
                     ],
                     'descr': 'Test Cluster CPU',
                     'max_jobs': 100,
