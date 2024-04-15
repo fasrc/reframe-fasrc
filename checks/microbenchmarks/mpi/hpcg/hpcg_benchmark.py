@@ -149,7 +149,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
 
     @run_after('setup')
     def set_launcher(self):
-        self.job.launcher = 'srun'
+        self.job.launcher = getlauncher('srun-harvard-pmi2')()
 
     @run_before('run')
     def set_memory_limit(self):
