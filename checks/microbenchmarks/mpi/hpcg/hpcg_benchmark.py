@@ -23,8 +23,6 @@ class HPCGCheckRef(rfm.RegressionTest):
         # use glob to catch the output file suffix dependent on execution time
         self.output_file = sn.getitem(sn.glob('HPCG*.txt'), 0)
 
-        self.mpi = '--mpi=pmix'
-
         self.num_tasks = 96
         self.num_cpus_per_task = 1
 
@@ -93,8 +91,6 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/* .',
                              './configure IMPI_IOMP_AVX512']
 
-        self.mpi = '--mpi=pmi2'
-
         self.num_tasks = 4
         self.problem_size = 104
 
@@ -150,6 +146,10 @@ class HPCGCheckMKL(rfm.RegressionTest):
     @run_after('setup')
     def prepare_test(self):
         self.env_vars['OMP_NUM_THREADS'] = str(self.num_cpus_per_task)
+
+    @run_after('setup')
+    def set_launcher(self):
+        self.job.launcher = LauncherWrapper('srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2')
 
     @run_before('run')
     def set_memory_limit(self):
