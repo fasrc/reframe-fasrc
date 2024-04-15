@@ -43,7 +43,7 @@ class DGEMMTest(rfm.RegressionTest):
             ]
             self.build_system.cflags = ['-qopenmp']
             self.build_system.ldflags = [
-                '-mkl', '-static-intel', '-liomp5', '-lpthread', '-lm', '-ldl'
+                '-lmkl_intel_ilp64', '-lmkl_intel_thread', '-lmkl_core', '-liomp5', '-lpthread', '-lm', '-ldl'
             ]
 
     @run_before('run')
