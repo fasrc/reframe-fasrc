@@ -7,6 +7,7 @@
 import os
 import reframe as rfm
 import reframe.utility.sanity as sn
+from reframe.core.backends import getlauncher
 
 @rfm.simple_test
 class HPCGCheckRef(rfm.RegressionTest):
