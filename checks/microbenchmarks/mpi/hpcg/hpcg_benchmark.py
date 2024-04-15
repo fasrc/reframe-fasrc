@@ -88,7 +88,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.valid_prog_environs = ['intel-mpi']
         self.modules = ['intel-mkl']
         self.build_system = 'Make'
-        self.prebuild_cmds = ['cp -r ${MKLROOT}/benchmarks/hpcg/* .',
+        self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/* .',
                              './configure OPENMPI_IOMP_AVX2']
 
         self.num_tasks = 4
