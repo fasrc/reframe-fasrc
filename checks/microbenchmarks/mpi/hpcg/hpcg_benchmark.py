@@ -23,6 +23,8 @@ class HPCGCheckRef(rfm.RegressionTest):
         # use glob to catch the output file suffix dependent on execution time
         self.output_file = sn.getitem(sn.glob('HPCG*.txt'), 0)
 
+        self.job.mpi = '--mpi=pmix'
+
         self.num_tasks = 96
         self.num_cpus_per_task = 1
 
@@ -91,7 +93,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/* .',
                              './configure IMPI_IOMP_AVX512']
 
-        self.launcher = 'srun-harvard-pmi2'
+        self.job.mpi = '--mpi=pmi2'
 
         self.num_tasks = 4
         self.problem_size = 104
