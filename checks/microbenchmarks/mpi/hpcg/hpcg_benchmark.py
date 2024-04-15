@@ -8,6 +8,11 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
+@register_launcher('srun-harvard-pmi2')
+class MySmartLauncher(JobLauncher):
+    def command(self, job):
+        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2']
+
 @rfm.simple_test
 class HPCGCheckRef(rfm.RegressionTest):
     def __init__(self):
