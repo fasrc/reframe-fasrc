@@ -75,7 +75,7 @@ class FlexAlltoallTest(rfm.RegressionTest):
 
     @run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=3G']
+        self.job.options = ['--mem-per-cpu=4G']
 
     @run_before('run')
     def set_tasks(self):
@@ -117,6 +117,10 @@ class AllreduceTest(rfm.RegressionTest):
     @run_before('run')
     def set_num_tasks(self):
         self.num_tasks = 6 if self.variant == 'small' else 12
+
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
 
     @sanity_function
     def assert_found_8MB_latency(self):
@@ -171,6 +175,10 @@ class P2PBaseTest(rfm.RegressionTest):
                 'num_switches': 1
             }
         }
+    
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
 
 
 @rfm.simple_test
@@ -198,6 +206,10 @@ class P2PCPUBandwidthTest(P2PBaseTest):
                                    self.stdout, 'bw', float)
         }
 
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
+
 
 @rfm.simple_test
 class P2PCPULatencyTest(P2PBaseTest):
@@ -223,3 +235,7 @@ class P2PCPULatencyTest(P2PBaseTest):
             'latency': sn.extractsingle(r'^8\s+(?P<latency>\S+)',
                                         self.stdout, 'latency', float)
         }
+
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem-per-cpu=4G']
