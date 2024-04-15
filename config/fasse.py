@@ -17,6 +17,10 @@ class MySmartLauncher(JobLauncher):
     def command(self, job):
         return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmix']
 
+@register_launcher('srun-harvard-pmi2')
+class MySmartLauncher(JobLauncher):
+    def command(self, job):
+        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2']
 
 site_configuration = {
     'systems': [
@@ -25,7 +29,7 @@ site_configuration = {
             'descr': 'FASSE',
             'hostnames': [
                 'holy7c',
-                'aagk80gpu',
+                'holygpu7c',
                 'fasselogin'
             ],
             'modules_system': 'lmod',
@@ -50,7 +54,8 @@ site_configuration = {
                          'gnu',
                          'intel',
                          'gnu-mpi',
-                         'intel-mpi'
+                         'intel-mpi',
+                         'intel-intelmpi'
                     ],
                     'descr': 'FASSE CPU',
                     'max_jobs': 100,
@@ -112,6 +117,13 @@ site_configuration = {
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
+        },
+        {
+            'name': 'intel-intelmpi',
+            'modules': ['intel','intelmpi'],
+            'cc': 'mpiicx',
+            'cxx': 'mpiicpx',
+            'ftn': 'mpiifx'
         },
         {
             'name': 'gpu',

@@ -17,6 +17,11 @@ class MySmartLauncher(JobLauncher):
     def command(self, job):
         return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmix']
 
+@register_launcher('srun-harvard-pmi2')
+class MySmartLauncher(JobLauncher):
+    def command(self, job):
+        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2']
+
 site_configuration = {
     'systems': [
         {
@@ -36,7 +41,8 @@ site_configuration = {
                         'gnu',
                         'intel',
                         'gnu-mpi',
-                        'intel-mpi'
+                        'intel-mpi',
+                        'intel-intelmpi'
                     ],
                     'descr': 'Run on local node',
                     'max_jobs': 1,
@@ -60,7 +66,8 @@ site_configuration = {
                          'gnu',
                          'intel',
                          'gnu-mpi',
-                         'intel-mpi'
+                         'intel-mpi',
+                         'intel-intelmpi'
                     ],
                     'descr': 'Cannon test partition',
                     'max_jobs': 5,
@@ -122,6 +129,13 @@ site_configuration = {
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
+        },
+        {
+            'name': 'intel-intelmpi',
+            'modules': ['intel','intelmpi'],
+            'cc': 'mpiicx',
+            'cxx': 'mpiicpx',
+            'ftn': 'mpiifx'
         },
         {
             'name': 'gpu',
