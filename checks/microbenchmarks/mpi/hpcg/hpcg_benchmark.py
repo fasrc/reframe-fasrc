@@ -91,6 +91,8 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/* .',
                              './configure IMPI_IOMP_AVX512']
 
+        self.launcher = 'srun-harvard-pmi2'
+
         self.num_tasks = 4
         self.problem_size = 104
 
