@@ -35,10 +35,10 @@ class HostnameCheck(SlurmSimpleBaseCheck):
         self.hostname_patt = {
             'cannon:test': r'^holy7c\d{5}$',
             'cannon:gpu_test': r'^holygpu2c\d{5}$',
-            'test:rc-testing': r'^holy2a\d{5}$',
-            'test:gpu': r'^aagk80gpu\d{2}$',
+            'test:rc-testing': r'^holy7c\d{5}$',
+            'test:gpu': r'^holygpu7c\d{2}$',
             'fasse:fasse': r'^holy7c\d{5}$',
-            'fasse:fasse_gpu': r'^aagk80gpu\d{2}$',
+            'fasse:fasse_gpu': r'^holygpu7c\d{2}$',
         }
 
     @run_before('sanity')
