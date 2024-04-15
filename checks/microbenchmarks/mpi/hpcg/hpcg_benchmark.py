@@ -149,7 +149,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
 
     @run_after('setup')
     def set_launcher(self):
-        self.job.launcher = LauncherWrapper('srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2')
+        self.job.launcher = 'srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2'
 
     @run_before('run')
     def set_memory_limit(self):
