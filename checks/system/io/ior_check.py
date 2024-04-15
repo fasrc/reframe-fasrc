@@ -98,7 +98,7 @@ class IorCheck(rfm.RunOnlyRegressionTest):
     def set_perf_patterns(self):
         self.perf_patterns = {
             'write_bw': sn.extractsingle(
-                r'^Max Write:\s+(?P<write_bw>\S+) MiB/sec', self.stdout,
+                r'^write \s+(?P<write_bw>\S+)', self.stdout,
                 'write_bw', float),
             'read_bw': sn.extractsingle(
                 r'^Max Read:\s+(?P<read_bw>\S+) MiB/sec', self.stdout,
