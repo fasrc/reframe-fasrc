@@ -85,7 +85,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
     def __init__(self):
         self.descr = 'HPCG benchmark Intel MKL implementation'
         self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
-        self.valid_prog_environs = ['intel-mpi']
+        self.valid_prog_environs = ['intel-intelmpi']
         self.modules = ['intel-mkl']
         self.build_system = 'Make'
         self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/* .',

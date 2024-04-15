@@ -113,6 +113,13 @@ site_configuration = {
             'ftn': 'mpifort'
         },
         {
+            'name': 'intel-intelmpi',
+            'modules': ['intel','intelmpi'],
+            'cc': 'mpiicx',
+            'cxx': 'mpiicpx',
+            'ftn': 'mpiifx'
+        },
+        {
             'name': 'gpu',
             'modules': ['gcc/12.2.0-fasrc01','cuda'],
             'cc': 'gcc',
