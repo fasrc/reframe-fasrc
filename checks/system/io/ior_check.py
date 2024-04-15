@@ -91,8 +91,8 @@ class IorCheck(rfm.RunOnlyRegressionTest):
 
     @run_before('sanity')
     def set_sanity_patterns(self):
-        self.sanity_patterns = sn.assert_found(r'^Max Write: ', self.stdout)
-        self.sanity_patterns = sn.assert_found(r'^Max Read: ', self.stdout)
+        self.sanity_patterns = sn.assert_found(r'^write: ', self.stdout)
+        self.sanity_patterns = sn.assert_found(r'^read: ', self.stdout)
 
     @run_before('performance')
     def set_perf_patterns(self):
