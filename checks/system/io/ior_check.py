@@ -101,6 +101,6 @@ class IorCheck(rfm.RunOnlyRegressionTest):
                 r'^write \s+(?P<write_bw>\S+)', self.stdout,
                 'write_bw', float),
             'read_bw': sn.extractsingle(
-                r'^Max Read:\s+(?P<read_bw>\S+) MiB/sec', self.stdout,
+                r'^read \s+(?P<read_bw>\S+)', self.stdout,
                 'read_bw', float)
         }
