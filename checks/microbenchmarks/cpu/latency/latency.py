@@ -13,7 +13,7 @@ class CPULatencyTest(rfm.RegressionTest):
     def __init__(self):
         self.sourcepath = 'latency.cpp'
         self.build_system = 'SingleSource'
-        valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:login','fasse:fasse','test:login','test:rc-testing']
+        self.valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:login','fasse:fasse','test:login','test:rc-testing']
         self.valid_prog_environs = ['*']
         self.num_tasks = 1
         self.num_tasks_per_node = 1

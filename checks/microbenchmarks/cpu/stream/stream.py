@@ -18,7 +18,7 @@ class StreamTest(rfm.RegressionTest):
     def __init__(self):
         self.descr = 'STREAM Benchmark'
         self.exclusive_access = True
-        valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:login','fasse:fasse','test:login','test:rc-testing']
+        self.valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:login','fasse:fasse','test:login','test:rc-testing']
         self.valid_prog_environs = ['builtin','gnu','gpu','intel']
 
         self.use_multithreading = False
