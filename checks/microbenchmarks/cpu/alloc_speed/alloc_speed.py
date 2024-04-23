@@ -12,7 +12,7 @@ class AllocSpeedTest(rfm.RegressionTest):
     hugepages = parameter(['no', '2M'])
     sourcepath = 'alloc_speed.cpp'
     build_system = 'SingleSource'
-    valid_systems = ['*']
+    valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:login','fasse:fasse','test:login','test:rc-testing']
     valid_prog_environs = ['*']
 
     @run_after('init')

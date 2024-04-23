@@ -17,7 +17,7 @@ class DGEMMTest(rfm.RegressionTest):
         # the perf patterns are automaticaly generated inside sanity
         self.perf_patterns = {}
         self.modules = ['intel-mkl']
-        self.valid_systems = ['cannon:local','cannon:test','fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['intel']
 
         self.num_tasks = 1
