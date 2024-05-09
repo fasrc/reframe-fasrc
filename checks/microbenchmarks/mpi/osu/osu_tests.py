@@ -159,7 +159,6 @@ class AllreduceTest(rfm.RegressionTest):
 
 class P2PBaseTest(rfm.RegressionTest):
     def __init__(self):
-        self.exclusive_access = True
         self.strict_check = False
         self.num_tasks = 2
         self.num_tasks_per_node = 1
