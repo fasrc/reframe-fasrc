@@ -13,7 +13,7 @@ class CppDotProduct(rfm.RegressionTest):
     valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
     valid_prog_environs = ['builtin','gnu','intel']
     prebuild_cmds = [
-        'wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Cpp/dot_prod.cpp'  # noqa: E501
+        'wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Cpp/Example5/dot_prod.cpp'  # noqa: E501
     ]
     build_system = 'SingleSource'
     sourcepath = 'dot_prod.cpp'
