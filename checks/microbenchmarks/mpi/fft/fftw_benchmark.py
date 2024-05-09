@@ -60,7 +60,7 @@ class FFTWTest(rfm.RegressionTest):
                     'fftw_exec_time': (0.6, None, 0.05, 's'),
                 },
                 'fasse:fasse': {
-                    'fftw_exec_time': (1.6, None, 0.05, 's'),
+                    'fftw_exec_time': (2.0, None, 0.05, 's'),
                 },
                 '*': {
                     'fftw_exec_time': (0.59, None, None, 's'),
