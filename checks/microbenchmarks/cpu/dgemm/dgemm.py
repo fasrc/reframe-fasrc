@@ -51,7 +51,7 @@ class DGEMMTest(rfm.RegressionTest):
         if self.current_partition.fullname in ['test:rc-testing']:
             self.num_cpus_per_task = 32
         elif self.current_partition.fullname in ['cannon:local','cannon:test', 'fasse:fasse']:
-            self.num_cpus_per_task = 96
+            self.num_cpus_per_task = 48
         else:
             self.num_cpus_per_task = 32
 
@@ -60,7 +60,7 @@ class DGEMMTest(rfm.RegressionTest):
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task)
             }
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
     @sanity_function
     def eval_sanity(self):

@@ -75,7 +75,7 @@ class FlexAlltoallTest(rfm.RegressionTest):
 
     @run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem-per-cpu=4G']
+        self.job.options = ['--mem-per-cpu=3G']
 
     @run_before('run')
     def set_tasks(self):
