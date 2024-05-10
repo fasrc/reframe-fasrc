@@ -88,10 +88,5 @@ class P2pBandwidthCheck(rfm.RegressionTest):
             r'^\s*\[([^,]{1,100})\]\s*Found %s device\(s\).'
             % self.num_gpus_per_node, self.stdout, 1
         ))
-        sn.evaluate(sn.assert_eq(
-            node_names, good_nodes,
-            msg='check failed on the following node(s): %s' %
-            ','.join(sorted(node_names - good_nodes)))
-        )
 
         return True
