@@ -77,10 +77,6 @@ class P2pBandwidthCheck(rfm.RegressionTest):
             self.num_gpus_per_node = 4
             self.num_cpus_per_task = 4
             self.num_tasks = 1
-        elif cp in {'cannon:gpu_test'}:
-            self.num_gpus_per_node = 2
-            self.num_cpus_per_task = 2
-            self.num_tasks = 1
         else:
             self.num_gpus_per_node = 1
             self.num_cpus_per_task = 1
