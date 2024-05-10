@@ -12,7 +12,7 @@ class StridedBase(rfm.RegressionTest):
     def __init__(self):
         self.sourcepath = 'strides.cpp'
         self.build_system = 'SingleSource'
-        self.valid_systems = ['cannon:local','cannon:local-gpu','cannon:gpu_test','cannon:test','fasse:fasse','test:rc-testing']
+        self.valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['builtin','gnu','gpu','intel']
         self.build_system.cxxflags = ['-std=c++11','-lpthread']
         self.num_tasks = 1
