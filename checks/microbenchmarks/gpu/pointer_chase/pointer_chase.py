@@ -21,7 +21,7 @@ class PchaseGlobal(rfm.RegressionMixin):
     multi_device_systems = variable(
         typ.List[str],
         value=[
-            'cannon:local-gpu', 'cannon:gpu_test', 'fasse:gpu', 'test:gpu'
+            'cannon:local-gpu', 'cannon:gpu_test', 'fasse:fasse_gpu', 'test:gpu'
         ]
     )
     global_prog_environs = variable(list, value=['gpu'])
