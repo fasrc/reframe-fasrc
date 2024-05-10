@@ -33,8 +33,8 @@ class HostnameCheck(SlurmSimpleBaseCheck):
         self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.hostname_patt = {
-            'cannon:test': r'^holy7c\d{5}$',
-            'cannon:gpu_test': r'^holygpu2c\d{5}$',
+            'cannon:test': r'^holy8c\d{5}$',
+            'cannon:gpu_test': r'^holygpu7c\d{5}$',
             'test:rc-testing': r'^holy7c\d{5}$',
             'test:gpu': r'^holygpu7c\d{2}$',
             'fasse:fasse': r'^holy7c\d{5}$',
