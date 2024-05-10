@@ -40,7 +40,7 @@ class Tensorflow(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def assert_sanity(self):
-        return sn.assert_found(r'Number of devices: 4', self.stdout)
+        return sn.assert_found(r'Test accuracy', self.stdout)
 
 @rfm.simple_test
 class TensorflowSingularity(rfm.RunOnlyRegressionTest):

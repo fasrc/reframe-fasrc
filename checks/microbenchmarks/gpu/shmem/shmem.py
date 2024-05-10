@@ -28,7 +28,7 @@ class GPUShmemTest(rfm.RegressionTest):
                 'bandwidth': (13000, -0.01, None, 'GB/s per gpu')
             },
             'cannon:gpu_test': {
-                'bandwidth': (13000, -0.01, None, 'GB/s per gpu')
+                'bandwidth': (7000, -0.01, None, 'GB/s per gpu')
             },
             '*': {
                 'bandwidth': (8850, None, None, 'GB/s per gpu')

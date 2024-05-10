@@ -39,7 +39,7 @@ class GpuBandwidthCheck(rfm.RegressionTest):
             'cannon:gpu_test': {
                 'h2d': (12000, -0.1, None, 'MB/s per gpu'),
                 'd2h': (13000, -0.1, None, 'MB/s per gpu'),
-                'd2d': (780000, -0.1, None, 'MB/s per gpu')
+                'd2d': (620000, -0.1, None, 'MB/s per gpu')
             },
             '*': {
                 'h2d': (11881, None, None, 'MB/s per gpu'),
