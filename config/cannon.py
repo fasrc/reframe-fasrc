@@ -81,7 +81,7 @@ site_configuration = {
                          'gpu'
                     ],
                     'descr': 'Cannon gpu_test partition',
-                    'max_jobs': 1,
+                    'max_jobs': 5,
                     'launcher': 'srun-harvard',
                     'access': ['-p gpu_test'],
                     'resources': [
