@@ -122,7 +122,7 @@ class HelloTest(rfm.RegressionTest):
 In the `runs` directory, you can run a single test `hello1.py` with
 the following command. One can also declare a `$WORKDIR` variable to
 store the location of the top-level `reframe` directory, which is
-'reframe_dir` in this case. For example,
+`reframe_dir` in this case. For example,
 `WORKDIR="~/projects/reframe_dir"` and then execute the following
 command using `$WORKDIR`, e.g.: `$WORKDIR/reframe/bin/reframe
 --config-file...` and so on. Additionally, remember to execute `module
