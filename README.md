@@ -50,7 +50,7 @@ These are codes from [FASRC User_codes](https://github.com/fasrc/User_Codes) rep
 * Parallel computing
   * Matlab: runs [`parallel_monte_carlo.m`](https://github.com/fasrc/User_Codes/tree/master/Parallel_Computing/MATLAB/Example1/parallel_monte_carlo.m)
 
-The reframe tests that run the codes listed above were modified tests from [Reframe tutorial](https://reframe-hpc.readthedocs.io/en/stable/tutorial_basics.html) and from University of Southern California [uschpc reframe repo](https://github.com/uschpc/reframe-tests/tree/main/tests).
+The reframe tests that run the codes listed above were modified tests from [Reframe tutorial](https://reframe-hpc.readthedocs.io/en/stable/tutorial_basics.html) and from University of Southern California [uschpc reframe repo](https://github.com/uschpc/reframe-tests/tree/main/tests). These tests can be run either from a login or a compute node as ReFrame runs these tests by submitting jobs to the Slurm scheduler.   
 
 ### System
 These tests are to verify various aspects of the system.  Here is a short description of each test.
