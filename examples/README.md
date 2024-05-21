@@ -12,9 +12,9 @@ We suggest that you create a reframe working directory with:
 
 1. [reframe original repo](https://github.com/reframe-hpc/refram) directory
 2. [reframe-fasrc repo](https://github.com/fasrc/reframe-fasrc) directory
-3. run directory
+3. and a `runs` directory
 
-We recommend having a separate "run" directory because `reframe` creates a bunch
+We recommend having a separate `runs` directory because `reframe` creates a bunch
 of directories and it can mess up git version control.  For example:
 
 ```bash
@@ -81,9 +81,12 @@ To run only on Cannon, use a Cannon login or compute node. Run the reframe
 command with the flag `--system="cannon:test"` for CPU codes and
 `--system="cannon:gpu_test"` for GPU codes
 
-To run only on FASSE, use a FASSE login node or a Remote Desktop session. Run
-the reframe command with the flag `--system="fasse"` for CPU codes and
-`--system="fasse_gpu"` for GPU codes
+To run only on FASSE, use a FASSE login node or a Remote Desktop
+session. Remember to repeat the steps above on FASSE to ensure a fresh
+creation of the reframe working directory and a new installation of
+the ReFrame repo therein, as Cannon's filesystem is not visible from
+FASSE. Run the reframe command with the flag `--system="fasse"` for
+CPU codes and `--system="fasse_gpu"` for GPU codes
 
 ## Hello world example
 
@@ -91,7 +94,7 @@ This is example `hello1.py` adapted from [reframe
 docs](https://reframe-hpc.readthedocs.io/en/stable/tutorial_basics.html#the-hello-world-test). 
 
 Note that specifying the system on the `hello1.py` file is not suffient. You
-have to add the flag `--sytem`, otherwise it will not work. 
+have to add the flag `--sytem`, otherwise it will not work.
 
 ```bash
 [paulasan@holylogin04 reframe-fasrc]$ pwd
@@ -116,7 +119,16 @@ class HelloTest(rfm.RegressionTest):
         return sn.assert_found(r'Hello, World\!', self.stdout)
 ```
 
-In the `runs` directory, you can run a single test `hello1.py` with the command:
+In the `runs` directory, you can run a single test `hello1.py` with
+the following command. One can also declare a `$WORKDIR` variable to
+store the location of the top-level `reframe` directory, which is
+'reframe_dir` in this case. For example,
+`WORKDIR="~/projects/reframe_dir"` and then execute the following
+command using `$WORKDIR`, e.g.: `$WORKDIR/reframe/bin/reframe
+--config-file...` and so on. Additionally, remember to execute `module
+load python` prior to executing the command below to avoid getting
+python version related errors, specifically, `SyntaxError: future
+feature annotations is not defined`. 
 
 ```bash
 [paulasan@builds01 runs]$ ~/projects/reframe_dir/reframe/bin/reframe --config-file ~/projects/reframe_dir/reframe-fasrc/config/test.py     --checkpath ~/projects/reframe_dir/reframe-fasrc/examples/hello/hello1.py --run --system="test:rc-testing"
