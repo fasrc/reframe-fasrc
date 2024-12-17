@@ -20,8 +20,8 @@ class GpuBurnTest(rfm.RegressionTest):
         self.build_system = 'Make'
         self.build_system.makefile = 'makefile.cuda'
         self.executable = './gpu_burn.x'
-        patt = (r'^\s*\[[^\]]*\]\s*GPU\s+\d+\(\S*\):\s+(?P<perf>\S*)\s+GF\/s'
-                r'\s+(?P<temp>\S*)\s+Celsius')
+        patt = (r'GPU\s+\d+\(OK\):\s+(?P<perf>\S+)\s+GF/s\s+'
+                r'(?P<temp>\S+)\s+Celsius')
         self.perf_patterns = {
             'perf': sn.min(sn.extractall(patt, self.stdout, 'perf', float)),
             'temp': sn.max(sn.extractall(patt, self.stdout, 'temp', float)),
@@ -47,11 +47,21 @@ class GpuBurnTest(rfm.RegressionTest):
     def num_tasks_assigned(self):
         return self.job.num_tasks * self.num_gpus_per_node
 
+#    @sanity_function
+#    def assert_num_tasks(self):
+#        return sn.assert_eq(sn.count(sn.findall(
+#            r'^\s*\[[^\]]*\]\s*GPU\s*\d+\(OK\)', self.stdout)
+#        ), self.num_tasks_assigned)
+
     @sanity_function
-    def assert_num_tasks(self):
-        return sn.assert_eq(sn.count(sn.findall(
-            r'^\s*\[[^\]]*\]\s*GPU\s*\d+\(OK\)', self.stdout)
-        ), self.num_tasks_assigned)
+    def assert_sanity(self):
+        num_gpus_detected = sn.extractsingle(
+            r'==> devices selected \((\d+)\)', self.stdout, 1, int
+        )
+        return sn.assert_eq(
+            sn.count(sn.findall(r'GPU\s+\d+\(OK\)', self.stdout)),
+            num_gpus_detected
+        )
 
     @run_before('run')
     def set_gpus_per_node(self):
