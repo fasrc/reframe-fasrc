@@ -13,7 +13,7 @@ import reframe.utility.sanity as sn
 
 @rfm.simple_test
 class IorCheck(rfm.RunOnlyRegressionTest):
-    base_dir = parameter(['/scratch/','/n/holyscratch01/rc_admin/test'])
+    base_dir = parameter(['/scratch/','/n/netscratch/rc_admin/test'])
     valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
     valid_prog_environs = ['intel-mpi']
     modules = ['ior']
@@ -36,7 +36,7 @@ class IorCheck(rfm.RunOnlyRegressionTest):
                 'num_tasks': 4,
                 'num_tasks_per_node': 4
             },
-            '/n/holyscratch01/rc_admin/test': {
+            '/n/netscratch/rc_admin/test': {
                 'num_tasks': 96,
                 'num_tasks_per_node': 32,
                 'ior_block_size': '32g',
