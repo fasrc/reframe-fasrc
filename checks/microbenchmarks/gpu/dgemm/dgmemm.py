@@ -11,7 +11,7 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GPUdgemmTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
         self.executable = './dgemm.x'

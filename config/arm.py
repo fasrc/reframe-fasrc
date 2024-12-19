@@ -12,73 +12,25 @@ from reframe.core.backends import register_launcher
 from reframe.core.launchers import JobLauncher
 
 
-@register_launcher('srun-harvard')
-class MySmartLauncher(JobLauncher):
-    def command(self, job):
-        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmix']
-
-@register_launcher('srun-harvard-pmi2')
-class MySmartLauncher(JobLauncher):
-    def command(self, job):
-        return ['srun -c ${SLURM_CPUS_PER_TASK:-1} -n ${SLURM_NTASKS:-1} --mpi=pmi2']
-
 site_configuration = {
     'systems': [
         {
-            'name': 'test',
-            'descr': 'Test Cluster',
+            'name': 'arm',
+            'descr': 'Arm Testing',
             'hostnames': [
                 'holy',
             ],
-            'modules_system': 'lmod',
+            'modules_system': 'nomod',
             'partitions': [
                 {
                     'name': 'local',
                     'scheduler': 'local',
                     'environs': [
                         'builtin',
-                        'gnu',
-                        'intel',
-                        'gnu-mpi',
-                        'intel-mpi'
                     ],
                     'descr': 'Local node',
                     'max_jobs': 1,
                     'launcher': 'local'
-                },
-                {
-                    'name': 'rc-testing',
-                    'scheduler': 'slurm',
-                    'environs': [
-                         'builtin',
-                         'gnu',
-                         'intel',
-                         'gnu-mpi',
-                         'intel-mpi',
-                         'intel-intelmpi'
-                    ],
-                    'descr': 'Test Cluster CPU',
-                    'max_jobs': 100,
-                    'launcher': 'srun-harvard',
-                    'access': ['-p rc-testing']
-                },
-                {
-                    'name': 'gpu',
-                    'scheduler': 'slurm',
-                    'environs': [
-                         'gpu'
-                    ],
-                    'descr': 'Test Cluster GPU',
-                    'max_jobs': 100,
-                    'launcher': 'srun-harvard',
-                    'access': ['-p gpu'],
-                    'resources': [
-                        {
-                            'name': '_rfm_gpu',
-                            'options': ['--gres=gpu:{num_gpus_per_node}']
-                        }
-                    ],
-
                 }
             ]
         }
