@@ -33,7 +33,7 @@ site_configuration = {
             'modules_system': 'lmod',
             'partitions': [
                 {
-                    'name': 'login',
+                    'name': 'local',
                     'scheduler': 'local',
                     'environs': [
                         'builtin',
@@ -42,7 +42,7 @@ site_configuration = {
                         'gnu-mpi',
                         'intel-mpi'
                     ],
-                    'descr': 'Login nodes',
+                    'descr': 'Local node',
                     'max_jobs': 1,
                     'launcher': 'local'
                 },
@@ -97,12 +97,6 @@ site_configuration = {
             'cc': 'icx',
             'cxx': 'icpx',
             'ftn': 'ifx'
-        },
-        {
-            'name': 'builtin',
-            'cc': 'gcc',
-            'cxx': 'g++',
-            'ftn': 'gfortran'
         },
         {
             'name': 'gnu-mpi',
