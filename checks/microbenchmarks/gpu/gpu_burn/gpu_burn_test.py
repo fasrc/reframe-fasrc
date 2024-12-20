@@ -13,19 +13,13 @@ import reframe.utility.osext as osext
 @rfm.simple_test
 class GpuBurnTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.descr = 'GPU burn test'
         self.valid_prog_environs = ['gpu']
         self.executable_opts = ['-d', '40']
         self.build_system = 'Make'
         self.build_system.makefile = 'makefile.cuda'
         self.executable = './gpu_burn.x'
-        patt = (r'GPU\s+\d+\(OK\):\s+(?P<perf>\S+)\s+GF/s\s+'
-                r'(?P<temp>\S+)\s+Celsius')
-        self.perf_patterns = {
-            'perf': sn.min(sn.extractall(patt, self.stdout, 'perf', float)),
-            'temp': sn.max(sn.extractall(patt, self.stdout, 'temp', float)),
-        }
         self.reference = {
             'cannon:local-gpu': {
                 'perf': (6200, -0.10, None, 'Gflop/s per gpu'),
@@ -47,22 +41,6 @@ class GpuBurnTest(rfm.RegressionTest):
     def num_tasks_assigned(self):
         return self.job.num_tasks * self.num_gpus_per_node
 
-#    @sanity_function
-#    def assert_num_tasks(self):
-#        return sn.assert_eq(sn.count(sn.findall(
-#            r'^\s*\[[^\]]*\]\s*GPU\s*\d+\(OK\)', self.stdout)
-#        ), self.num_tasks_assigned)
-
-    @sanity_function
-    def assert_sanity(self):
-        num_gpus_detected = sn.extractsingle(
-            r'==> devices selected \((\d+)\)', self.stdout, 1, int
-        )
-        return sn.assert_eq(
-            sn.count(sn.findall(r'GPU\s+\d+\(OK\)', self.stdout)),
-            num_gpus_detected
-        )
-
     @run_before('run')
     def set_gpus_per_node(self):
         cp = self.current_partition.fullname
@@ -79,25 +57,28 @@ class GpuBurnTest(rfm.RegressionTest):
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=4G']
 
-    @run_before('performance')
-    def report_slow_nodes(self):
-        '''Report the base perf metrics and also all the slow nodes.'''
+    @sanity_function
+    def assert_sanity(self):
+        num_gpus_detected = sn.extractsingle(
+            r'==> devices selected \((\d+)\)', self.stdout, 1, int
+        )
+        return sn.assert_eq(
+            sn.count(sn.findall(r'GPU\s+\d+\(OK\)', self.stdout)),
+            num_gpus_detected
+        )
 
-        # Only report the nodes that don't meet the perf reference
-        with osext.change_dir(self.stagedir):
-            key = f'{self.current_partition.fullname}:min_perf'
-            if key in self.reference:
-                regex = r'\[(\S+)\] GPU\s+\d\(OK\): (\d+) GF/s'
-                nids = set(sn.extractall(regex, self.stdout, 1))
+    def _extract_metric(self, metric):
+        return sn.extractall(
+            r'GPU\s+\d+\(OK\):\s+(?P<perf>\S+)\s+GF/s\s+'
+            r'(?P<temp>\S+)\s+Celsius', self.stdout, metric, float
+        )
 
-                # Get the references
-                ref, lt, ut, *_ = self.reference[key]
+    @performance_function('Gflop/s per gpu')
+    def gpu_perf_min(self):
+        '''Lowest performance recorded among all the selected devices.'''
+        return sn.min(self._extract_metric('perf'))
 
-                # Flag the slow nodes
-                for nid in nids:
-                    try:
-                        node_perf = self.min_perf(nid)
-                        val = node_perf.evaluate(cache=True)
-                        sn.assert_reference(val, ref, lt, ut).evaluate()
-                    except SanityError:
-                        self.perf_variables[nid] = node_perf
+    @performance_function('degC')
+    def gpu_temp_max(self):
+        '''Maximum temperature recorded among all the selected devices.'''
+        return sn.max(self._extract_metric('temp'))

@@ -27,6 +27,8 @@ site_configuration = {
                     'scheduler': 'local',
                     'environs': [
                         'builtin',
+                        'gpu',
+                        'gnu'
                     ],
                     'descr': 'Local node',
                     'max_jobs': 1,
@@ -44,7 +46,6 @@ site_configuration = {
         },
         {
             'name': 'gnu',
-            'modules': ['gcc'],
             'cc': 'gcc',
             'cxx': 'g++',
             'ftn': 'gfortran'
@@ -79,10 +80,12 @@ site_configuration = {
         },
         {
             'name': 'gpu',
-            'modules': ['gcc/12.2.0-fasrc01','cuda'],
             'cc': 'gcc',
             'cxx': 'g++',
-            'ftn': 'gfortran'
+            'ftn': 'gfortran',
+            'env_vars': [
+              ['PATH','${PATH}:/usr/local/cuda-12.2/bin']
+            ]
         }
     ],
     'logging': [
