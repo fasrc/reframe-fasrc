@@ -9,7 +9,7 @@ import reframe.utility.sanity as sn
 
 @rfm.simple_test
 class KernelLatencyTest(rfm.RegressionTest):
-    valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu']
+    valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
     valid_prog_environs = ['gpu']
 
     build_system = 'Make'
