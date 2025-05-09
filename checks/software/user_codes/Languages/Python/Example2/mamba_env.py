@@ -13,8 +13,8 @@ class PyMambaEnv(rfm.RunOnlyRegressionTest):
     descr = 'Creates a conda environment, test numpy and pandas, deletes conda environment'
     valid_systems = ['cannon:local','cannon:test','fasse:fasse','test:rc-testing']
     valid_prog_environs = ['builtin']
-    prerun_cmds = ['wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Python/Example3/build_env.sh',
-                   'wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Python/Example3/numpy_pandas_ex.py',
+    prerun_cmds = ['wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Python/Example2/build_env.sh',
+                   'wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Python/Example2/numpy_pandas_ex.py',
                    'sh build_env.sh',
                    'mamba activate my_env']
     build_system = 'SingleSource'
