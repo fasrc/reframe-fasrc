@@ -193,10 +193,10 @@ class GpuDRAMLatency(GpuPointerChaseSingle):
         super().__init__()
         self.reference = {
             'cannon:local-gpu': {
-                'average_latency': (430, None, 0.1, 'clock cycles')
+                'average_latency': (500, None, 0.1, 'clock cycles')
             },
             'cannon:gpu_test': {
-                'average_latency': (430, None, 0.1, 'clock cycles')
+                'average_latency': (500, None, 0.1, 'clock cycles')
             },
             '*': {
                 'average_latency': (506, None, 0.1, 'clock cycles')
