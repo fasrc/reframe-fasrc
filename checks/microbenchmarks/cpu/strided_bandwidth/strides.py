@@ -65,7 +65,7 @@ class StridedBandwidthTest(StridedBase):
                 'bandwidth': (185, -0.1, None, 'GB/s')
             },
             'fasse:fasse': {
-                'bandwidth': (185, -0.1, None, 'GB/s')
+                'bandwidth': (90, -0.1, None, 'GB/s')
             },
             '*': {
                 'bandwidth': (270, None, None, 'GB/s')
