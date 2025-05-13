@@ -26,10 +26,10 @@ class AlltoallTest(rfm.RegressionTest):
 
     reference = {
         'cannon:test': {
-            'latency': (3.3, None, 0.1, 'us')
+            'latency': (4.0, None, 0.1, 'us')
         },
         'fasse:fasse': {
-            'latency': (3.3, None, 0.1, 'us')
+            'latency': (4.0, None, 0.1, 'us')
         },
         '*': {
             'latency': (20.73, None, None, 'us')

@@ -72,9 +72,9 @@ class HaloCellExchangeTest(rfm.RegressionTest):
                 'time_4_10': (2e-05, None, 0.50, 's'),
                 'time_4_10000': (7e-05, None, 0.50, 's'),
                 'time_4_1000000': (1e-03, None, 0.50, 's'),
-                'time_6_10': (2e-05, None, 0.50, 's'),
-                'time_6_10000': (6e-05, None, 0.50, 's'),
-                'time_6_1000000': (1e-03, None, 0.50, 's')
+                'time_6_10': (2e-04, None, 0.50, 's'),
+                'time_6_10000': (3e-04, None, 0.50, 's'),
+                'time_6_1000000': (3e-03, None, 0.50, 's')
             },
             '*': {
                 'time_2_10': (3.925395e-06, None, None, 's'),

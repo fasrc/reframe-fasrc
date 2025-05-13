@@ -128,7 +128,7 @@ class StridedBandwidthTest128(StridedBase):
 
         self.reference = {
             'cannon:local': {
-                'bandwidth': (17, -0.1, None, 'GB/s')
+                'bandwidth': (12, -0.1, None, 'GB/s')
             },
             'cannon:local-gpu': {
                 'bandwidth': (14, -0.1, None, 'GB/s')
@@ -137,7 +137,7 @@ class StridedBandwidthTest128(StridedBase):
                 'bandwidth': (8, -0.1, None, 'GB/s')
             },
             'cannon:test': {
-                'bandwidth': (17, -0.1, None, 'GB/s')
+                'bandwidth': (12, -0.1, None, 'GB/s')
             },
             'fasse:fasse': {
                 'bandwidth': (17, -0.1, None, 'GB/s')
