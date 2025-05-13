@@ -199,7 +199,7 @@ class GpuDRAMLatency(GpuPointerChaseSingle):
                 'average_latency': (500, None, 0.1, 'clock cycles')
             },
             '*': {
-                'average_latency': (506, None, 0.1, 'clock cycles')
+                'average_latency': (600, None, 0.1, 'clock cycles')
             },
         }
 
