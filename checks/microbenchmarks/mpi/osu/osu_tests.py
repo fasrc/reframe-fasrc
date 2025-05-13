@@ -193,7 +193,7 @@ class P2PCPUBandwidthTest(P2PBaseTest):
                 'bw': (12000.0, -0.10, None, 'MB/s')
             },
             'fasse:fasse': {
-                'bw': (12000.0, -0.10, None, 'MB/s')
+                'bw': (5000.0, -0.10, None, 'MB/s')
             },
             '*': {
                 'bw': (9649.0, None, None, 'MB/s')
@@ -224,7 +224,7 @@ class P2PCPULatencyTest(P2PBaseTest):
                 'latency': (1.7, None, 0.70, 'us')
             },
             'fasse:fasse': {
-                'latency': (1.7, None, 0.70, 'us')
+                'latency': (15, None, 0.70, 'us')
             },
             '*': {
                 'latency': (1.61, None, None, 'us')

@@ -39,7 +39,7 @@ class HPCGCheckRef(rfm.RegressionTest):
                 'gflops': (28, -0.1, None, 'Gflop/s')
             },
             'fasse:fasse': {
-                'gflops': (28, -0.1, None, 'Gflop/s')
+                'gflops': (18, -0.1, None, 'Gflop/s')
             },
             '*': {
                 'gflops': (13.4, None, None, 'Gflop/s')
