@@ -16,12 +16,12 @@ class PyMambaEnv(rfm.RunOnlyRegressionTest):
     prerun_cmds = ['wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Python/Example2/build_env.sh',
                    'wget https://raw.githubusercontent.com/fasrc/User_Codes/master/Languages/Python/Example2/numpy_pandas_ex.py',
                    'sh build_env.sh',
-                   'mamba activate my_env']
+                   'source activate my_env']
     build_system = 'SingleSource'
     sourcepath = 'numpy_pandas_ex.py'
     modules = ['python']
     executable = 'python numpy_pandas_ex.py'
-    postrun_cmds= ['mamba deactivate',
+    postrun_cmds= ['source deactivate',
                    'mamba env remove -n my_env']
 
     @run_before('run')
