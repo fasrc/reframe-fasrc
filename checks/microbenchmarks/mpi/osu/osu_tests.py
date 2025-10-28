@@ -89,9 +89,9 @@ class FlexAlltoallTest(rfm.RegressionTest):
             self.num_tasks_per_node = 32
             self.num_tasks = 64
 
-
+@rfm.simple_test
 class AllreduceTest(rfm.RegressionTest):
-    variant = parameter(['small'], ['large'])
+    variant = parameter(['small', 'large'])
     strict_check = False
     valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
 
@@ -128,7 +128,7 @@ class AllreduceTest(rfm.RegressionTest):
 
     @run_before('performance')
     def set_performance_patterns(self):
-        if variant == 'small':
+        if self.variant == 'small':
             self.reference = {
                 'cannon:test': {
                     'latency': (4.6, None, 0.05, 'us')
@@ -157,12 +157,14 @@ class AllreduceTest(rfm.RegressionTest):
                                         self.stdout, 'latency', float)
         }
 
+@rfm.simple_test
 class P2PBaseTest(rfm.RegressionTest):
     def __init__(self):
         self.strict_check = False
         self.num_tasks = 2
         self.num_tasks_per_node = 1
         self.descr = 'P2P microbenchmark'
+        self.executable = './p2p_osu_latency'
         self.build_system = 'Make'
         self.build_system.makefile = 'Makefile_p2p'
         self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
