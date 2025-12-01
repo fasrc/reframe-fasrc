@@ -11,7 +11,7 @@ import reframe as rfm
 import os
 
 
-class PchaseGlobal(rfm.RegressionMixin):
+class PchaseGlobal(rfm.RegressionTestPlugin):
     '''Handy class to store common test settings.
     '''
     single_device_systems = variable(

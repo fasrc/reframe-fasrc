@@ -49,7 +49,6 @@ class HostnameCheck(SlurmSimpleBaseCheck):
         )
         self.sanity_patterns = sn.assert_eq(self.num_tasks, num_matches)
 
-
 @rfm.simple_test
 class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
     def __init__(self):
@@ -62,7 +61,6 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
         num_matches = sn.count(sn.findall(r'TEST123456!', self.stdout))
         self.sanity_patterns = sn.assert_eq(self.num_tasks, num_matches)
 
-
 @rfm.simple_test
 class DefaultRequestGPU(SlurmSimpleBaseCheck):
     def __init__(self):
@@ -74,6 +72,9 @@ class DefaultRequestGPU(SlurmSimpleBaseCheck):
         self.sanity_patterns = sn.assert_found(
             r'NVIDIA-SMI.*Driver Version.*', self.stdout)
 
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem=2000']
 
 @rfm.simple_test
 class DefaultRequestGPUSetsGRES(SlurmSimpleBaseCheck):
@@ -86,6 +87,9 @@ class DefaultRequestGPUSetsGRES(SlurmSimpleBaseCheck):
         self.sanity_patterns = sn.assert_found(
             r'.*(TresPerNode|Gres)=.*gpu:1.*', self.stdout)
 
+    @run_before('run')
+    def set_memory_limit(self):
+        self.job.options = ['--mem=2000']
 
 @rfm.simple_test
 class MemoryOverconsumptionCheck(SlurmCompiledBaseCheck):
