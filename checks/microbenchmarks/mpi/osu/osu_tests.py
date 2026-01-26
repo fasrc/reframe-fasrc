@@ -73,6 +73,7 @@ class FlexAlltoallTest(rfm.RegressionTest):
         self.build_system.makefile = 'Makefile_alltoall'
         self.executable = './osu_alltoall'
         self.sanity_patterns = sn.assert_found(r'^1048576', self.stdout)
+        self.time_limit = '10m'
 
     @run_before('run')
     def set_memory_limit(self):
@@ -105,6 +106,7 @@ class AllreduceTest(rfm.RegressionTest):
     valid_prog_environs = ['gnu-mpi','intel-mpi']
     num_tasks_per_node = 1
     num_gpus_per_node  = 0
+    time_limit = '10m'
     extra_resources = {
         'switches': {
             'num_switches': 1
@@ -164,6 +166,7 @@ class P2PBaseTest(rfm.RegressionTest):
         self.strict_check = False
         self.num_tasks = 2
         self.num_tasks_per_node = 1
+        self.time_limit = '10m'
         self.descr = 'P2P microbenchmark'
         self.executable = './p2p_osu_latency'
         self.build_system = 'Make'
@@ -191,6 +194,7 @@ class P2PCPUBandwidthTest(P2PBaseTest):
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.executable = './p2p_osu_bw'
         self.executable_opts = ['-x', '100', '-i', '1000']
+        self.time_limit = '10m'
         self.reference = {
             'cannon:test': {
                 'bw': (12000.0, -0.10, None, 'MB/s')
@@ -220,6 +224,7 @@ class P2PCPULatencyTest(P2PBaseTest):
         self.valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
         self.valid_prog_environs = ['gnu-mpi', 'intel-mpi']
         self.executable_opts = ['-x', '100', '-i', '1000']
+        self.time_limit = '10m'
 
         self.executable = './p2p_osu_latency'
         self.reference = {

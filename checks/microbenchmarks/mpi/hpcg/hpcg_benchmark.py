@@ -90,6 +90,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
         self.valid_prog_environs = ['intel-intelmpi']
         self.modules = ['intel-mkl/24.2.1-fasrc01']
         self.build_system = 'Make'
+        self.time_limit = '10m'
         self.prebuild_cmds = ['cp -r ${MKLROOT}/share/mkl/benchmarks/hpcg/hpcg_cpu/* .',
                              './configure IMPI_IOMP_AVX512']
 
