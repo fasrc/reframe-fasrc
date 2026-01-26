@@ -50,6 +50,7 @@ class TensorflowSingularity(rfm.RunOnlyRegressionTest):
     valid_prog_environs = ['gpu']
     build_system = 'SingleSource'
     executable = 'singularity pull --disable-cache docker://tensorflow/tensorflow:latest-gpu'
+    time_limit = '10m'
 
     @run_before('run')
     def set_memory_limit(self):
