@@ -19,7 +19,7 @@ class P2pBandwidthCheck(rfm.RegressionTest):
     build_system = 'Make'
     executable = './p2p_bandwidth.x'
 
-    self.time_limit = '10m'
+    time_limit = '10m'
 
     peerAccess = parameter(['peerAccess', 'noPeerAccess'])
 

@@ -23,7 +23,7 @@ class AlltoallTest(rfm.RegressionTest):
     num_tasks_per_node = 1
     num_gpus_per_node  = 1
     num_tasks = 8
-    self.time_limit = '10m'
+    time_limit = '10m'
 
     reference = {
         'cannon:test': {

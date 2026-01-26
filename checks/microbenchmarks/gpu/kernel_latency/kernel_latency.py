@@ -16,7 +16,7 @@ class KernelLatencyTest(rfm.RegressionTest):
     executable = './kernel_latency.x'
 
     kernel_version = parameter(['sync', 'async'])
-    self.time_limit = '10m'
+    time_limit = '10m'
 
     @run_before('performance')
     def set_perf_patterns(self):

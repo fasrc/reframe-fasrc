@@ -16,7 +16,7 @@ class FFTWTest(rfm.RegressionTest):
     modules = ['fftw']
     num_tasks_per_node = 12
     num_gpus_per_node = 0
-    self.time_limit = '10m'
+    time_limit = '10m'
     valid_prog_environs = ['gnu-mpi', 'intel-mpi']
 
     @run_before('compile')
