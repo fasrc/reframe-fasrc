@@ -17,6 +17,7 @@ class CppDotProduct(rfm.RegressionTest):
     ]
     build_system = 'SingleSource'
     sourcepath = 'dot_prod.cpp'
+    self.time_limit = '10m'
 
     @run_before('compile')
     def set_compiler_flags(self):

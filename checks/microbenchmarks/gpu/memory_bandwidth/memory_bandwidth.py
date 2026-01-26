@@ -21,6 +21,8 @@ class GpuBandwidthCheck(rfm.RegressionTest):
         self.executable = './memory_bandwidth.x'
         self.build_system.cxxflags = [f'-DCOPY={self.copy_size}']
 
+        self.time_limit = '10m'
+
         # perf_patterns and reference will be set by the sanity check function
         self.perf_patterns = {
             'h2d': sn.min(sn.extractall(self._xfer_pattern('h2d'),

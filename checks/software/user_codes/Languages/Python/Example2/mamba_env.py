@@ -24,6 +24,8 @@ class PyMambaEnv(rfm.RunOnlyRegressionTest):
     postrun_cmds= ['source deactivate',
                    'mamba env remove -n my_env']
 
+    self.time_limit = '10m'
+
     @run_before('run')
     def set_memory_limit(self):
         self.job.options = ['--mem-per-cpu=4G']

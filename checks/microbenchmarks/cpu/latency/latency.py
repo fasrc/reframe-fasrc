@@ -17,6 +17,7 @@ class CPULatencyTest(rfm.RegressionTest):
         self.valid_prog_environs = ['*']
         self.num_tasks = 1
         self.num_tasks_per_node = 1
+        self.time_limit = '10m'
 
         self.build_system.cxxflags = ['-std=c++11','-lpthread','-O3']
 

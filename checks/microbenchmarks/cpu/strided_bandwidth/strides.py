@@ -17,6 +17,7 @@ class StridedBase(rfm.RegressionTest):
         self.build_system.cxxflags = ['-std=c++11','-lpthread']
         self.num_tasks = 1
         self.num_tasks_per_node = 1
+        self.time_limit = '10m'
 
         self.sanity_patterns = sn.assert_eq(
             sn.count(sn.findall(r'bandwidth', self.stdout)),

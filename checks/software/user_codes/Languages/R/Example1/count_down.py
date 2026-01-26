@@ -20,6 +20,8 @@ class RCountDown(rfm.RunOnlyRegressionTest):
     #executable = 'Rscript count_down.R > count_down.Rout'
     executable = 'R CMD BATCH --no-save --no-restore count_down.R'
 
+    self.time_limit = '10m'
+
     @sanity_function
     def assert_sanity(self):
         return sn.assert_found(r'CountDown\( 10 \)', "count_down.Rout")

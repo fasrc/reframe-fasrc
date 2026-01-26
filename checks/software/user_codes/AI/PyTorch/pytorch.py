@@ -21,6 +21,7 @@ class PyTorch(rfm.RunOnlyRegressionTest):
     build_system = 'SingleSource'
     sourcepath = 'check_gpu.py'
     executable = 'singularity exec --nv pytorch_latest.sif python check_gpu.py'
+    self.time_limit = '10m'
 
     @run_after('init')
     def inject_dependencies(self):

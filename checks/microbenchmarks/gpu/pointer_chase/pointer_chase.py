@@ -36,6 +36,7 @@ class CompileGpuPointerChase(rfm.CompileOnlyRegressionTest, PchaseGlobal):
         self.valid_prog_environs = self.global_prog_environs
         self.build_system = 'Make'
         self.postbuild_cmds = ['ls .']
+        self.time_limit = '10m'
 
     @run_after('setup')
     def select_makefile(self):

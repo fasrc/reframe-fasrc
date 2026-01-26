@@ -14,6 +14,7 @@ class AllocSpeedTest(rfm.RegressionTest):
     build_system = 'SingleSource'
     valid_systems = ['cannon:local','cannon:local-gpu','cannon:test','fasse:login','fasse:fasse','test:login','test:rc-testing','arm:local']
     valid_prog_environs = ['*']
+    self.time_limit = '10m'
 
     @run_after('init')
     def set_descr(self):

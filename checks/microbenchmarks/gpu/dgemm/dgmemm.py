@@ -15,6 +15,7 @@ class GPUdgemmTest(rfm.RegressionTest):
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
         self.executable = './dgemm.x'
+        self.time_limit = '10m'
         self.perf_patterns = {
             'perf': sn.min(sn.extractall(
                 r'^\s*\[[^\]]*\]\s*GPU\s*\d+: (?P<fp>\S+) TF/s',

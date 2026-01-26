@@ -20,6 +20,7 @@ class GpuBurnTest(rfm.RegressionTest):
         self.build_system = 'Make'
         self.build_system.makefile = 'makefile.cuda'
         self.executable = './gpu_burn.x'
+        self.time_limit = '10m'
         self.reference = {
             'cannon:local-gpu': {
                 'perf': (6200, -0.10, None, 'Gflop/s per gpu'),

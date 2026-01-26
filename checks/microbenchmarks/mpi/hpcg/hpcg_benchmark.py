@@ -26,6 +26,7 @@ class HPCGCheckRef(rfm.RegressionTest):
 
         self.num_tasks = 96
         self.num_cpus_per_task = 1
+        self.time_limit = '10m'
 
         self.system_num_tasks = {
             'cannon:test':  48,

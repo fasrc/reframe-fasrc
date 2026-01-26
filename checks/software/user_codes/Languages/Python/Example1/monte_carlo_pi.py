@@ -18,6 +18,7 @@ class PyMonteCarloPi(rfm.RunOnlyRegressionTest):
     sourcepath = 'mc_pi.py'
     modules = ['python']
     executable = 'python mc_pi.py'
+    self.time_limit = '10m'
 
     @sanity_function
     def assert_sanity(self):

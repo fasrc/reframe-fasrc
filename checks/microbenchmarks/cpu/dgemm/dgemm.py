@@ -21,6 +21,7 @@ class DGEMMTest(rfm.RegressionTest):
         self.valid_prog_environs = ['intel']
 
         self.num_tasks = 1
+        self.time_limit = '10m'
         self.use_multithreading = False
         self.executable_opts = ['6144', '12288', '3072']
         self.build_system = 'SingleSource'

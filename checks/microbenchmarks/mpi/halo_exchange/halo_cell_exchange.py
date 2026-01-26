@@ -19,6 +19,7 @@ class HaloCellExchangeTest(rfm.RegressionTest):
         self.num_tasks = 6
         self.num_tasks_per_node = 1
         self.num_gpus_per_node = 0
+        self.time_limit = '10m'
 
         self.executable_opts = ['input.txt']
 

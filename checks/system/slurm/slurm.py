@@ -16,6 +16,7 @@ class SlurmSimpleBaseCheck(rfm.RunOnlyRegressionTest):
         self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.num_tasks_per_node = 1
+        self.time_limit = '10m'
 
 class SlurmCompiledBaseCheck(rfm.RegressionTest):
     '''Base class for Slurm tests that require compiling some code'''
@@ -24,12 +25,14 @@ class SlurmCompiledBaseCheck(rfm.RegressionTest):
         self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.num_tasks_per_node = 1
+        self.time_limit = '10m'
 
 @rfm.simple_test
 class HostnameCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.executable = '/bin/hostname -s'
+        self.time_limit = '10m'
         self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.valid_prog_environs = ['builtin']
         self.hostname_patt = {
@@ -54,6 +57,7 @@ class EnvironmentVariableCheck(SlurmSimpleBaseCheck):
     def __init__(self):
         super().__init__()
         self.num_tasks = 2
+        self.time_limit = '10m'
         self.valid_systems = ['cannon:test','cannon:gpu_test','fasse:fasse','fasse:fasse_gpu','test:rc-testing','test:gpu']
         self.executable = '/bin/echo'
         self.executable_opts = ['$MY_VAR']
@@ -68,6 +72,7 @@ class DefaultRequestGPU(SlurmSimpleBaseCheck):
         self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.valid_prog_environs = ['gpu']
         self.num_gpus_per_node = 1
+        self.time_limit = '10m'
         self.executable = 'nvidia-smi'
         self.sanity_patterns = sn.assert_found(
             r'NVIDIA-SMI.*Driver Version.*', self.stdout)
@@ -83,6 +88,7 @@ class DefaultRequestGPUSetsGRES(SlurmSimpleBaseCheck):
         self.valid_prog_environs = ['gpu']
         self.valid_systems = ['cannon:gpu_test','fasse:fasse_gpu','test:gpu']
         self.num_gpus_per_node = 1
+        self.time_limit = '10m'
         self.executable = 'scontrol show job ${SLURM_JOB_ID}'
         self.sanity_patterns = sn.assert_found(
             r'.*(TresPerNode|Gres)=.*gpu:1.*', self.stdout)

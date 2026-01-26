@@ -21,6 +21,7 @@ class Tensorflow(rfm.RunOnlyRegressionTest):
     build_system = 'SingleSource'
     sourcepath = 'tf_test_multi_gpu.py'
     executable = 'singularity exec --nv tensorflow_latest-gpu.sif python tf_test_multi_gpu.py'
+    self.time_limit = '10m'
 
     @run_after('init')
     def inject_dependencies(self):

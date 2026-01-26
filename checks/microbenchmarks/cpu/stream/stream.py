@@ -33,6 +33,7 @@ class StreamTest(rfm.RegressionTest):
         self.sourcepath = 'stream.c'
         self.build_system = 'SingleSource'
         self.num_tasks = 1
+        self.time_limit = '10m'
         self.num_tasks_per_node = 1
         self.stream_cpus_per_task = {
             'cannon:local': 96,

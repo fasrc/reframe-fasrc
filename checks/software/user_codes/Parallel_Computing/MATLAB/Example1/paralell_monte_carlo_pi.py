@@ -18,6 +18,7 @@ class MatlabParallelMonteCarloPi(rfm.RunOnlyRegressionTest):
     sourcepath = 'parallel_monte_carlo.m'
     modules = ['matlab']
     executable = 'matlab -nosplash -nodesktop -r parallel_monte_carlo'
+    self.time_limit = '10m'
 
     @run_before('run')
     def set_memory_limit(self):
