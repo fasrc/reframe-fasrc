@@ -15,8 +15,8 @@ import reframe.utility.sanity as sn
 class IorCheck(rfm.RunOnlyRegressionTest):
     base_dir = parameter(['/scratch/','/n/netscratch/rc_admin/test'])
     valid_systems = ['cannon:test','fasse:fasse','test:rc-testing']
-    valid_prog_environs = ['intel-mpi']
-    modules = ['ior']
+    valid_prog_environs = ['builtin']
+    modules = ['gcc/14.2.0-fasrc01','openmpi/5.0.5-fasrc01','ior']
     sourcesdir = None
     executable = 'ior'
 
