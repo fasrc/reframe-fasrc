@@ -58,7 +58,7 @@ class TensorflowSingularity(rfm.RunOnlyRegressionTest):
 
     @run_before('run')
     def set_num_threads(self):
-        self.num_cpus_per_task = 16
+        self.num_cpus_per_task = 8
 
     @run_before('run')
     def set_job_options(self):
