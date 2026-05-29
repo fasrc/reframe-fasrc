@@ -11,11 +11,11 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class GPUShmemTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
+        self.valid_systems = ['cannon:local-gpu','fasse:fasse_gpu','test:gpu','arm:local']
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
         self.executable = './shmem.x'
-        self.time_limit = '20m'
+        self.time_limit = '10m'
         self.perf_patterns = {
             'bandwidth': sn.min(sn.extractall(
                 r'^\s*\[[^\]]*\]\s*GPU\s*\d+: '
