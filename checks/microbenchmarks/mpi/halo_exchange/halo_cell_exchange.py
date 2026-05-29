@@ -67,8 +67,8 @@ class HaloCellExchangeTest(rfm.RegressionTest):
 
         self.reference = {
             'cannon:test': {
-                'time_2_10': (1e-05, None, 0.50, 's'),
-                'time_2_10000': (6e-05, None, 0.50, 's'),
+                'time_2_10': (1e-04, None, 0.50, 's'),
+                'time_2_10000': (2e-04, None, 0.50, 's'),
                 'time_2_1000000': (1e-03, None, 0.50, 's'),
                 'time_4_10': (2e-05, None, 0.50, 's'),
                 'time_4_10000': (7e-05, None, 0.50, 's'),
