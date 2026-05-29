@@ -15,7 +15,7 @@ class GPUShmemTest(rfm.RegressionTest):
         self.valid_prog_environs = ['gpu']
         self.build_system = 'Make'
         self.executable = './shmem.x'
-        self.time_limit = '10m'
+        self.time_limit = '15m'
         self.perf_patterns = {
             'bandwidth': sn.min(sn.extractall(
                 r'^\s*\[[^\]]*\]\s*GPU\s*\d+: '

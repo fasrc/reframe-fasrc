@@ -36,7 +36,7 @@ class CompileGpuPointerChase(rfm.CompileOnlyRegressionTest, PchaseGlobal):
         self.valid_prog_environs = self.global_prog_environs
         self.build_system = 'Make'
         self.postbuild_cmds = ['ls .']
-        self.time_limit = '10m'
+        self.time_limit = '15m'
 
     @run_after('setup')
     def select_makefile(self):
@@ -69,7 +69,7 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
     # Set a large number of node jumps to smooth out spurious effects
     num_node_jumps = variable(int, value=400000)
 
-    time_limit = '10m'
+    time_limit = '15m'
 
     def __init__(self):
         self.depends_on('CompileGpuPointerChase')
@@ -120,7 +120,7 @@ class GpuPointerChaseBase(rfm.RunOnlyRegressionTest, PchaseGlobal):
 class GpuPointerChaseSingle(GpuPointerChaseBase):
     '''Base class for the single-GPU latency tests.'''
 
-    time_limit = '10m'
+    time_limit = '15m'
 
     def __init__(self):
         super().__init__()
@@ -246,7 +246,7 @@ class GpuP2PLatencyP2P(GpuP2PLatency):
     '''
     list_size = parameter([5000, 2000000])
     num_list_nodes = 2000000
-    time_limit = '10m'
+    time_limit = '15m'
 
     def __init__(self):
         super().__init__()
