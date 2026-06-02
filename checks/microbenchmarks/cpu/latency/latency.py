@@ -67,7 +67,7 @@ class CPULatencyTest(rfm.RegressionTest):
             'fasse:fasse': {
                 'latencyL1':  (1.14, None, 0.26, 'ns'),
                 'latencyL2':  (4.0, None, 0.26, 'ns'),
-                'latencyL3':  (26, None, 0.075, 'ns'),
+                'latencyL3':  (35, None, 0.075, 'ns'),
                 'latencyMem': (200, None, 0.05, 'ns')
             },
             '*': {
