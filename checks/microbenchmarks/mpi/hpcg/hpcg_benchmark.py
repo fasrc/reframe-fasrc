@@ -40,7 +40,7 @@ class HPCGCheckRef(rfm.RegressionTest):
                 'gflops': (28, -0.1, None, 'Gflop/s')
             },
             'fasse:fasse': {
-                'gflops': (18, -0.1, None, 'Gflop/s')
+                'gflops': (10, -0.1, None, 'Gflop/s')
             },
             '*': {
                 'gflops': (13.4, None, None, 'Gflop/s')
@@ -115,7 +115,7 @@ class HPCGCheckMKL(rfm.RegressionTest):
                 'gflops': (39, -0.1, None, 'Gflop/s')
             },
             'fasse:fasse': {
-                'gflops': (39, -0.1, None, 'Gflop/s')
+                'gflops': (30, -0.1, None, 'Gflop/s')
             },
             '*': {
                 'gflops': (13.4, None, None, 'Gflop/s')

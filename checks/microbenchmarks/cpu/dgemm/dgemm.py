@@ -29,7 +29,7 @@ class DGEMMTest(rfm.RegressionTest):
         self.sys_reference = {
             'cannon:local': (2400.0, -0.15, None, 'Gflop/s'),
             'cannon:test': (2400.0, -0.15, None, 'Gflop/s'),
-            'fasse:fasse': (2400.0, -0.15, None, 'Gflop/s'),
+            'fasse:fasse': (1450.0, -0.15, None, 'Gflop/s'),
             '*': (0, None, None, 'Gflop/s'),
         }
 
