@@ -24,6 +24,7 @@ These are benchmark tests that are broken down by category.  Here is a short des
 #### gpu
 * dgemm: Runs dgemm code to get a measure of FLOps. Originally from CSCS
 * gpu_burn: Burns in GPU and gives a report of GFLOps for one GPU and its temperature. Originally from CSCS
+* gpu_fryer: Burns in GPU using HuggingFace's [gpu-fryer](https://github.com/huggingface/gpu-fryer). Tests FP32, BF16, and FP8
 * kernel_latency: Tests latency in loading the NVIDIA kernel. Originally from CSCS
 * memory_bandwidth: Tests GPU memory bandwidth. Originally from CSCS
 * pointer_chase: Runs a linked list search to test memory latencies. Originally from CSCS
