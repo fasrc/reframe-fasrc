@@ -9,7 +9,7 @@ import reframe.utility.sanity as sn
 
 
 @rfm.simple_test
-class GPUFryerFP32TensorTest(rfm.RegressionTest):
+class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
