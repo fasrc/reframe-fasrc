@@ -13,6 +13,7 @@ class GPUFryerFP32TensorTest(rfm.RegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.executable = 'timeout -s 9 2m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 gpu-fryer_1.1.0.sif --use-fp32 60'
+        self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.perf_patterns = {
             'perf': sn.min(sn.extractall(
