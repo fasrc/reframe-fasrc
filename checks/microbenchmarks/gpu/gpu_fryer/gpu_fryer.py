@@ -18,7 +18,7 @@ class GPUFryerFP32TensorTest(rfm.RegressionTest):
   perf_patterns = {
     'perf': sn.min(sn.extractall(
       r'^\s*\[[^\]]*\]\s*GPU\s*\d+: (?P<fp>\S+) Gflops/s',
-      self.stdout, 'fp', float))
+      stdout, 'fp', float))
   }
   reference = {
     'cannon:local-gpu': {
