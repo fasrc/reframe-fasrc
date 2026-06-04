@@ -9,7 +9,7 @@ import reframe.utility.sanity as sn
 
 
 @rfm.simple_test
-class GPUFryerFP32Test(rfm.RegressionTest):
+class GPUFryerFP32TensorTest(rfm.RegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.executable = 'timeout -s 9 2m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 gpu-fryer_1.1.0.sif --use-fp32 60'
