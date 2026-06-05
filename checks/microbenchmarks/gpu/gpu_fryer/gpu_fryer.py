@@ -13,7 +13,7 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 5m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32'
+        self.executable = 'singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -54,11 +54,11 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
-            self.num_cpus_per_task = 4
+            self.num_cpus_per_task = 16
             self.num_tasks = 1
         else:
             self.num_gpus_per_node = 1
-            self.num_cpus_per_task = 1
+            self.num_cpus_per_task = 4
             self.num_tasks = 1
 
     @run_before('run')
@@ -70,7 +70,7 @@ class GPUFryerBF16TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 5m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-bf16'
+        self.executable = 'singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-bf16'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -111,11 +111,11 @@ class GPUFryerBF16TensorTest(rfm.RunOnlyRegressionTest):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
-            self.num_cpus_per_task = 4
+            self.num_cpus_per_task = 16
             self.num_tasks = 1
         else:
             self.num_gpus_per_node = 1
-            self.num_cpus_per_task = 1
+            self.num_cpus_per_task = 4
             self.num_tasks = 1
 
     @run_before('run')
@@ -127,7 +127,7 @@ class GPUFryerFP8TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 5m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp8'
+        self.executable = 'singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp8'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -168,11 +168,11 @@ class GPUFryerFP8TensorTest(rfm.RunOnlyRegressionTest):
         cp = self.current_partition.fullname
         if cp in {'cannon:local-gpu', 'fasse:fasse_gpu', 'test:gpu'}:
             self.num_gpus_per_node = 4
-            self.num_cpus_per_task = 4
+            self.num_cpus_per_task = 16
             self.num_tasks = 1
         else:
             self.num_gpus_per_node = 1
-            self.num_cpus_per_task = 1
+            self.num_cpus_per_task = 4
             self.num_tasks = 1
 
     @run_before('run')
