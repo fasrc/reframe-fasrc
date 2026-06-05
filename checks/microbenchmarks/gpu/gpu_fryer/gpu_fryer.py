@@ -13,7 +13,7 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 8m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32 60'
+        self.executable = 'timeout -s 9 6m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -33,18 +33,21 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
     def assert_sanity(self):
         return sn.assert_found(r'All GPUs seem healthy', self.stdout)
 
-    def _extract_metric(self, metric):
-        return sn.extractall(r'GPU \#\d+:\s+(?P<perf>\S+)\s+Gflops\/s.+' r'\s+Temperature: (?P<temp>\S+)/°C.+', self.stdout, metric, float)
+    def _extract_metric_perf(self, metric):
+        return sn.extractall(r'GPU \#\d+:\s+(?P<perf>\S+)\s+Gflops\/s.+', self.stdout, metric, float)
+
+    def _extract_metric_temp(self, metric):
+        return sn.extractall(r'\s+Temperature: (?P<temp>\S+)\°C.+', self.stdout, metric, float)
 
     @performance_function('Gflop/s per gpu')
     def gpu_perf_min(self):
         '''Lowest performance recorded among all the selected devices.'''
-        return sn.min(self._extract_metric('perf'))
+        return sn.min(self._extract_metric_perf('perf'))
 
     @performance_function('degC')
     def gpu_temp_max(self):
         '''Maximum temperature recorded among all the selected devices.'''
-        return sn.max(self._extract_metric('temp'))
+        return sn.max(self._extract_metric_temp('temp'))
 
     @run_before('run')
     def set_gpus_per_node(self):
@@ -67,7 +70,7 @@ class GPUFryerBF16TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 8m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-bf16 60'
+        self.executable = 'timeout -s 9 6m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-bf16 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -80,19 +83,28 @@ class GPUFryerBF16TensorTest(rfm.RunOnlyRegressionTest):
             '*': {
                 'perf': (200000, None, None, 'Gflops/s per gpu')
             },
+            '*': {'temp': (0, None, None, 'degC')}
         }
 
     @sanity_function
     def assert_sanity(self):
         return sn.assert_found(r'All GPUs seem healthy', self.stdout)
 
-    def _extract_metric(self, metric):
+    def _extract_metric_perf(self, metric):
         return sn.extractall(r'GPU \#\d+:\s+(?P<perf>\S+)\s+Gflops\/s.+', self.stdout, metric, float)
+
+    def _extract_metric_temp(self, metric):
+        return sn.extractall(r'\s+Temperature: (?P<temp>\S+)\°C.+', self.stdout, metric, float)
 
     @performance_function('Gflop/s per gpu')
     def gpu_perf_min(self):
         '''Lowest performance recorded among all the selected devices.'''
-        return sn.min(self._extract_metric('perf'))
+        return sn.min(self._extract_metric_perf('perf'))
+
+    @performance_function('degC')
+    def gpu_temp_max(self):
+        '''Maximum temperature recorded among all the selected devices.'''
+        return sn.max(self._extract_metric_temp('temp'))
 
     @run_before('run')
     def set_gpus_per_node(self):
@@ -115,7 +127,7 @@ class GPUFryerFP8TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 8m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp8 60'
+        self.executable = 'timeout -s 9 6m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp8 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -128,19 +140,28 @@ class GPUFryerFP8TensorTest(rfm.RunOnlyRegressionTest):
             '*': {
                 'perf': (400000, None, None, 'Gflops/s per gpu')
             },
+            '*': {'temp': (0, None, None, 'degC')}
         }
 
     @sanity_function
     def assert_sanity(self):
         return sn.assert_found(r'All GPUs seem healthy', self.stdout)
 
-    def _extract_metric(self, metric):
+    def _extract_metric_perf(self, metric):
         return sn.extractall(r'GPU \#\d+:\s+(?P<perf>\S+)\s+Gflops\/s.+', self.stdout, metric, float)
+
+    def _extract_metric_temp(self, metric):
+        return sn.extractall(r'\s+Temperature: (?P<temp>\S+)\°C.+', self.stdout, metric, float)
 
     @performance_function('Gflop/s per gpu')
     def gpu_perf_min(self):
         '''Lowest performance recorded among all the selected devices.'''
-        return sn.min(self._extract_metric('perf'))
+        return sn.min(self._extract_metric_perf('perf'))
+
+    @performance_function('degC')
+    def gpu_temp_max(self):
+        '''Maximum temperature recorded among all the selected devices.'''
+        return sn.max(self._extract_metric_temp('temp'))
 
     @run_before('run')
     def set_gpus_per_node(self):
