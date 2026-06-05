@@ -16,11 +16,6 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
         self.executable = 'timeout -s 9 4m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
-        self.perf_patterns = {
-            'perf': sn.min(sn.extractall(
-                r'^\s*\[[^\]]*\]\s*GPU\s*\d+: (?P<fp>\S+) Gflops/s',
-                self.stdout, 'fp', float))
-        }
         self.reference = {
             'cannon:local-gpu': {
                 'perf': (5.2, -0.1, None, 'Gflops/s per gpu')
@@ -37,6 +32,13 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
     def assert_sanity(self):
         return sn.assert_found(r'All GPUs seem healthy', self.stdout)
 
+    def _extract_metric(self, metric):
+        return sn.extractall(r'GPU \#\s+\d+:\s+(?P<perf>\S+)\s+GF/s\s+', self.stdout, metric, float)
+
+    @performance_function('Gflop/s per gpu')
+    def gpu_perf_min(self):
+        '''Lowest performance recorded among all the selected devices.'''
+        return sn.min(self._extract_metric('perf'))
 
     @run_before('run')
     def set_gpus_per_node(self):
