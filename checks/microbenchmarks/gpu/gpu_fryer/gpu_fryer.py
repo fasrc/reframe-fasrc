@@ -33,7 +33,7 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
         return sn.assert_found(r'All GPUs seem healthy', self.stdout)
 
     def _extract_metric(self, metric):
-        return sn.extractall(r'GPU \#\s+\d+:\s+(?P<perf>\S+)\s+Gflops/s\s+', self.stdout, metric, float)
+        return sn.extractall(r'GPU \#\s+\d+:\s+(?P<perf>\S+)\s+Gflops\/s.+', self.stdout, metric, float)
 
     @performance_function('Gflop/s per gpu')
     def gpu_perf_min(self):
