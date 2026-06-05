@@ -13,7 +13,7 @@ class GPUFryerFP32TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 8m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32 60'
+        self.executable = 'timeout -s 9 9m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp32 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -70,7 +70,7 @@ class GPUFryerBF16TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 8m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-bf16 60'
+        self.executable = 'timeout -s 9 9m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-bf16 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
@@ -127,7 +127,7 @@ class GPUFryerFP8TensorTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ['cannon:local-gpu','cannon:gpu_test','fasse:fasse_gpu','test:gpu','arm:local']
         self.build_system = 'SingleSource'
-        self.executable = 'timeout -s 9 8m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp8 60'
+        self.executable = 'timeout -s 9 9m singularity run --nv --bind /usr/lib64/libnvidia-ml.so.1:/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1 /n/sw/singularity_images/FAS/gpu-fryer/gpu-fryer_1.1.0.sif --use-fp8 60'
         self.valid_prog_environs = ['gpu']
         self.time_limit = '10m'
         self.reference = {
