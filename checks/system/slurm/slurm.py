@@ -75,7 +75,7 @@ class DefaultRequestGPU(SlurmSimpleBaseCheck):
         self.time_limit = '10m'
         self.executable = 'nvidia-smi'
         self.sanity_patterns = sn.assert_found(
-            r'NVIDIA-SMI.*Driver Version.*', self.stdout)
+            r'NVIDIA-SMI.*KMD Version.*', self.stdout)
 
     @run_before('run')
     def set_memory_limit(self):
