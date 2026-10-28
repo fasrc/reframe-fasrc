@@ -54,7 +54,7 @@ class TensorflowSingularity(rfm.RunOnlyRegressionTest):
 
     @run_before('run')
     def set_memory_limit(self):
-        self.job.options = ['--mem=8G']
+        self.job.options = ['--mem=16G']
 
     @run_before('run')
     def set_num_threads(self):
