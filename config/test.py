@@ -106,14 +106,14 @@ site_configuration = {
         },
         {
             'name': 'gnu-mpi',
-            'modules': ['gcc','openmpi'],
+            'modules': ['gcc','mpich'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
         },
         {
             'name': 'intel-mpi',
-            'modules': ['intel','openmpi'],
+            'modules': ['intel','mpich'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
             'ftn': 'mpifort'
